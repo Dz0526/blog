@@ -1,5 +1,6 @@
-import { VStack, Stack, Box } from '@chakra-ui/react';
+import { Stack, Box } from '@chakra-ui/react';
 import { ArticlePreview } from 'components/ArticlePreview';
+import { getAllArticles } from 'lib/getArticle';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Article } from 'types/Article';
@@ -8,7 +9,7 @@ type Props = {
   articles: Article[];
 };
 
-const Home: NextPage = () => {
+const Index: NextPage<Props> = ({ articles }) => {
   return (
     <Box>
       <Head>
@@ -17,15 +18,22 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <VStack spacing={10}>
-        <Stack spacing={20}>
-          <ArticlePreview />
-          <ArticlePreview />
-          <ArticlePreview />
-        </Stack>
-      </VStack>
+      <Stack spacing={20}>
+        {articles &&
+          articles.map((article, i) => (
+            <ArticlePreview key={i} article={article} />
+          ))}
+      </Stack>
     </Box>
   );
 };
 
-export default Home;
+export default Index;
+
+export const getStaticProps = async () => {
+  const articles = getAllArticles();
+
+  return {
+    props: { articles },
+  };
+};

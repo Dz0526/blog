@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { HStack, Heading, Link, Icon } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
 
-export const Header = () => {
+export const Header: FC = () => {
   return (
     <HStack spacing={10} my={10}>
       <Heading as='h2' _hover={{ color: 'accent.100' }}>
