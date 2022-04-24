@@ -1,4 +1,4 @@
-import { Stack, Box } from '@chakra-ui/react';
+import { Stack, Box, StackDivider } from '@chakra-ui/react';
 import { ArticlePreview } from 'components/ArticlePreview';
 import { getAllArticles } from 'lib/getArticle';
 import type { NextPage } from 'next';
@@ -17,7 +17,7 @@ const Index: NextPage<Props> = ({ articles }) => {
         <meta name='description' content='This is the blog site of Dz99' />
       </Head>
 
-      <Stack spacing={20}>
+      <Stack spacing={20} divider={<StackDivider borderColor='gray.200' />}>
         {articles &&
           articles.map((article, i) => (
             <ArticlePreview key={i} article={article} />
