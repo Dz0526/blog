@@ -15,7 +15,6 @@ const Index: NextPage<Props> = ({ articles }) => {
       <Head>
         <title>Dz99 blog</title>
         <meta name='description' content='This is the blog site of Dz99' />
-        <link rel='icon' href='/favicon.ico' />
       </Head>
 
       <Stack spacing={20}>
