@@ -8,7 +8,7 @@ export const Header: FC = () => {
       <Link href='/' _hover={{ color: 'accent.100' }}>
         <Heading as='h2'>Dz99 Blog</Heading>
       </Link>
-      <Link href='https://github.com/Dz0526'>
+      <Link href='https://github.com/Dz0526' isExternal>
         <Icon as={FaGithub} color='accent.100' />
       </Link>
     </HStack>
