@@ -5,9 +5,9 @@ import { FaGithub } from 'react-icons/fa';
 export const Header: FC = () => {
   return (
     <HStack spacing={10} my={10}>
-      <Heading as='h2' _hover={{ color: 'accent.100' }}>
-        Dz99 Blog
-      </Heading>
+      <Link href='/' _hover={{ color: 'accent.100' }}>
+        <Heading as='h2'>Dz99 Blog</Heading>
+      </Link>
       <Link href='https://github.com/Dz0526'>
         <Icon as={FaGithub} color='accent.100' />
       </Link>
