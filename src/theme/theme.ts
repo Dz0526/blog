@@ -15,8 +15,8 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: `cursive,"Hachi Maru Pop"`,
-    body: `cursive,"Hachi Maru Pop"`,
+    heading: `"Open Sans", sans-serif; cursive,"Hachi Maru Pop"`,
+    body: `"Open Sans", sans-serif; cursive,"Hachi Maru Pop"`,
   },
 });
 
