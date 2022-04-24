@@ -1,5 +1,5 @@
 ---
-title: 'PolybarのThemeがパクパクPCのリソースを食べていた話'
+title: 'PolybarのテーマがPCのリソースをパクパク食べていた話'
 date: '2022-04-24'
 ---
 
