@@ -19,5 +19,9 @@ export const getAllArticles = () => {
   const articlesPath = join(process.cwd(), '_posts');
   const slugs = fs.readdirSync(articlesPath);
 
-  return slugs.map(slug => getArticleBySlug(slug));
+  return slugs
+    .map(slug => getArticleBySlug(slug))
+    .sort((f, s) => {
+      return f.date > s.date ? -1 : 1;
+    });
 };
