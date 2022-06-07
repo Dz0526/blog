@@ -152,5 +152,5 @@ const options: HTMLReactParserOptions = {
 };
 
 export const ArticleBody: FC<Props> = ({ content }) => {
-  return <Box>{parse(content, options)}</Box>;
+  return <Box {...{ maxWidth: '100%' }}>{parse(content, options)}</Box>;
 };
