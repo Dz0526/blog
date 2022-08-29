@@ -7,7 +7,7 @@ Arch ユーザになってから初めてコントリビュートしました！
 
 # AUR でアカウントを作る
 
-[AUR](aur.archlinux.org) にアクセスしてアカウントを作成します。ここでは自分がメンテしているパッケージや他のユーザからのリクエストを確認することができます。
+[AUR](https://aur.archlinux.org) にアクセスしてアカウントを作成します。ここでは自分がメンテしているパッケージや他のユーザからのリクエストを確認することができます。
 
 # AUR アカウントに SSH key を設定する
 
@@ -39,8 +39,8 @@ PKGBUILD が AUR の核の部分です。ここにアップストリームやビ
 また今回は孤児を救ったので、
 
 ```
-# Maintainer: Dz99 <@gmail.com>
-# Contributor: Nick Black <@gmail.com>
+# Maintainer: Dz99 <email>
+# Contributor: Who Black <email>
 ```
 
 といった感じでメンテナを自身に変更して、過去のメンテナをコントリビューターに書き直すことが必要でした。
