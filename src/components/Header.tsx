@@ -11,14 +11,17 @@ export const Header: FC = () => {
       borderBottomWidth={1}
       backdropFilter={'auto'}
       backdropBlur={'2px'}
+      top={0}
+      pl={1}
+      pr={1}
     >
-      <HStack p={1} justifyContent={'space-between'} width={'100%'}>
+      <HStack justifyContent={'space-between'} width={'100%'}>
         <Link href='/' _hover={{ color: 'accent.100' }}>
           <Heading as='h1' fontWeight={'normal'} fontSize={20}>
             Dz99 Blog
           </Heading>
         </Link>
-        <Link href='https://github.com/Dz0526' isExternal>
+        <Link href='https://github.com/Dz0526' isExternal pt={1}>
           <Icon as={FaGithub} color='accent.100' fontSize={20} />
         </Link>
       </HStack>
