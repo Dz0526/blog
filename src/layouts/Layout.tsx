@@ -1,4 +1,4 @@
-import { Box, Container, Divider } from '@chakra-ui/react';
+import { Box, Container, Divider, SlideFade } from '@chakra-ui/react';
 import { Footer } from 'components/Footer';
 import { Header } from 'components/Header';
 import React, { FC } from 'react';
@@ -12,10 +12,12 @@ export const Layout: FC<Props> = ({ children }) => {
     <Box>
       <Header />
       <Divider />
-      <Container my={10}>
-        {children}
-        <Footer />
-      </Container>
+      <SlideFade offsetY={'30px'} in={true}>
+        <Container my={10}>
+          {children}
+          <Footer />
+        </Container>
+      </SlideFade>
     </Box>
   );
 };
