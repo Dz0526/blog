@@ -3,7 +3,7 @@ import { ArticleBody } from 'components/ArticleBody';
 import { ArticleHeading } from 'components/ArticleHeading';
 import { getAllArticles, getArticleBySlug } from 'lib/getArticle';
 import { NextPage } from 'next';
-import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 import { Article } from 'types/Article';
 import markdownToHtml from 'zenn-markdown-html';
 
@@ -19,16 +19,30 @@ type Params = {
 
 const ArticleContent: NextPage<Props> = ({ article }) => {
   return (
-    <Box as='article'>
-      <Head>
-        <title>{article.title}</title>
-      </Head>
+    <>
+      <NextSeo
+        title={article.title}
+        openGraph={{
+          title: article.title,
+          siteName: 'Dz99 Blog',
+          url: 'https://dz99.me/' + article.slug,
+          images: [
+            {
+              url: '/ito.jpg',
+              alt: 'Og Image',
+              type: 'image/jpeg',
+            },
+          ],
+        }}
+      />
 
-      <VStack spacing={10}>
-        <ArticleHeading title={article.title} date={article.date} />
-        <ArticleBody content={article.content} />
-      </VStack>
-    </Box>
+      <Box as='article'>
+        <VStack spacing={10}>
+          <ArticleHeading title={article.title} date={article.date} />
+          <ArticleBody content={article.content} />
+        </VStack>
+      </Box>
+    </>
   );
 };
 
