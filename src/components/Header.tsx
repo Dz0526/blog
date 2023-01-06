@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { HStack, Heading, Link, Icon, Box } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
+import { BsFileTextFill } from 'react-icons/bs';
 
 export const Header: FC = () => {
   return (
@@ -21,9 +22,14 @@ export const Header: FC = () => {
             Dz99 Blog
           </Heading>
         </Link>
-        <Link href='https://github.com/Dz0526' isExternal pt={1}>
-          <Icon as={FaGithub} color='accent.100' fontSize={20} />
-        </Link>
+        <HStack>
+          <Link href='/nippo' pt={1}>
+            <Icon as={BsFileTextFill} color='accent.100' fontSize={20} />
+          </Link>
+          <Link href='https://github.com/Dz0526' isExternal pt={1}>
+            <Icon as={FaGithub} color='accent.100' fontSize={20} />
+          </Link>
+        </HStack>
       </HStack>
     </Box>
   );
