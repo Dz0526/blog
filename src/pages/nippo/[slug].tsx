@@ -1,15 +1,10 @@
 import { Box, VStack } from '@chakra-ui/react';
 import { ContentBody } from 'components/ContentBody';
-import { ArticleHeading } from 'components/ArticleHeading';
-import { getAllArticles, getArticleBySlug } from 'lib/getArticle';
-import { NextPage } from 'next';
+import { NippoHeading } from 'components/nippo/NippoHeading';
+import { getAllNippos, getNippoBySlug } from 'lib/getNippo';
 import { NextSeo } from 'next-seo';
-import { Article } from 'types/Article';
+import { Nippo } from 'types/Article';
 import markdownToHtml from 'zenn-markdown-html';
-
-type Props = {
-  article: Article;
-};
 
 type Params = {
   params: {
@@ -17,8 +12,8 @@ type Params = {
   };
 };
 
-const ArticleContent: NextPage<Props> = ({ article }) => {
-  const title = `Dz99 Blog | ${article.title}`;
+const NippoContent = ({ nippo }: { nippo: Nippo }) => {
+  const title = `Dz99 Nippo | ${nippo.date}`;
   return (
     <>
       <NextSeo
@@ -26,7 +21,7 @@ const ArticleContent: NextPage<Props> = ({ article }) => {
         openGraph={{
           title: title,
           siteName: 'Dz99 Blog',
-          url: 'https://dz99.me/article/' + article.slug,
+          url: 'https://dz99.me/nippo/' + nippo.slug,
           images: [
             {
               url: '/ito.jpg',
@@ -39,8 +34,8 @@ const ArticleContent: NextPage<Props> = ({ article }) => {
 
       <Box as='article'>
         <VStack spacing={10}>
-          <ArticleHeading title={article.title} date={article.date} />
-          <ContentBody content={article.content} />
+          <NippoHeading title={nippo.title} date={nippo.date} />
+          <ContentBody content={nippo.content} />
         </VStack>
       </Box>
     </>
@@ -48,28 +43,29 @@ const ArticleContent: NextPage<Props> = ({ article }) => {
 };
 
 export const getStaticPaths = () => {
-  const articles = getAllArticles();
+  const nippos = getAllNippos();
 
   return {
-    paths: articles.map(article => {
-      return { params: { slug: article.slug } };
+    paths: nippos.map(nippo => {
+      console.log(nippo);
+      return { params: { slug: nippo.slug } };
     }),
     fallback: false,
   };
 };
 
 export const getStaticProps = async ({ params }: Params) => {
-  const article = getArticleBySlug(params.slug);
-  const content = markdownToHtml(article.content);
+  const nippo = getNippoBySlug(params.slug);
+  const content = markdownToHtml(nippo.content);
 
   return {
     props: {
-      article: {
-        ...article,
+      nippo: {
+        ...nippo,
         content: content,
       },
     },
   };
 };
 
-export default ArticleContent;
+export default NippoContent;
