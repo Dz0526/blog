@@ -13,13 +13,13 @@ type Params = {
 };
 
 const NippoContent = ({ nippo }: { nippo: Nippo }) => {
-  const title = `Dz99 Nippo | ${nippo.date}`;
   return (
     <>
       <NextSeo
-        title={title}
+        title={`Dz99 Nippo | ${nippo.date}`}
         openGraph={{
-          title: title,
+          title: nippo.date,
+          description: nippo.title,
           siteName: 'Dz99 Blog',
           url: 'https://dz99.me/nippo/' + nippo.slug,
           images: [

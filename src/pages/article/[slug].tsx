@@ -18,13 +18,12 @@ type Params = {
 };
 
 const ArticleContent: NextPage<Props> = ({ article }) => {
-  const title = `Dz99 Blog | ${article.title}`;
   return (
     <>
       <NextSeo
-        title={title}
+        title={`Dz99 Blog | ${article.title}`}
         openGraph={{
-          title: title,
+          title: article.title,
           siteName: 'Dz99 Blog',
           url: 'https://dz99.me/article/' + article.slug,
           images: [
