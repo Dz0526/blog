@@ -28,7 +28,7 @@ const ArticleContent: NextPage<Props> = ({ article }) => {
         />
         <meta
           property='og:image'
-          content={`https://dz99.me/api/static?title=${article.title}&date=${article.date}`}
+          content={`https://dz99.me/api/og?title=${article.title}&date=${article.date}`}
         />
         <meta property='og:title' content={article.title} />
         <meta property='og:description' content={article.date} />

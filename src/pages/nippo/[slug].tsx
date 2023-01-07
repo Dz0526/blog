@@ -23,7 +23,7 @@ const NippoContent = ({ nippo }: { nippo: Nippo }) => {
         />
         <meta
           property='og:image'
-          content={`https://dz99.me/api/static?title=${nippo.title}&date=${nippo.date}`}
+          content={`https://dz99.me/api/og?title=${nippo.title}&date=${nippo.date}`}
         />
         <meta property='og:title' content={nippo.date} />
         <meta property='og:description' content={nippo.title} />
