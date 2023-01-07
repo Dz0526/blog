@@ -15,6 +15,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/hachi-maru-pop": "^4.5.7",
+    "@vercel/og": "^0.0.22",
     "framer-motion": "^6",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.5.1",
