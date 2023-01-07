@@ -2,7 +2,7 @@ import { Box, VStack } from '@chakra-ui/react';
 import { ContentBody } from 'components/ContentBody';
 import { NippoHeading } from 'components/nippo/NippoHeading';
 import { getAllNippos, getNippoBySlug } from 'lib/getNippo';
-import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import { Nippo } from 'types/Article';
 import markdownToHtml from 'zenn-markdown-html';
 
@@ -15,22 +15,24 @@ type Params = {
 const NippoContent = ({ nippo }: { nippo: Nippo }) => {
   return (
     <>
-      <NextSeo
-        title={`Dz99 Nippo | ${nippo.date}`}
-        openGraph={{
-          title: nippo.date,
-          description: nippo.title,
-          siteName: 'Dz99 Blog',
-          url: 'https://dz99.me/nippo/' + nippo.slug,
-          images: [
-            {
-              url: '/ito.jpg',
-              alt: 'Og Image',
-              type: 'image/jpeg',
-            },
-          ],
-        }}
-      />
+      <Head>
+        <title>{`Dz99 Nippo | ${nippo.date}`}</title>
+        <meta
+          name='description'
+          content={`This is Dz99 Nippo in ${nippo.date}`}
+        />
+        <meta
+          property='og:image'
+          content={`https://dz99.me/api/static?title=${nippo.title}&date=${nippo.date}`}
+        />
+        <meta property='og:title' content={nippo.date} />
+        <meta property='og:description' content={nippo.title} />
+        <meta
+          property='og:url'
+          content={'https://dz99.me/nippo/' + nippo.slug}
+        />
+        <meta property='og:site_name' content='Dz99 NIPPO ' />
+      </Head>
 
       <Box as='article'>
         <VStack spacing={10}>

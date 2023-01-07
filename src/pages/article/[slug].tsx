@@ -3,9 +3,9 @@ import { ContentBody } from 'components/ContentBody';
 import { ArticleHeading } from 'components/ArticleHeading';
 import { getAllArticles, getArticleBySlug } from 'lib/getArticle';
 import { NextPage } from 'next';
-import { NextSeo } from 'next-seo';
 import { Article } from 'types/Article';
 import markdownToHtml from 'zenn-markdown-html';
+import Head from 'next/head';
 
 type Props = {
   article: Article;
@@ -20,21 +20,24 @@ type Params = {
 const ArticleContent: NextPage<Props> = ({ article }) => {
   return (
     <>
-      <NextSeo
-        title={`Dz99 Blog | ${article.title}`}
-        openGraph={{
-          title: article.title,
-          siteName: 'Dz99 Blog',
-          url: 'https://dz99.me/article/' + article.slug,
-          images: [
-            {
-              url: '/ito.jpg',
-              alt: 'Og Image',
-              type: 'image/jpeg',
-            },
-          ],
-        }}
-      />
+      <Head>
+        <title>{`Dz99 Blog | ${article.date}`}</title>
+        <meta
+          name='description'
+          content={`This is Dz99 blog ${article.title}`}
+        />
+        <meta
+          property='og:image'
+          content={`https://dz99.me/api/static?title=${article.title}&date=${article.date}`}
+        />
+        <meta property='og:title' content={article.title} />
+        <meta property='og:description' content={article.date} />
+        <meta
+          property='og:url'
+          content={'https://dz99.me/article/' + article.slug}
+        />
+        <meta property='og:site_name' content='Dz99 Blog ' />
+      </Head>
 
       <Box as='article'>
         <VStack spacing={10}>
