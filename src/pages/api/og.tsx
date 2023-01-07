@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import { NextApiRequest } from 'next';
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 };
 
 export default function handler(req: NextApiRequest) {
@@ -24,6 +24,7 @@ export default function handler(req: NextApiRequest) {
               height: '100%',
               width: '100%',
               position: 'relative',
+              display: 'flex',
             }}
           >
             <div
@@ -32,7 +33,7 @@ export default function handler(req: NextApiRequest) {
                 width: '95%',
                 display: 'flex',
                 flexDirection: 'column',
-                fontSize: '60px',
+                fontSize: '40px',
                 background: 'white',
                 position: 'absolute',
                 top: '30px',
@@ -43,8 +44,9 @@ export default function handler(req: NextApiRequest) {
                 style={{
                   height: '50%',
                   textAlign: 'center',
-                  fontSize: '100px',
+                  fontSize: '80px',
                   alignSelf: 'center',
+                  width: '90%',
                 }}
               >
                 {title}
@@ -52,15 +54,16 @@ export default function handler(req: NextApiRequest) {
               <div
                 style={{
                   display: 'flex',
-                  justifyItems: 'stretch',
                   height: '50%',
+                  justifyContent: 'space-between',
+                  width: '100%',
                 }}
               >
                 <div
                   style={{
                     display: 'flex',
-                    width: '50%',
-                    alignSelf: 'end',
+                    alignSelf: 'flex-end',
+                    alignItems: 'center',
                     margin: '10px',
                   }}
                 >
@@ -69,19 +72,19 @@ export default function handler(req: NextApiRequest) {
                     alt='icon'
                     width={100}
                     height={100}
-                    style={{ borderRadius: '50%', borderColor: '#E2E8F0' }}
+                    style={{ borderRadius: '50%', border: '1px #E2E8F0' }}
                   />
-                  <div>dz99</div>
+                  <div>dz99.me</div>
                 </div>
                 <div
                   style={{
-                    width: '50%',
-                    alignSelf: 'end',
-                    textAlign: 'end',
-                    margin: '10px',
+                    alignSelf: 'flex-end',
+                    margin: '30px',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
-                  {date}
+                  <div>{date}</div>
                 </div>
               </div>
             </div>
