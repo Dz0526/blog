@@ -49,7 +49,6 @@ export const getStaticPaths = () => {
 
   return {
     paths: nippos.map(nippo => {
-      console.log(nippo);
       return { params: { slug: nippo.slug } };
     }),
     fallback: false,

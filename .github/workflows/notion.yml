@@ -1,0 +1,30 @@
+name: Update Notion nippo
+
+on:
+  schedule:
+    - cron: 15 0-2 * * *
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+      - name: Install packages
+        run: yarn install
+      - name: Fetch notion articles
+        run: yarn notion:fetch
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'Update nippo'
+          branch: 'notion-pull-request/patch'
+          delete-branch: true
+          title: 'Update nippo by Notion action'
+          reviewers: Dz0526
