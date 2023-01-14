@@ -3,6 +3,7 @@ name: Update Notion nippo
 on:
   schedule:
     - cron: 15 0-2 * * *
+    - cron: 30 * * * *
 
 jobs:
   sync:
