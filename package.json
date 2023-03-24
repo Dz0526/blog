@@ -9,7 +9,8 @@
     "lint": "eslint --ext=.ts, .tsx src",
     "fix": "eslint --fix",
     "type": "tsc --noEmit",
-    "notion:fetch": "ts-node tools/notion.ts"
+    "notion:fetch": "ts-node tools/notion.ts",
+    "keyword:generate": "ts-node tools/generate-keyword.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",

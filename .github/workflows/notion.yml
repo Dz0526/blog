@@ -21,6 +21,8 @@ jobs:
         run: yarn notion:fetch
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      - name: Generate keyword contents
+        run: yarn keyword:generate
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
