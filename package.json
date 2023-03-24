@@ -9,7 +9,8 @@
     "lint": "eslint --ext=.ts, .tsx src",
     "fix": "eslint --fix",
     "type": "tsc --noEmit",
-    "notion:fetch": "ts-node tools/notion.ts"
+    "notion:fetch": "ts-node tools/notion.ts",
+    "keyword:generate": "ts-node tools/generate-keyword.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",
@@ -21,11 +22,13 @@
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.5.1",
     "html-react-parser": "^1.4.12",
+    "ky": "^0.33.3",
     "next": "^13.0.6",
     "next-seo": "^5.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
+    "swr": "^2.1.1",
     "zenn-content-css": "^0.1.109",
     "zenn-markdown-html": "^0.1.109"
   },
