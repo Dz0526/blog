@@ -50,7 +50,7 @@ const fetchAllPages = async (
       .then((blocks: string) => n2m.toMarkdownString(blocks))
       .then((mdString: string) => {
         const title = page.properties.subject.type == "rich_text" &&
-          page.properties.subject.rich_text[0];
+          page.properties.subject.rich_text[0].plain_text;
         const date = page.properties.date.type == "rich_text" &&
           page.properties.date.rich_text[0].plain_text;
         const subject = `---
