@@ -1,0 +1,14 @@
+{
+  "plugins": {},
+  "filters": {},
+  "rules": {
+    "preset-ja-technical-writing": {
+      "no-exclamation-question-mark": false,
+      "ja-no-mixed-period": {
+        "periodMark": "．",
+        "allowEmojiAtEnd": true,
+        "allowPeriodMarks": ["！","!","。"]
+      }
+    }
+  }
+}
