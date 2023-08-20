@@ -1,9 +1,8 @@
 name: Textlint blog and nippo
 on:
   pull_request:
-    types: [opened, synchronize]
     paths:
-      - '**.md'
+      - '**/*.md'
 jobs:
   textlint:
     runs-on: ubuntu-latest
