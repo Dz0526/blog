@@ -19,7 +19,7 @@ interface Props {
 	title: string;
 	pageTitle?: string | null;
 	description?: string | null;
-	image?: string | null;
+	ogImage?: string | null;
 	canonical?: string | null;
 	robots?: string | null;
 	type?: "website" | "article";
@@ -34,7 +34,7 @@ const {
 	title,
 	pageTitle,
 	description,
-	image,
+	ogImage,
 	canonical,
 	robots,
 	type = "website",
@@ -57,9 +57,9 @@ const pageCtx = createPublicPageContext({
 	pageTitle: pageTitle ?? title,
 	description,
 	canonical,
-	image,
+	image: ogImage,
 	content,
-	seo: { ogImage: image, robots },
+	seo: { ogImage, robots },
 	articleMeta: { publishedTime, modifiedTime, author },
 	siteName: siteTitle,
 });
