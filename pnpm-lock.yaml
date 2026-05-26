@@ -23,6 +23,9 @@ importers:
       '@emdash-cms/plugin-webhook-notifier':
         specifier: 0.2.0
         version: 0.2.0(74d32a4d33996dfe528ee2d11eec5863)
+      '@fontsource/hachi-maru-pop':
+        specifier: ^5.2.8
+        version: 5.2.8
       astro:
         specifier: ^6.3.0
         version: 6.3.7(@types/node@25.9.1)(rollup@4.60.4)(yaml@2.9.0)
@@ -786,6 +789,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@fontsource/hachi-maru-pop@5.2.8':
+    resolution: {integrity: sha512-MaPBq9mELk30HLhT5vViDZoU+XYpCEGf03f34o7NzGdcA/GOhQXe3lLnAfKdr27RIb/PcJnNtyriyAmlO28mcw==}
 
   '@hono/node-server@1.19.14':
     resolution: {integrity: sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==}
@@ -4745,6 +4751,8 @@ snapshots:
       tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@fontsource/hachi-maru-pop@5.2.8': {}
 
   '@hono/node-server@1.19.14(hono@4.12.23)':
     dependencies:
