@@ -1,0 +1,39 @@
+---
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/blog/", label: "Blog" },
+  { href: "/archive/", label: "Archive" },
+];
+const current = Astro.url.pathname;
+---
+<header>
+  <a href="/" class="brand">dz99.me</a>
+  <nav>
+    {links.map(({ href, label }) => (
+      <a href={href} class:list={[{ active: current === href || (href !== "/" && current.startsWith(href)) }]}>
+        {label}
+      </a>
+    ))}
+  </nav>
+</header>
+<style>
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-accent-100);
+    text-decoration: none;
+  }
+  nav { display: flex; gap: var(--space-lg); }
+  nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  nav a.active { color: var(--color-text-primary); font-weight: 600; }
+</style>
