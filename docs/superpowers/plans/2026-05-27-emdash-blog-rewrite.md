@@ -150,12 +150,12 @@ Each phase ends in a green test suite + commit. Phases 0–10 happen on the work
 
 **Files:** none changed in main repo
 
-- [ ] **Step 1: Verify clean main**
+- [x] **Step 1: Verify clean main**
 
 Run: `git status` (in `/Users/daiki99/projects/develop/dz99/blog`)
 Expected: working tree clean, branch `main`.
 
-- [ ] **Step 2: Create worktree for the rewrite branch**
+- [x] **Step 2: Create worktree for the rewrite branch**
 
 Run:
 ```bash
@@ -165,7 +165,7 @@ cd ../blog-rewrite-emdash
 
 Expected output: `Preparing worktree (new branch 'rewrite/emdash')` then a checked-out copy.
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `git branch --show-current && pwd`
 Expected: `rewrite/emdash` and the worktree path.
@@ -175,11 +175,11 @@ Expected: `rewrite/emdash` and the worktree path.
 **Files:**
 - Delete: `.github/workflows/notion.yml`
 
-- [ ] **Step 1: Remove the workflow file**
+- [x] **Step 1: Remove the workflow file**
 
 Run: `git rm .github/workflows/notion.yml`
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git commit -m "chore: retire Notion sync workflow (nippo discontinued)"
@@ -189,7 +189,7 @@ git commit -m "chore: retire Notion sync workflow (nippo discontinued)"
 
 **Files:** none on this branch (this is a side action on `main`)
 
-- [ ] **Step 1: Switch briefly to main worktree and cherry-pick the deletion**
+- [x] **Step 1: Switch briefly to main worktree and cherry-pick the deletion**
 
 In the main checkout at `/Users/daiki99/projects/develop/dz99/blog`, run:
 
@@ -203,7 +203,7 @@ git push origin main
 
 (The `cherry-pick` may already include the deletion; the explicit `rm` is the safety net.)
 
-- [ ] **Step 2: Return to rewrite worktree**
+- [x] **Step 2: Return to rewrite worktree**
 
 Run: `cd ../blog-rewrite-emdash`
 
