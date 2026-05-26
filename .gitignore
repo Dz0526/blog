@@ -37,3 +37,6 @@ yarn-error.log*
 # actions
 .env
 .secrets
+
+# superpowers brainstorm artifacts
+.superpowers/
