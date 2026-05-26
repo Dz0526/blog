@@ -221,7 +221,7 @@ Run: `cd ../blog-rewrite-emdash`
 
 **Files preserved:** `_posts/`, `_nippo/`, `public/`, `docs/`, `CLAUDE.md`, `.gitignore`, `.editorconfig`, `.textlintrc.json`, `README.md`.
 
-- [ ] **Step 1: Delete the Next.js bits**
+- [x] **Step 1: Delete the Next.js bits**
 
 Run:
 ```bash
@@ -231,7 +231,7 @@ git rm -r _keyword
 git rm next-env.d.ts next.config.js tsconfig.json package.json yarn.lock .eslintrc.json .prettierrc .prettierignore
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git commit -m "chore: remove Next.js scaffold ahead of EmDash rewrite"
@@ -241,7 +241,7 @@ git commit -m "chore: remove Next.js scaffold ahead of EmDash rewrite"
 
 **Files created by scaffold:** `package.json`, `astro.config.mjs`, `wrangler.jsonc`, `src/`, `tsconfig.json`, `pnpm-lock.yaml`, etc.
 
-- [ ] **Step 1: Run the scaffold**
+- [x] **Step 1: Run the scaffold**
 
 Run:
 ```bash
@@ -261,7 +261,7 @@ npm create emdash@latest .
 
 Expected: a new `package.json` referencing `emdash`/`@emdash-cms/*`, an `astro.config.mjs`, a `wrangler.jsonc`, and a generated `src/` with example pages.
 
-- [ ] **Step 2: Pin EmDash version**
+- [x] **Step 2: Pin EmDash version**
 
 Open `package.json`. For every dependency starting with `emdash` or `@emdash-cms/`, replace any `^` or `~` range with an exact version. Example:
 
@@ -282,21 +282,21 @@ Use the actual version numbers chosen by the scaffold; the point is to drop the 
 pnpm install
 ```
 
-- [ ] **Step 3: Verify local dev server boots**
+- [x] **Step 3: Verify local dev server boots**
 
 Run: `pnpm dev`
 Expected: a local URL (typically `http://localhost:4321`). Visit it; expect the blog template's example homepage.
 
 Stop the dev server (Ctrl-C).
 
-- [ ] **Step 4: Verify admin loads**
+- [x] **Step 4: Verify admin loads**
 
 Run: `pnpm dev` again, visit `http://localhost:4321/_emdash/admin`
 Expected: EmDash admin login screen. Create a passkey-based admin user when prompted, log in, confirm the dashboard renders.
 
 Stop the dev server.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add .
@@ -310,7 +310,7 @@ git commit -m "feat: scaffold EmDash blog template (pinned ${EMDASH_VERSION})"
 **Files:**
 - Create: `docs/emdash-discovery.md`
 
-- [ ] **Step 1: Inspect the scaffolded project and write findings**
+- [x] **Step 1: Inspect the scaffolded project and write findings**
 
 Read these files and capture their shape into `docs/emdash-discovery.md`:
 
@@ -361,7 +361,7 @@ Format `docs/emdash-discovery.md` as a structured reference for later phases. Ex
 - Programmatic API: ...
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/emdash-discovery.md
@@ -377,7 +377,7 @@ git commit -m "docs: capture EmDash conventions from scaffold"
 - Create: `tests/unit/sanity.test.ts`
 - Create: `tests/e2e/sanity.spec.ts`
 
-- [ ] **Step 1: Install test runners**
+- [x] **Step 1: Install test runners**
 
 Run:
 ```bash
@@ -385,7 +385,7 @@ pnpm add -D vitest @vitest/ui playwright @playwright/test
 pnpm exec playwright install chromium
 ```
 
-- [ ] **Step 2: Create `vitest.config.ts`**
+- [x] **Step 2: Create `vitest.config.ts`**
 
 ```ts
 import { defineConfig } from "vitest/config";
@@ -398,7 +398,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 3: Create `playwright.config.ts`**
+- [x] **Step 3: Create `playwright.config.ts`**
 
 ```ts
 import { defineConfig } from "@playwright/test";
@@ -415,7 +415,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Add scripts to `package.json`**
+- [x] **Step 4: Add scripts to `package.json`**
 
 Add (or merge) into the `scripts` block:
 
@@ -434,7 +434,7 @@ Add (or merge) into the `scripts` block:
 
 (Preserve EmDash-scaffold scripts you find; merge, don't overwrite.)
 
-- [ ] **Step 5: Write a sanity unit test**
+- [x] **Step 5: Write a sanity unit test**
 
 `tests/unit/sanity.test.ts`:
 ```ts
@@ -447,12 +447,12 @@ describe("toolchain sanity", () => {
 });
 ```
 
-- [ ] **Step 6: Run unit tests**
+- [x] **Step 6: Run unit tests**
 
 Run: `pnpm test`
 Expected: 1 passed.
 
-- [ ] **Step 7: Write a sanity E2E test**
+- [x] **Step 7: Write a sanity E2E test**
 
 `tests/e2e/sanity.spec.ts`:
 ```ts
@@ -464,12 +464,12 @@ test("home renders something", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 8: Run E2E tests**
+- [x] **Step 8: Run E2E tests**
 
 Run: `pnpm test:e2e`
 Expected: 1 passed (Playwright auto-starts `pnpm dev`).
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add vitest.config.ts playwright.config.ts package.json pnpm-lock.yaml tests/
