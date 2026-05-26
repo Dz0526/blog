@@ -486,7 +486,7 @@ git commit -m "chore: add Vitest + Playwright test infrastructure"
 - Create: `src/styles/tokens.css`
 - Modify: `src/layouts/BaseLayout.astro` (or whichever layout the scaffold provides) to import the tokens
 
-- [ ] **Step 1: Create `src/styles/tokens.css`**
+- [x] **Step 1: Create `src/styles/tokens.css`**
 
 ```css
 :root {
@@ -517,11 +517,11 @@ git commit -m "chore: add Vitest + Playwright test infrastructure"
 }
 ```
 
-- [ ] **Step 2: Install Hachi Maru Pop**
+- [x] **Step 2: Install Hachi Maru Pop**
 
 Run: `pnpm add @fontsource/hachi-maru-pop`
 
-- [ ] **Step 3: Import font + tokens in the base layout**
+- [x] **Step 3: Import font + tokens in the base layout**
 
 Open the layout file (after Task 1.3 discovery you know whether it's `src/layouts/BaseLayout.astro`, `Layout.astro`, or other). Add at the top of the frontmatter:
 
@@ -532,11 +532,11 @@ import "../styles/tokens.css";
 
 (Adjust the relative path to the actual layout location.)
 
-- [ ] **Step 4: Smoke check**
+- [x] **Step 4: Smoke check**
 
 Run: `pnpm dev`, visit `/`, open devtools and confirm `--color-accent-100` is set on `:root`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/styles/tokens.css src/layouts package.json pnpm-lock.yaml
@@ -550,7 +550,7 @@ git commit -m "feat: add design tokens and Hachi Maru Pop font"
 - Create: `src/components/SiteHeader.astro`
 - Create: `src/components/SiteFooter.astro`
 
-- [ ] **Step 1: `src/components/SiteHeader.astro`**
+- [x] **Step 1: `src/components/SiteHeader.astro`**
 
 ```astro
 ---
@@ -594,7 +594,7 @@ const current = Astro.url.pathname;
 </style>
 ```
 
-- [ ] **Step 2: `src/components/SiteFooter.astro`**
+- [x] **Step 2: `src/components/SiteFooter.astro`**
 
 ```astro
 ---
@@ -615,7 +615,7 @@ const year = new Date().getFullYear();
 </style>
 ```
 
-- [ ] **Step 3: Update `src/layouts/BaseLayout.astro`**
+- [x] **Step 3: Update `src/layouts/BaseLayout.astro`**
 
 Replace the layout body with:
 
@@ -665,7 +665,7 @@ const fullTitle = title === "dz99.me" ? title : `${title} | dz99.me`;
 </style>
 ```
 
-- [ ] **Step 4: Create `src/styles/globals.css`**
+- [x] **Step 4: Create `src/styles/globals.css`**
 
 ```css
 * { box-sizing: border-box; }
@@ -674,11 +674,11 @@ a { color: var(--color-accent-100); }
 img { max-width: 100%; height: auto; }
 ```
 
-- [ ] **Step 5: Smoke check**
+- [x] **Step 5: Smoke check**
 
 Run: `pnpm dev`. Visit `/`. Header and footer should appear with the mint accent.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/layouts src/components src/styles/globals.css
