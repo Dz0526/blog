@@ -8,12 +8,15 @@ const current = Astro.url.pathname;
 ---
 <header>
   <a href="/" class="brand">dz99.me</a>
-  <nav>
-    {links.map(({ href, label }) => (
-      <a href={href} class:list={[{ active: current === href || (href !== "/" && current.startsWith(href)) }]}>
-        {label}
-      </a>
-    ))}
+  <nav aria-label="Main navigation">
+    {links.map(({ href, label }) => {
+      const isActive = current === href || (href !== "/" && current.startsWith(href));
+      return (
+        <a href={href} class:list={[{ active: isActive }]} aria-current={isActive ? "page" : undefined}>
+          {label}
+        </a>
+      );
+    })}
   </nav>
 </header>
 <style>

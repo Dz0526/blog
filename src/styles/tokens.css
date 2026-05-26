@@ -1,12 +1,10 @@
 :root {
   --color-accent-100: #66cdaa;
-  --color-accent-500: #7fffd4;
+  /* Right stop #66cdda differs from accent-100 #66cdaa by one hex — intentional, matches the legacy OG gradient. */
   --color-accent-gradient: linear-gradient(to right, #66cdaa 0%, #66cdda 100%);
 
   --color-text-primary: #1a202c;
   --color-text-muted: #4a5568;
-  --color-surface: #ffffff;
-  --color-border: #e2e8f0;
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
