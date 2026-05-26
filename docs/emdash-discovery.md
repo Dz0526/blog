@@ -14,12 +14,13 @@ Pinned exact versions in `package.json`:
 | `@emdash-cms/cloudflare` | `0.14.0` |
 | `@emdash-cms/plugin-forms` | `0.2.2` |
 | `@emdash-cms/plugin-webhook-notifier` | `0.2.0` |
+| `react` | `19.2.4` |
+| `react-dom` | `19.2.4` |
 
 Other notable deps (not pinned, still carry `^`):
 - `astro` `^6.3.0`
 - `@astrojs/cloudflare` `^13.5.3`
 - `@astrojs/react` `^5.0.0`
-- `react` / `react-dom` `19.2.4` (exact, no prefix)
 
 ---
 

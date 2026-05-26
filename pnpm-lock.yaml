@@ -48,9 +48,6 @@ importers:
       '@vitest/ui':
         specifier: ^4.1.7
         version: 4.1.7(vitest@4.1.7)
-      playwright:
-        specifier: ^1.60.0
-        version: 1.60.0
       vitest:
         specifier: ^4.1.7
         version: 4.1.7(@types/node@25.9.1)(@vitest/ui@4.1.7)(vite@7.3.3(@types/node@25.9.1)(yaml@2.9.0))
