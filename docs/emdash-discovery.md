@@ -276,3 +276,59 @@ pnpm exec emdash content create posts --data '{"title": "Hello", "status": "publ
 ```
 
 **Via export/import:** Run `pnpm exec emdash export-seed` against a configured instance to export the current schema as a seed file — useful for snapshotting admin-created schemas into version control.
+
+---
+
+## 11. PortableText rendering
+
+### The `PortableText` component
+
+EmDash ships `PortableText` as part of `emdash/ui` — **not** a separate `@emdash-cms/blocks` package. It wraps `astro-portabletext` with EmDash-specific defaults (image blocks, code blocks, embeds, galleries).
+
+```astro
+---
+import { PortableText } from "emdash/ui";
+---
+<PortableText value={entry.data.content} />
+```
+
+`value` accepts `PortableTextBlock[]` — imported as `import type { PortableTextBlock } from "emdash"`.
+
+### Type shape
+
+`PortableTextBlock` is defined in `emdash/src/fields/index.js`. The scaffold pages (`posts/[slug].astro`, `pages/[slug].astro`) import and use it identically. The generated `emdash-env.d.ts` types `bio` as `PortableTextBlock[]`.
+
+### Custom components
+
+```astro
+<PortableText value={content} components={{ type: { image: MyImage } }} />
+```
+
+Props type: `PortableTextProps` from `emdash/ui` (re-exported from `astro-portabletext`).
+
+### Fetching a singleton entry
+
+Use `getEmDashEntry(collectionSlug, entrySlug)` from `"emdash"`:
+
+```ts
+import { getEmDashEntry } from "emdash";
+const { entry } = await getEmDashEntry("profile", "profile");
+// entry is null when the DB isn't seeded — handle gracefully
+```
+
+Signature: `getEmDashEntry<T, D>(type: T, id: string, options?: { locale?: string }): Promise<EntryResult<D>>`
+
+### contact_links repeater type
+
+The `contact_links` field is typed as `unknown` in `emdash-env.d.ts` because EmDash's type generator doesn't infer repeater sub-field shapes. Cast and validate at runtime:
+
+```ts
+const rawLinks = Array.isArray(data.contact_links) ? data.contact_links : [];
+const links = rawLinks
+  .filter((l): l is { label: string; url: string; icon?: string } =>
+    typeof l === "object" && l !== null &&
+    typeof (l as Record<string, unknown>).label === "string" &&
+    typeof (l as Record<string, unknown>).url === "string"
+  )
+  .map(l => ({ label: l.label, url: l.url, icon: l.icon ?? "" }));
+```
