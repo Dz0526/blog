@@ -13,3 +13,4 @@ data.db
 !.env.example
 .dev.vars
 .dev.vars.*
+test-results/
