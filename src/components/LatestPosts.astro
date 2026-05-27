@@ -1,0 +1,60 @@
+---
+// Placeholder for Phase 4 — real post fetching comes later.
+interface Props {
+  posts?: unknown[];
+}
+
+const { posts = [] } = Astro.props;
+---
+
+<section class="latest-posts">
+  <div class="latest-posts-inner">
+    <h2 class="latest-posts-heading">Latest Posts</h2>
+    {posts.length > 0 ? (
+      <ul class="posts-list" role="list">
+        {/* Phase 4 will render real PostCard components here */}
+      </ul>
+    ) : (
+      <p class="empty-state">記事はまだありません。</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .latest-posts {
+    padding: var(--spacing-12, 3rem) var(--spacing-6, 1.5rem);
+    border-bottom: 1px solid var(--color-border-subtle, #f0f0f0);
+  }
+
+  .latest-posts-inner {
+    max-width: var(--max-width, 720px);
+    margin: 0 auto;
+  }
+
+  .latest-posts-heading {
+    font-size: var(--font-size-sm, 0.875rem);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider, 0.08em);
+    color: var(--color-muted, #8b8b8b);
+    margin: 0 0 var(--spacing-6, 1.5rem);
+  }
+
+  .posts-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .empty-state {
+    font-size: var(--font-size-base, 1rem);
+    color: var(--color-muted, #8b8b8b);
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .latest-posts {
+      padding: var(--spacing-8, 2rem) var(--spacing-4, 1rem);
+    }
+  }
+</style>
