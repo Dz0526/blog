@@ -731,7 +731,7 @@ Committed as `feat: define Profile content type via seed and seed singleton entr
 - Create: `src/components/About.astro`
 - Create: `src/components/Contact.astro`
 
-- [ ] **Step 1: `src/components/Hero.astro`**
+- [x] **Step 1: `src/components/Hero.astro`**
 
 ```astro
 ---
@@ -766,7 +766,7 @@ const { title, subtitle, avatarUrl } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: `src/components/About.astro`**
+- [x] **Step 2: `src/components/About.astro`**
 
 ```astro
 ---
@@ -786,7 +786,7 @@ const { body } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 3: `src/components/Contact.astro`**
+- [x] **Step 3: `src/components/Contact.astro`**
 
 ```astro
 ---
@@ -811,7 +811,7 @@ const { links } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/Hero.astro src/components/About.astro src/components/Contact.astro
@@ -824,7 +824,7 @@ git commit -m "feat: Hero, About, Contact components"
 - Modify: `src/pages/index.astro`
 - Create: `src/components/LatestPosts.astro` (skeleton; populated in Phase 4)
 
-- [ ] **Step 1: `src/components/LatestPosts.astro` (placeholder)**
+- [x] **Step 1: `src/components/LatestPosts.astro` (placeholder)**
 
 ```astro
 ---
@@ -862,7 +862,7 @@ const { posts = [] } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/index.astro`**
+- [x] **Step 2: `src/pages/index.astro`**
 
 Replace the scaffolded `index.astro` with:
 
@@ -885,7 +885,7 @@ const profile = await getProfile();
 </BaseLayout>
 ```
 
-- [ ] **Step 3: Create `src/lib/content.ts` with `getProfile`**
+- [x] **Step 3: Create `src/lib/content.ts` with `getProfile`**
 
 The exact EmDash API for reading content depends on the version (use `docs/emdash-discovery.md`). The shape of the helper:
 
@@ -914,7 +914,7 @@ export async function getProfile(): Promise<Profile> {
 
 If `getEntry` is not the actual API, replace with the documented EmDash content-access function. Update `docs/emdash-discovery.md` with the correct call.
 
-- [ ] **Step 4: E2E test for home**
+- [x] **Step 4: E2E test for home**
 
 `tests/e2e/home.spec.ts`:
 ```ts
@@ -932,7 +932,7 @@ test("home shows hero, about, latest posts, contact", async ({ page }) => {
 Run: `pnpm test:e2e tests/e2e/home.spec.ts`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/index.astro src/components/LatestPosts.astro src/lib/content.ts tests/e2e/home.spec.ts
