@@ -1,0 +1,80 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  avatarUrl?: string;
+}
+
+const { title, subtitle, avatarUrl } = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero-inner">
+    {avatarUrl && (
+      <div class="hero-avatar">
+        <img src={avatarUrl} alt={title} width="96" height="96" />
+      </div>
+    )}
+    <div class="hero-text">
+      <h1 class="hero-title">{title}</h1>
+      {subtitle && <p class="hero-subtitle">{subtitle}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-accent-gradient);
+    padding: var(--spacing-16) var(--spacing-6);
+  }
+
+  .hero-inner {
+    max-width: var(--max-width, 720px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+  }
+
+  .hero-avatar img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(var(--font-size-2xl, 1.5rem), 5vw, var(--font-size-4xl, 2.5rem));
+    font-weight: 400;
+    letter-spacing: var(--tracking-tight, -0.03em);
+    line-height: var(--leading-tight, 1.15);
+    color: #fff;
+    margin: 0;
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-lg, 1.125rem);
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: var(--leading-normal, 1.5);
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      padding: var(--spacing-10, 2.5rem) var(--spacing-4, 1rem);
+    }
+
+    .hero-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
