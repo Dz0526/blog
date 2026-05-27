@@ -3,9 +3,53 @@
 
 /// <reference types="emdash/locals" />
 
-import type { ContentBylineCredit } from "emdash";
+import type { ContentBylineCredit, PortableTextBlock } from "emdash";
+
+export interface Page {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  content?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  content?: PortableTextBlock[];
+  excerpt?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Profile {
+  id: string;
+  slug: string | null;
+  status: string;
+  hero_title: string;
+  hero_subtitle?: string;
+  bio: PortableTextBlock[];
+  avatar?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  contact_links?: unknown;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
 
 declare module "emdash" {
   interface EmDashCollections {
+    pages: Page;
+    posts: Post;
+    profile: Profile;
   }
 }

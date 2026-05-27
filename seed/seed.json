@@ -12,6 +12,67 @@
 	},
 	"collections": [
 		{
+			"slug": "profile",
+			"label": "Profile",
+			"labelSingular": "Profile",
+			"description": "Site owner profile — singleton, only one entry intended",
+			"supports": ["seo"],
+			"fields": [
+				{
+					"slug": "hero_title",
+					"label": "Hero Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hero_subtitle",
+					"label": "Hero Subtitle",
+					"type": "string",
+					"required": false
+				},
+				{
+					"slug": "bio",
+					"label": "Bio",
+					"type": "portableText",
+					"required": true
+				},
+				{
+					"slug": "avatar",
+					"label": "Avatar",
+					"type": "image",
+					"required": false
+				},
+				{
+					"slug": "contact_links",
+					"label": "Contact Links",
+					"type": "repeater",
+					"required": false,
+					"validation": {
+						"subFields": [
+							{
+								"slug": "label",
+								"type": "string",
+								"label": "Label",
+								"required": true
+							},
+							{
+								"slug": "url",
+								"type": "url",
+								"label": "URL",
+								"required": true
+							},
+							{
+								"slug": "icon",
+								"type": "string",
+								"label": "Icon",
+								"required": false
+							}
+						]
+					}
+				}
+			]
+		},
+		{
 			"slug": "posts",
 			"label": "Posts",
 			"labelSingular": "Post",
