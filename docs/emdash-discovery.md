@@ -323,12 +323,17 @@ Signature: `getEmDashEntry<T, D>(type: T, id: string, options?: { locale?: strin
 The `contact_links` field is typed as `unknown` in `emdash-env.d.ts` because EmDash's type generator doesn't infer repeater sub-field shapes. Cast and validate at runtime:
 
 ```ts
+/** Only these URL protocols are allowed to prevent XSS via javascript: hrefs. */
+const ALLOWED_URL_PROTOCOLS = /^(https?:|mailto:)/i;
+
 const rawLinks = Array.isArray(data.contact_links) ? data.contact_links : [];
 const links = rawLinks
   .filter((l): l is { label: string; url: string; icon?: string } =>
-    typeof l === "object" && l !== null &&
+    l !== null &&
+    typeof l === "object" &&
     typeof (l as Record<string, unknown>).label === "string" &&
-    typeof (l as Record<string, unknown>).url === "string"
+    typeof (l as Record<string, unknown>).url === "string" &&
+    ALLOWED_URL_PROTOCOLS.test((l as Record<string, unknown>).url as string)
   )
-  .map(l => ({ label: l.label, url: l.url, icon: l.icon ?? "" }));
+  .map(l => ({ label: l.label, url: l.url, icon: typeof l.icon === "string" ? l.icon : "" }));
 ```

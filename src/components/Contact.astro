@@ -1,9 +1,5 @@
 ---
-interface ContactLink {
-  label: string;
-  url: string;
-  icon: string;
-}
+import type { ContactLink } from "../lib/content";
 
 interface Props {
   links: ContactLink[];
@@ -30,14 +26,17 @@ function getIcon(icon: string): string {
     <h2 class="contact-heading">Contact</h2>
     {links.length > 0 ? (
       <ul class="contact-links" role="list">
-        {links.map(({ label, url, icon }) => (
-          <li>
-            <a href={url} class="contact-link" rel="noopener noreferrer" target={url.startsWith("mailto:") ? undefined : "_blank"}>
-              {getIcon(icon) ? <Fragment set:html={getIcon(icon)} /> : null}
-              <span>{label}</span>
-            </a>
-          </li>
-        ))}
+        {links.map(({ label, url, icon }) => {
+          const svg = getIcon(icon);
+          return (
+            <li>
+              <a href={url} class="contact-link" rel="noopener noreferrer" target={url.startsWith("mailto:") ? undefined : "_blank"}>
+                {svg && <Fragment set:html={svg} />}
+                <span>{label}</span>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     ) : (
       <p class="contact-empty">連絡先はまだ登録されていません。</p>

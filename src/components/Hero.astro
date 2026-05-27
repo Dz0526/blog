@@ -24,8 +24,8 @@ const { title, subtitle, avatarUrl } = Astro.props;
 
 <style>
   .hero {
-    background: var(--color-accent-gradient);
-    padding: var(--spacing-16) var(--spacing-6);
+    background: var(--color-accent-gradient, linear-gradient(to right, #66cdaa, #66cdda));
+    padding: var(--spacing-16, 4rem) var(--spacing-6, 1.5rem);
   }
 
   .hero-inner {
@@ -33,7 +33,7 @@ const { title, subtitle, avatarUrl } = Astro.props;
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: var(--spacing-6);
+    gap: var(--spacing-6, 1.5rem);
   }
 
   .hero-avatar img {
@@ -47,11 +47,11 @@ const { title, subtitle, avatarUrl } = Astro.props;
   .hero-text {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2);
+    gap: var(--spacing-2, 0.5rem);
   }
 
   .hero-title {
-    font-family: var(--font-display);
+    font-family: var(--font-display, sans-serif);
     font-size: clamp(var(--font-size-2xl, 1.5rem), 5vw, var(--font-size-4xl, 2.5rem));
     font-weight: 400;
     letter-spacing: var(--tracking-tight, -0.03em);

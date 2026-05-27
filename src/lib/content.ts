@@ -15,15 +15,26 @@ export interface Profile {
   contactLinks: ContactLink[];
 }
 
+/** Only these URL protocols are allowed in contact_links to prevent XSS. */
+const ALLOWED_URL_PROTOCOLS = /^(https?:|mailto:)/i;
+
 /**
  * Read the single "profile" entry from the EmDash database.
  * Translates snake_case EmDash fields to camelCase for the rest of the codebase.
  * Returns safe defaults when the database isn't seeded yet so the page renders.
  */
 export async function getProfile(): Promise<Profile> {
-  const { entry } = await getEmDashEntry("profile", "profile");
+  const { entry, error } = await getEmDashEntry("profile", "profile");
+
+  if (error) {
+    throw new Error(
+      `getProfile: failed to fetch profile entry: ${(error as { message?: string }).message ?? error}`,
+    );
+  }
 
   if (!entry) {
+    // DB is unseeded (local dev before first seed run). Return placeholder
+    // so the dev page renders without crashing.
     return {
       heroTitle: "Dz0526 / ITO",
       heroSubtitle: undefined,
@@ -44,7 +55,8 @@ export async function getProfile(): Promise<Profile> {
         l !== null &&
         typeof l === "object" &&
         typeof (l as Record<string, unknown>).label === "string" &&
-        typeof (l as Record<string, unknown>).url === "string",
+        typeof (l as Record<string, unknown>).url === "string" &&
+        ALLOWED_URL_PROTOCOLS.test((l as Record<string, unknown>).url as string),
     )
     .map((l) => ({
       label: l.label,
