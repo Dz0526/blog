@@ -4,6 +4,8 @@
  *
  * Approach:
  *   - portableText conversion: emdash/client's built-in markdownToPortableText (Option 3)
+ *     The EmDashClient automatically converts markdown strings to portableText blocks
+ *     via convertDataForWrite when fields have type "portableText".
  *   - Importer: EmDashClient JS API (Path B) with devBypass auth
  */
 
@@ -12,7 +14,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
-// Use emdash/client for both markdown conversion and content creation
 import { EmDashClient, markdownToPortableText } from "emdash/client";
 import type { PortableTextBlock } from "emdash/client";
 
@@ -36,18 +37,22 @@ export interface ImportResult {
   reason?: string;
 }
 
+/** Importer interface: body is passed as markdown string.
+ *  EmDashClientImporter lets the EmDashClient convert it to portableText blocks
+ *  automatically (field type "portableText" + string value → converted on write).
+ */
 export interface Importer {
   upsertArchivedArticle(input: {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string; // markdown
   }): Promise<void>;
   upsertArchivedNippo(input: {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string; // markdown
   }): Promise<void>;
 }
 
@@ -86,7 +91,7 @@ export class EmDashClientImporter implements Importer {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string;
   }): Promise<void> {
     await this.upsert("archivedarticle", input.slug, {
       title: input.title,
@@ -100,7 +105,7 @@ export class EmDashClientImporter implements Importer {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string;
   }): Promise<void> {
     await this.upsert("archivednippo", input.slug, {
       title: input.title,
@@ -115,7 +120,7 @@ export class EmDashClientImporter implements Importer {
     slug: string,
     data: Record<string, unknown>
   ): Promise<void> {
-    // Try to find existing item by slug
+    // Try to find existing item by slug (handles published/draft/scheduled states)
     let existingId: string | null = null;
     let existingRev: string | undefined;
     try {
@@ -123,7 +128,7 @@ export class EmDashClientImporter implements Importer {
       existingId = existing.id;
       existingRev = existing._rev;
     } catch {
-      // Not found — will create
+      // Not found in active states — might be trashed
     }
 
     if (existingId) {
@@ -135,11 +140,28 @@ export class EmDashClientImporter implements Importer {
         // already published — ignore
       }
     } else {
-      const item = await this.client.create(collection, { data, slug, status: "published" });
       try {
+        // EmDash API only accepts "draft" as status on create; publish separately.
+        // The client converts markdown body strings to portableText blocks automatically.
+        const item = await this.client.create(collection, { data, slug });
         await this.client.publish(collection, item.id);
-      } catch {
-        // already published — ignore
+      } catch (createErr) {
+        const err = createErr as { code?: string; message?: string };
+        // Slug may conflict because item was soft-deleted (trashed).
+        // Restore it, then update with new data.
+        if (err?.message?.includes("already exists")) {
+          // Restore the trashed item first
+          await this.client.restore(collection, slug);
+          const restored = await this.client.get(collection, slug);
+          await this.client.update(collection, restored.id, { data, _rev: restored._rev });
+          try {
+            await this.client.publish(collection, restored.id);
+          } catch {
+            // ignore — might already be published after restore
+          }
+        } else {
+          throw createErr;
+        }
       }
     }
   }
@@ -160,12 +182,12 @@ export class CLIImporter implements Importer {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string;
   }): Promise<void> {
     this.upsertViaCliSeed("archivedarticle", input.slug, {
       title: input.title,
       date: input.date,
-      body: input.body,
+      body: markdownToPortableText(input.body),
       origin: `https://dz99.me/article/${input.slug}`,
     });
   }
@@ -174,12 +196,12 @@ export class CLIImporter implements Importer {
     title: string;
     slug: string;
     date: string;
-    body: PortableTextBlock[];
+    body: string;
   }): Promise<void> {
     this.upsertViaCliSeed("archivednippo", input.slug, {
       title: input.title,
       date: input.date,
-      body: input.body,
+      body: markdownToPortableText(input.body),
       origin: `https://dz99.me/nippo/${input.slug}`,
     });
   }
@@ -221,10 +243,9 @@ export async function importDir(
     const raw = fs.readFileSync(path.join(dir, file), "utf-8");
     let slugForError = file;
     try {
-      const { title, date, body: markdown } = parseFrontmatter(raw);
+      const { title, date, body } = parseFrontmatter(raw);
       const slug = kind === "article" ? file.replace(/\.md$/, "") : date;
       slugForError = slug;
-      const body = markdownToPortableText(markdown);
       if (kind === "article") {
         await importer.upsertArchivedArticle({ title, slug, date, body });
       } else {
