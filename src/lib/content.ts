@@ -103,6 +103,26 @@ function parseTags(raw: unknown): string[] | undefined {
 }
 
 /**
+ * Map an EmDash blogpost entry to a PostSummary.
+ * Centralises the five-field mapping shared by listBlogPosts and getBlogPostBySlug.
+ * Note: ContentEntry does not expose a top-level `slug`; slug lives in entry.data.
+ */
+function toPostSummary(entry: {
+  id: string;
+  data: Record<string, unknown>;
+}): PostSummary {
+  const d = entry.data;
+  return {
+    title: String(d.title ?? ""),
+    // data.slug is the content slug; fall back to the entry id (ULID)
+    slug: String(d.slug ?? entry.id),
+    date: String(d.date ?? ""),
+    excerpt: typeof d.excerpt === "string" ? d.excerpt : undefined,
+    tags: parseTags(d.tags),
+  };
+}
+
+/**
  * Extract a URL string from an EmDash image field value.
  * The image may provide `src` directly or require building from the media API.
  * Returns undefined when the image is absent or malformed.
@@ -114,8 +134,9 @@ function imageToUrl(raw: unknown): string | undefined {
   if (typeof img.src === "string" && img.src) {
     const src = img.src;
     if (ALLOWED_URL_PROTOCOLS.test(src)) return src;
-    // Relative path — keep as-is (safe, no protocol injection possible)
-    return src;
+    // Accept root-relative paths only; reject anything else (e.g. javascript:)
+    if (src.startsWith("/")) return src;
+    return undefined;
   }
   // Local provider: build from media API using the media id
   if (typeof img.id === "string" && img.id) {
@@ -133,7 +154,12 @@ function imageToUrl(raw: unknown): string | undefined {
 export async function listBlogPosts(
   opts: { limit?: number } = {},
 ): Promise<PostSummary[]> {
-  const { entries, error } = await getEmDashCollection("blogpost");
+  // Push limit to the API so the DB can optimise the query.
+  // We still slice below as a safety net in case the API returns extras
+  // (e.g. due to bucket rounding inside getEmDashCollection).
+  const { entries, error } = await getEmDashCollection("blogpost", {
+    ...(opts.limit !== undefined && opts.limit > 0 ? { limit: opts.limit } : {}),
+  });
 
   if (error) {
     throw new Error(
@@ -147,18 +173,14 @@ export async function listBlogPosts(
     .filter((e) => e.data.published === true)
     .sort((a, b) => {
       // date is a string field — sort lexicographically desc (ISO format works)
-      const da = a.data.date ?? "";
-      const db = b.data.date ?? "";
+      const da = String(a.data.date ?? "");
+      const db = String(b.data.date ?? "");
       return db.localeCompare(da);
     })
-    .map((e) => ({
-      title: e.data.title,
-      slug: e.data.slug ?? e.data.id,
-      date: e.data.date,
-      excerpt: e.data.excerpt,
-      tags: parseTags(e.data.tags),
-    }));
+    .map((e) => toPostSummary(e as unknown as { id: string; data: Record<string, unknown> }));
 
+  // Safety-net slice: honours the requested limit even when the API returns
+  // more entries than asked (bucket rounding, status filtering, etc.).
   if (opts.limit != null && opts.limit > 0) {
     return posts.slice(0, opts.limit);
   }
@@ -191,11 +213,7 @@ export async function getBlogPostBySlug(
   if (entry.data.published !== true) return null;
 
   return {
-    title: entry.data.title,
-    slug: entry.data.slug ?? entry.data.id,
-    date: entry.data.date,
-    excerpt: entry.data.excerpt,
-    tags: parseTags(entry.data.tags),
+    ...toPostSummary(entry as unknown as { id: string; data: Record<string, unknown> }),
     body: entry.data.body ?? [],
     coverImageUrl: imageToUrl(entry.data.cover_image),
   };

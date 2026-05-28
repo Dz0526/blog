@@ -5,7 +5,7 @@ const { title, slug, date, excerpt, tags = [] } = Astro.props;
 ---
 <article class="card">
   <a href={`/blog/${slug}`}>
-    <time>{date}</time>
+    <time datetime={date}>{date}</time>
     <h2>{title}</h2>
     {excerpt && <p>{excerpt}</p>}
     {tags.length > 0 && (
@@ -16,7 +16,7 @@ const { title, slug, date, excerpt, tags = [] } = Astro.props;
 <style>
   .card { border: 1px solid var(--color-border, #e2e8f0); border-radius: var(--radius-md, 8px); margin-bottom: var(--space-md, 16px); }
   .card a { display: block; padding: var(--space-md, 16px); text-decoration: none; color: inherit; }
-  .card a:hover { border-color: var(--color-accent-100, #66cdaa); }
+  .card:hover, .card:focus-within { border-color: var(--color-accent-100, #66cdaa); }
   time { font-size: 0.85rem; color: var(--color-accent-100, #66cdaa); }
   h2 { font-family: var(--font-display, sans-serif); margin: var(--space-xs, 4px) 0; }
   .tags { display: flex; gap: var(--space-xs, 4px); padding: 0; list-style: none; font-size: 0.8rem; color: var(--color-text-muted, #4a5568); }

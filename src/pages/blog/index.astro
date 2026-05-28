@@ -10,6 +10,11 @@ const posts = await listBlogPosts();
   {posts.length === 0 ? (
     <p>まだ記事がありません。</p>
   ) : (
-    posts.map(p => <BlogPostCard {...p} />)
+    <ul role="list" class="post-list">
+      {posts.map(p => <li><BlogPostCard {...p} /></li>)}
+    </ul>
   )}
 </Base>
+<style>
+  .post-list { list-style: none; padding: 0; margin: 0; }
+</style>

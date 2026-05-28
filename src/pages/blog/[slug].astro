@@ -12,7 +12,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(post.title)}&date
 <Base title={post.title} description={post.excerpt} ogImage={ogImage} canonical={`https://dz99.me/blog/${post.slug}`}>
   <article>
     <header>
-      <time>{post.date}</time>
+      <time datetime={post.date}>{post.date}</time>
       <h1>{post.title}</h1>
     </header>
     <PortableTextBody value={post.body} />
