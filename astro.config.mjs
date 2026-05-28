@@ -34,4 +34,9 @@ export default defineConfig({
 		},
 	],
 	devToolbar: { enabled: false },
+	vite: {
+		optimizeDeps: {
+			exclude: ["workers-og"],
+		},
+	},
 });
