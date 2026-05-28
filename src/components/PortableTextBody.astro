@@ -1,0 +1,12 @@
+---
+import { PortableText } from "emdash/ui";
+import "zenn-content-css";
+interface Props { value: unknown }
+const { value } = Astro.props;
+---
+<div class="znc">
+  <PortableText value={value} />
+</div>
+<style>
+  .znc { line-height: 1.8; }
+</style>
