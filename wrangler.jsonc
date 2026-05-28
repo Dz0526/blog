@@ -1,19 +1,20 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "my-emdash-site",
+	"name": "dz99-blog",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "my-emdash-site",
+			"database_name": "dz99-blog",
+			"database_id": "a056a9d0-3fc6-4272-af8f-bab0d6dfb956",
 		},
 	],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
-			"bucket_name": "my-emdash-media",
+			"bucket_name": "dz99-blog-media",
 		},
 	],
 	// Worker Loader for plugin sandboxing
@@ -22,4 +23,9 @@
 			"binding": "LOADER",
 		},
 	],
+	// Custom domain (requires `dz99.me` zone to be added to this Cloudflare account first)
+	// "routes": [
+	//   { "pattern": "dz99.me/*", "zone_name": "dz99.me", "custom_domain": true },
+	//   { "pattern": "www.dz99.me/*", "zone_name": "dz99.me", "custom_domain": true }
+	// ],
 }
