@@ -318,7 +318,7 @@ export async function getArchivedArticleBySlug(
 
   if (!entry) return null;
 
-  const d = entry.data as Record<string, unknown>;
+  const d = (entry.data as unknown) as Record<string, unknown>;
   return {
     title: String(d.title ?? ""),
     slug: String(d.slug ?? entry.id),
@@ -348,7 +348,7 @@ export async function getArchivedNippoByDate(
 
   if (!entry) return null;
 
-  const d = entry.data as Record<string, unknown>;
+  const d = (entry.data as unknown) as Record<string, unknown>;
   return {
     title: typeof d.title === "string" && d.title ? d.title : undefined,
     slug: String(d.slug ?? entry.id),
