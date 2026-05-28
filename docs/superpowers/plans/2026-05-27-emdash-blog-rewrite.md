@@ -1219,7 +1219,7 @@ git commit -m "feat: /blog/<slug> individual post page"
 
 **Files:** none (admin operation); update discovery doc.
 
-- [ ] **Step 1: Create `ArchivedArticle` collection**
+- [x] **Step 1: Create `ArchivedArticle` collection**
 
 Fields:
 - `title` — string, required
@@ -1228,7 +1228,7 @@ Fields:
 - `body` — markdown, required
 - `origin` — string (constant `"article"`)
 
-- [ ] **Step 2: Create `ArchivedNippo` collection**
+- [x] **Step 2: Create `ArchivedNippo` collection**
 
 Fields:
 - `title` — string
@@ -1237,11 +1237,11 @@ Fields:
 - `body` — markdown, required
 - `origin` — string (constant `"nippo"`)
 
-- [ ] **Step 3: Regenerate types**
+- [x] **Step 3: Regenerate types**
 
 Run: `pnpm exec emdash types`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/content docs/emdash-discovery.md
@@ -1253,7 +1253,7 @@ git commit -m "feat: define ArchivedArticle and ArchivedNippo content types"
 **Files:**
 - Modify: `src/lib/content.ts`
 
-- [ ] **Step 1: Add to `src/lib/content.ts`**
+- [x] **Step 1: Add to `src/lib/content.ts`**
 
 ```ts
 export interface ArchivedArticle {
@@ -1296,7 +1296,7 @@ export async function getArchivedNippoByDate(date: string): Promise<ArchivedNipp
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/lib/content.ts
@@ -1309,7 +1309,7 @@ git commit -m "feat: archive content helpers"
 - Create: `src/pages/archive/index.astro`
 - Create: `src/components/ArchiveTabs.astro`
 
-- [ ] **Step 1: `src/components/ArchiveTabs.astro`**
+- [x] **Step 1: `src/components/ArchiveTabs.astro`**
 
 ```astro
 ---
@@ -1368,7 +1368,7 @@ const nippoByYear = groupByYear(nippos);
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/archive/index.astro`**
+- [x] **Step 2: `src/pages/archive/index.astro`**
 
 ```astro
 ---
@@ -1385,7 +1385,7 @@ const [articles, nippos] = await Promise.all([listArchivedArticles(), listArchiv
 </BaseLayout>
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/archive/index.astro src/components/ArchiveTabs.astro
@@ -1399,7 +1399,7 @@ git commit -m "feat: /archive/ tabbed index"
 - Create: `src/pages/archive/nippo/[date].astro`
 - Create: `tests/e2e/archive.spec.ts`
 
-- [ ] **Step 1: `src/pages/archive/article/[slug].astro`**
+- [x] **Step 1: `src/pages/archive/article/[slug].astro`**
 
 ```astro
 ---
@@ -1429,7 +1429,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(article.title)}&d
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/archive/nippo/[date].astro`**
+- [x] **Step 2: `src/pages/archive/nippo/[date].astro`**
 
 ```astro
 ---
@@ -1460,7 +1460,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(title)}&date=${en
 </style>
 ```
 
-- [ ] **Step 3: E2E test**
+- [x] **Step 3: E2E test**
 
 `tests/e2e/archive.spec.ts`:
 ```ts
@@ -1476,7 +1476,7 @@ test("/archive/ renders both tabs", async ({ page }) => {
 
 Run: `pnpm test:e2e tests/e2e/archive.spec.ts` → PASS (data may still be empty pre-migration).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/archive tests/e2e/archive.spec.ts
