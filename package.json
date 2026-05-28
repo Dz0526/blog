@@ -15,7 +15,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "typecheck": "astro check && tsc --noEmit"
+    "typecheck": "astro check && tsc --noEmit",
+    "migrate": "tsx tools/migrate-to-emdash.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.5.3",
@@ -35,6 +36,8 @@
     "@cloudflare/workers-types": "^4.20260305.1",
     "@playwright/test": "^1.60.0",
     "@vitest/ui": "^4.1.7",
+    "gray-matter": "^4.0.3",
+    "tsx": "^4.22.3",
     "vitest": "^4.1.7",
     "wrangler": "^4.83.0"
   },
