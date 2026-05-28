@@ -1,5 +1,6 @@
 ---
 import type { PostSummary } from "../lib/content";
+import BlogPostCard from "./BlogPostCard.astro";
 
 interface Props {
   posts?: PostSummary[];
@@ -13,7 +14,9 @@ const { posts = [] } = Astro.props;
     <h2 class="latest-posts-heading">Latest Posts</h2>
     {posts.length > 0 ? (
       <ul class="posts-list" role="list">
-        {/* Phase 4 will render real PostCard components here */}
+        {posts.map((p) => (
+          <li><BlogPostCard {...p} /></li>
+        ))}
       </ul>
     ) : (
       <p class="empty-state">記事はまだありません。</p>
