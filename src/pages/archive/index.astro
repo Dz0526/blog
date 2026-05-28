@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import ArchiveTabs from "../../components/ArchiveTabs.astro";
+import { listArchivedArticles, listArchivedNippos } from "../../lib/content";
+
+const [articles, nippos] = await Promise.all([listArchivedArticles(), listArchivedNippos()]);
+---
+<Base title="Archive" description="過去の記事と日報のアーカイブ">
+  <h1>Archive</h1>
+  <p>過去のブログ記事と Notion 連携時代の日報のアーカイブです。</p>
+  <ArchiveTabs articles={articles} nippos={nippos} />
+</Base>
+<style>
+  h1 {
+    font-family: var(--font-display, sans-serif);
+    margin-bottom: var(--space-sm, 12px);
+  }
+  p {
+    color: var(--color-text-muted, #64748b);
+    margin-bottom: var(--space-lg, 32px);
+  }
+</style>
