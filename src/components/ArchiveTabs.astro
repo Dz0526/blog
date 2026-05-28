@@ -30,16 +30,16 @@ const nippoGroups = groupByYear(nippos);
   <input type="radio" name="archive-tab" id="tab-nippos" class="tab-radio" />
 
   <nav class="tab-nav" role="tablist" aria-label="アーカイブのタブ">
-    <label class="tab-label" for="tab-articles" role="tab">
+    <label id="label-articles" class="tab-label" for="tab-articles" role="tab">
       記事 ({articles.length})
     </label>
-    <label class="tab-label" for="tab-nippos" role="tab">
+    <label id="label-nippos" class="tab-label" for="tab-nippos" role="tab">
       日報 ({nippos.length})
     </label>
   </nav>
 
   <!-- Articles panel -->
-  <div class="panel articles" role="tabpanel" aria-labelledby="tab-articles">
+  <div class="panel articles" role="tabpanel" aria-labelledby="label-articles">
     {articleGroups.length === 0 ? (
       <p class="empty">記事はまだありません。</p>
     ) : (
@@ -63,7 +63,7 @@ const nippoGroups = groupByYear(nippos);
   </div>
 
   <!-- Nippos panel -->
-  <div class="panel nippos" role="tabpanel" aria-labelledby="tab-nippos">
+  <div class="panel nippos" role="tabpanel" aria-labelledby="label-nippos">
     {nippoGroups.length === 0 ? (
       <p class="empty">日報はまだありません。</p>
     ) : (
