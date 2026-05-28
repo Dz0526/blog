@@ -218,3 +218,141 @@ export async function getBlogPostBySlug(
     coverImageUrl: imageToUrl(entry.data.cover_image),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Archive types and functions
+// ---------------------------------------------------------------------------
+
+export interface ArchivedArticle {
+  title: string;
+  slug: string;
+  date: string;
+  body: unknown; // PortableTextBlock[]; validated at the renderer
+}
+
+export interface ArchivedNippo {
+  title?: string; // optional — some nippos lack a title
+  slug: string;
+  date: string;
+  body: unknown;
+}
+
+export interface ArchiveListItem {
+  slug: string;
+  date: string;
+  title?: string;
+}
+
+/**
+ * Map an EmDash archivedarticle or archivednippo entry to an ArchiveListItem.
+ * Centralises the mapping shared by listArchivedArticles and listArchivedNippos.
+ */
+function toArchiveListItem(entry: {
+  id: string;
+  data: Record<string, unknown>;
+}): ArchiveListItem {
+  const d = entry.data;
+  return {
+    slug: String(d.slug ?? entry.id),
+    date: String(d.date ?? ""),
+    title: typeof d.title === "string" && d.title ? d.title : undefined,
+  };
+}
+
+/**
+ * List all ArchivedArticle entries, sorted by date descending.
+ */
+export async function listArchivedArticles(): Promise<ArchiveListItem[]> {
+  const { entries, error } = await getEmDashCollection("archivedarticle");
+
+  if (error) {
+    throw new Error(
+      `listArchivedArticles: failed to fetch archivedarticle collection: ${
+        (error as { message?: string }).message ?? error
+      }`,
+    );
+  }
+
+  return (entries ?? [])
+    .map((e) => toArchiveListItem(e as unknown as { id: string; data: Record<string, unknown> }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * List all ArchivedNippo entries, sorted by date descending.
+ */
+export async function listArchivedNippos(): Promise<ArchiveListItem[]> {
+  const { entries, error } = await getEmDashCollection("archivednippo");
+
+  if (error) {
+    throw new Error(
+      `listArchivedNippos: failed to fetch archivednippo collection: ${
+        (error as { message?: string }).message ?? error
+      }`,
+    );
+  }
+
+  return (entries ?? [])
+    .map((e) => toArchiveListItem(e as unknown as { id: string; data: Record<string, unknown> }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * Fetch a single ArchivedArticle by its slug (original _posts filename without .md).
+ *
+ * Returns null when the entry does not exist.
+ * Throws when EmDash returns an error.
+ */
+export async function getArchivedArticleBySlug(
+  slug: string,
+): Promise<ArchivedArticle | null> {
+  const { entry, error } = await getEmDashEntry("archivedarticle", slug);
+
+  if (error) {
+    throw new Error(
+      `getArchivedArticleBySlug: failed to fetch archivedarticle "${slug}": ${
+        (error as { message?: string }).message ?? error
+      }`,
+    );
+  }
+
+  if (!entry) return null;
+
+  const d = entry.data as Record<string, unknown>;
+  return {
+    title: String(d.title ?? ""),
+    slug: String(d.slug ?? entry.id),
+    date: String(d.date ?? ""),
+    body: d.body ?? [],
+  };
+}
+
+/**
+ * Fetch a single ArchivedNippo by its date slug (e.g. "2023-01-06").
+ *
+ * Returns null when the entry does not exist.
+ * Throws when EmDash returns an error.
+ */
+export async function getArchivedNippoByDate(
+  date: string,
+): Promise<ArchivedNippo | null> {
+  const { entry, error } = await getEmDashEntry("archivednippo", date);
+
+  if (error) {
+    throw new Error(
+      `getArchivedNippoByDate: failed to fetch archivednippo "${date}": ${
+        (error as { message?: string }).message ?? error
+      }`,
+    );
+  }
+
+  if (!entry) return null;
+
+  const d = entry.data as Record<string, unknown>;
+  return {
+    title: typeof d.title === "string" && d.title ? d.title : undefined,
+    slug: String(d.slug ?? entry.id),
+    date: String(d.date ?? ""),
+    body: d.body ?? [],
+  };
+}
