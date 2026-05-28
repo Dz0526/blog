@@ -1957,13 +1957,13 @@ git commit -m "feat: sitemap.xml and robots.txt"
 - Create: `src/pages/og.ts`
 - Create: `tests/e2e/og.spec.ts`
 
-- [ ] **Step 1: Install**
+- [x] **Step 1: Install**
 
 ```bash
 pnpm add workers-og
 ```
 
-- [ ] **Step 2: `src/pages/og.ts`**
+- [x] **Step 2: `src/pages/og.ts`**
 
 ```ts
 import type { APIRoute } from "astro";
@@ -1998,7 +1998,7 @@ function escapeHtml(s: string) {
 }
 ```
 
-- [ ] **Step 3: E2E test**
+- [x] **Step 3: E2E test**
 
 `tests/e2e/og.spec.ts`:
 ```ts
@@ -2015,7 +2015,7 @@ test("/og returns a PNG with size 1200x600", async ({ request }) => {
 
 Run: `pnpm test:e2e tests/e2e/og.spec.ts` → PASS.
 
-- [ ] **Step 4: Visual eyeball**
+- [x] **Step 4: Visual eyeball**
 
 In a browser, open `http://localhost:4321/og?title=テスト&date=2026-05-27`. Confirm:
 - Green→mint gradient background
@@ -2025,7 +2025,7 @@ In a browser, open `http://localhost:4321/og?title=テスト&date=2026-05-27`. C
 
 If anything looks wrong, iterate on the HTML in `src/pages/og.ts`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/og.ts tests/e2e/og.spec.ts package.json pnpm-lock.yaml
