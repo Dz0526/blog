@@ -15,12 +15,12 @@ for (const { from, to } of samples) {
 
 test("destination of /article/* 301 actually renders", async ({ page }) => {
   await page.goto("/archive/article/first-aur-contributing");
-  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator("h1").first()).toBeVisible();
 });
 
 test("destination of /nippo/* 301 actually renders", async ({ page }) => {
   await page.goto("/archive/nippo/2023-01-06");
-  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator("h1").first()).toBeVisible();
 });
 
 test("/sitemap.xml returns XML with the home URL", async ({ request }) => {
