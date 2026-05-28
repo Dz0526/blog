@@ -1781,7 +1781,7 @@ If there's nothing to commit for this step, that's fine.
 - Create: `src/lib/redirects.ts`
 - Create: `tests/unit/redirects.test.ts`
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 `tests/unit/redirects.test.ts`:
 ```ts
@@ -1803,12 +1803,12 @@ describe("mapOldUrl", () => {
 });
 ```
 
-- [ ] **Step 2: Run — confirm fail**
+- [x] **Step 2: Run — confirm fail**
 
 Run: `pnpm test tests/unit/redirects.test.ts`
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/lib/redirects.ts`:
 ```ts
@@ -1826,11 +1826,11 @@ export function mapOldUrl(pathname: string): string | null {
 }
 ```
 
-- [ ] **Step 4: Run — confirm pass**
+- [x] **Step 4: Run — confirm pass**
 
 Run: `pnpm test tests/unit/redirects.test.ts` → PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/redirects.ts tests/unit/redirects.test.ts
@@ -1842,7 +1842,7 @@ git commit -m "feat: old→new URL redirect mapping"
 **Files:**
 - Create: `src/middleware.ts`
 
-- [ ] **Step 1: `src/middleware.ts`**
+- [x] **Step 1: `src/middleware.ts`**
 
 ```ts
 import { defineMiddleware } from "astro:middleware";
@@ -1857,7 +1857,7 @@ export const onRequest = defineMiddleware((ctx, next) => {
 });
 ```
 
-- [ ] **Step 2: E2E test**
+- [x] **Step 2: E2E test**
 
 `tests/e2e/redirects.spec.ts`:
 ```ts
@@ -1877,11 +1877,11 @@ for (const { from, to } of samples) {
 }
 ```
 
-- [ ] **Step 3: Run E2E**
+- [x] **Step 3: Run E2E**
 
 Run: `pnpm test:e2e tests/e2e/redirects.spec.ts` → PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/middleware.ts tests/e2e/redirects.spec.ts
@@ -1894,7 +1894,7 @@ git commit -m "feat: 301 redirects from old URLs to /archive/*"
 - Create: `src/pages/sitemap.xml.ts`
 - Create: `public/robots.txt`
 
-- [ ] **Step 1: `public/robots.txt`**
+- [x] **Step 1: `public/robots.txt`**
 
 ```
 User-agent: *
@@ -1903,7 +1903,7 @@ Disallow: /mcp/
 Sitemap: https://dz99.me/sitemap.xml
 ```
 
-- [ ] **Step 2: `src/pages/sitemap.xml.ts`**
+- [x] **Step 2: `src/pages/sitemap.xml.ts`**
 
 ```ts
 import type { APIRoute } from "astro";
@@ -1935,11 +1935,11 @@ ${urls.map(u => `  <url><loc>${u}</loc></url>`).join("\n")}
 };
 ```
 
-- [ ] **Step 3: Smoke**
+- [x] **Step 3: Smoke**
 
 Run `pnpm dev`, fetch `/sitemap.xml` and `/robots.txt`, eyeball the output.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/sitemap.xml.ts public/robots.txt
