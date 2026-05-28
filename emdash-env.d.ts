@@ -5,6 +5,23 @@
 
 import type { ContentBylineCredit, PortableTextBlock } from "emdash";
 
+export interface BlogPost {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  date: string;
+  excerpt?: string;
+  body: PortableTextBlock[];
+  tags?: string;
+  cover_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  published?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -48,6 +65,7 @@ export interface Profile {
 
 declare module "emdash" {
   interface EmDashCollections {
+    blogpost: BlogPost;
     pages: Page;
     posts: Post;
     profile: Profile;

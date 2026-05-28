@@ -75,6 +75,64 @@
 			]
 		},
 		{
+			"slug": "blogpost",
+			"label": "Blog Posts",
+			"labelSingular": "Blog Post",
+			"description": "dz99.me blog posts (distinct from scaffold 'posts' collection)",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "date",
+					"label": "Date",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "string",
+					"required": false
+				},
+				{
+					"slug": "body",
+					"label": "Body",
+					"type": "portableText",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "tags",
+					"label": "Tags",
+					"type": "string",
+					"required": false
+				},
+				{
+					"slug": "cover_image",
+					"label": "Cover Image",
+					"type": "image",
+					"required": false
+				},
+				{
+					"slug": "published",
+					"label": "Published",
+					"type": "boolean",
+					"required": false
+				}
+			]
+		},
+		{
 			"slug": "posts",
 			"label": "Posts",
 			"labelSingular": "Post",

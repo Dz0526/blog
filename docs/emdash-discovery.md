@@ -337,3 +337,46 @@ const links = rawLinks
   )
   .map(l => ({ label: l.label, url: l.url, icon: typeof l.icon === "string" ? l.icon : "" }));
 ```
+
+---
+
+## 12. Collection listing API (`getEmDashCollection`)
+
+Use `getEmDashCollection(collectionSlug, options?)` from `"emdash"` to list entries in a collection:
+
+```ts
+import { getEmDashCollection } from "emdash";
+
+const { entries, error, cacheHint } = await getEmDashCollection("blogpost");
+if (error) throw new Error(`Failed to fetch: ${error}`);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+// entries: EmDashEntry<BlogPost>[]
+```
+
+Options include `{ orderBy, status, limit }`. Returns `{ entries, error, cacheHint }`.
+
+---
+
+## 13. Two-database architecture (local dev)
+
+**CRITICAL for Phase 4+:** The EmDash CLI (`emdash seed`) and the dev server use DIFFERENT databases in local dev.
+
+- **`emdash seed` CLI default (`--database ./data.db`):** Seeds `./data.db` — a standalone SQLite file. This is **NOT** used by the dev server.
+- **Dev server (via Wrangler/Cloudflare Workers):** Uses `.wrangler/state/v3/d1/miniflare-D1DatabaseObject/<hash>.sqlite` — the local D1 emulation database.
+
+To seed the database that the dev server actually reads, always pass the Wrangler D1 path explicitly:
+
+```bash
+WRANGLER_DB=".wrangler/state/v3/d1/miniflare-D1DatabaseObject/e7352547963de7050bd7d94658afc4fe78b61811b7815da12d90be8e863abf4d.sqlite"
+pnpm exec emdash seed --file seed/seed.json --on-conflict update --database "$WRANGLER_DB"
+```
+
+The hash in the filename is stable for a given project (derived from the D1 binding config).
+
+Type regeneration (`emdash types` / `/_emdash/api/typegen`) reads from the Wrangler D1 database via the running dev server. After seeding, trigger typegen by running `astro check` (which starts a temporary dev server) or by calling the typegen API:
+
+```bash
+curl -s -X POST http://localhost:4321/_emdash/api/typegen -H "Content-Type: application/json" \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['types'])" \
+  > emdash-env.d.ts
+```
