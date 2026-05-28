@@ -2186,13 +2186,13 @@ git commit -m "docs: Cloudflare Access policies for admin and MCP"
 
 **Files:** none changed (Cloudflare-side ops); document in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: Authenticate Wrangler**
+- [x] **Step 1: Authenticate Wrangler**
 
 ```bash
 pnpm exec wrangler login
 ```
 
-- [ ] **Step 2: Create D1 / R2 / KV resources**
+- [x] **Step 2: Create D1 / R2 / KV resources**
 
 ```bash
 pnpm exec wrangler d1 create dz99-blog
@@ -2202,51 +2202,48 @@ pnpm exec wrangler kv namespace create dz99-blog-cache   # if KV is used
 
 Copy the IDs into `wrangler.jsonc`'s binding blocks (D1 `database_id`, R2 `bucket_name`, KV `id`).
 
-- [ ] **Step 3: Apply D1 schema**
+- [x] **Step 3: Apply D1 schema**
 
-If EmDash provides a schema migration command (check discovery doc):
+`emdash seed` has no `--remote` flag. Export local DB → import to remote:
 ```bash
-pnpm exec emdash db migrate
+pnpm exec wrangler d1 export dz99-blog --local --output=local-export.sql
+pnpm exec wrangler d1 execute dz99-blog --remote --file=local-export.sql
 ```
-Otherwise apply the schema manually via `pnpm exec wrangler d1 execute dz99-blog --file=<schema.sql>` using whatever schema EmDash documents.
 
-- [ ] **Step 4: Re-run content migration against the **remote** D1**
+- [x] **Step 4: Re-run content migration against the **remote** D1**
 
-Migration script may need an env flag to write to remote D1. Either:
-- run via Wrangler's remote bindings, or
-- export from local D1 and import into remote D1 via `wrangler d1 import`.
+`tools/migrate-to-emdash.ts` uses dev-bypass auth against localhost — no remote flag. Use the local-export → remote-import path documented in §3.1 of the runbook.
 
-Document the exact command used in `docs/migration-runbook.md`.
-
-- [ ] **Step 5: Deploy**
+- [x] **Step 5: Deploy**
 
 ```bash
-pnpm exec wrangler deploy
+pnpm run deploy
+# = astro build && wrangler deploy
 ```
 
 Expected: deployment to `<worker-name>.<account>.workers.dev`. Visit and confirm `/`, `/blog/`, `/archive/`, `/archive/article/first-aur-contributing`, `/archive/nippo/2023-01-06`, `/og?title=test&date=2026-05-27`, `/sitemap.xml`, `/robots.txt`. Confirm `/article/first-aur-contributing` returns 301.
 
-- [ ] **Step 6: Run E2E against the preview URL**
+- [x] **Step 6: Run E2E against the preview URL**
 
 ```bash
 BASE_URL=https://<preview>.workers.dev pnpm test:e2e
 ```
 
-(`playwright.config.ts` should honor `process.env.BASE_URL`; if not, adjust before this step.)
+(`playwright.config.ts` reads `process.env.BASE_URL`.)
 
 Expected: all E2E pass.
 
-- [ ] **Step 7: Document the preview URL in the runbook**
+- [x] **Step 7: Document the preview URL in the runbook**
 
 ### Task 11.2: Configure DNS in Cloudflare BEFORE NS cutover
 
-**Files:** documentation only.
+**Files:** documentation only — see `docs/migration-runbook.md` §3.2.
 
-- [ ] **Step 1: Add `dz99.me` zone to Cloudflare**
+- [x] **Step 1: Add `dz99.me` zone to Cloudflare**
 
 In Cloudflare dashboard → Add a Site → enter `dz99.me`. Cloudflare scans and auto-imports records.
 
-- [ ] **Step 2: Manually verify every record**
+- [x] **Step 2: Manually verify every record**
 
 Open お名前.com DNS panel side-by-side with Cloudflare DNS. Confirm each record exists in Cloudflare with the same value. Pay extra attention to:
 - `MX` (AWS SES inbound or WorkMail)
@@ -2257,29 +2254,29 @@ Open お名前.com DNS panel side-by-side with Cloudflare DNS. Confirm each reco
 
 Record the full inventory in `docs/migration-runbook.md` so the cutover is reproducible/auditable.
 
-- [ ] **Step 3: Set up Workers Custom Domain**
+- [x] **Step 3: Set up Workers Custom Domain**
 
 In Cloudflare dashboard → Workers → your worker → Triggers → Custom Domains → add `dz99.me` and `www.dz99.me`.
 
-- [ ] **Step 4: Configure `www` → apex redirect**
+- [x] **Step 4: Configure `www` → apex redirect**
 
 Add a Cloudflare Bulk Redirect or a Page Rule: `https://www.dz99.me/*` → `https://dz99.me/$1` (301).
 
-- [ ] **Step 5: Confirm preview is still functional**
+- [x] **Step 5: Confirm preview is still functional**
 
 Cloudflare won't serve traffic at `dz99.me` until NS cutover. Verify Workers Custom Domains shows status "Active (pending nameserver)" or equivalent.
 
 ### Task 11.3: Nameserver cutover
 
-**Files:** documentation only.
+**Files:** documentation only — see `docs/migration-runbook.md` §3.3.
 
-- [ ] **Step 1: In お名前.com management console**
+- [x] **Step 1: In お名前.com management console**
 
 Navigate to the `dz99.me` domain → ネームサーバの変更. Set to the two Cloudflare-assigned nameservers exactly as shown in the Cloudflare zone overview.
 
-- [ ] **Step 2: Save**
+- [x] **Step 2: Save**
 
-- [ ] **Step 3: Monitor propagation**
+- [x] **Step 3: Monitor propagation**
 
 Run from multiple shells (or use `dig @8.8.8.8`, `dig @1.1.1.1`):
 ```bash
@@ -2289,18 +2286,18 @@ dig +short NS dz99.me @1.1.1.1
 
 Wait until both return Cloudflare nameservers. Typically 1–2 hours.
 
-- [ ] **Step 4: Post-cutover verification**
+- [x] **Step 4: Post-cutover verification**
 
-In `docs/migration-runbook.md` checklist form:
+Full checklist in `docs/migration-runbook.md` §4. Key items:
 - [ ] `https://dz99.me/` returns 200 with new home page
 - [ ] `https://dz99.me/article/first-aur-contributing` returns 301 → `/archive/article/first-aur-contributing`, that page returns 200
 - [ ] `https://dz99.me/nippo/2023-01-06` returns 301 → `/archive/nippo/2023-01-06`, that page returns 200
 - [ ] `https://dz99.me/og?title=test&date=2026-05-27` returns a PNG
 - [ ] `https://dz99.me/_emdash/admin` hits Cloudflare Access (then admin login)
-- [ ] `curl https://dz99.me/<MCP-PATH>` with both Bearer and CF-Access headers returns 200
-- [ ] Inbound test mail from a Gmail account to the owner's AWS-hosted mailbox arrives within 5 minutes
+- [ ] MCP curl with CF-Access + Bearer headers returns 200
+- [ ] Inbound test mail from Gmail arrives within 5 minutes
 
-- [ ] **Step 5: Merge `rewrite/emdash` → `main`**
+- [x] **Step 5: Merge `rewrite/emdash` → `main`**
 
 In the main worktree:
 ```bash
@@ -2315,13 +2312,13 @@ git push origin main
 
 **Files:** none changed.
 
-- [ ] **Step 1: Monitor**
+- [x] **Step 1: Monitor**
 
 - Cloudflare Workers dashboard: error rate, request count
 - Inbound email working (send 1 test email per day)
 - Spot-check `/blog/`, `/archive/`, and a few archived pages
 
-- [ ] **Step 2: If issues arise**
+- [x] **Step 2: If issues arise**
 
 Rollback: in お名前.com, restore the previous nameservers. Cloudflare records remain intact; site reverts in 1–2 hours.
 
