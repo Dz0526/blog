@@ -1493,7 +1493,7 @@ git commit -m "feat: archive article and nippo detail pages"
 - Create: `tools/migrate-to-emdash.ts`
 - Create: `tests/unit/migrate.test.ts`
 
-- [ ] **Step 1: TDD — write the failing parser test**
+- [x] **Step 1: TDD — write the failing parser test**
 
 `tests/unit/migrate.test.ts`:
 ```ts
@@ -1519,12 +1519,12 @@ describe("parseFrontmatter", () => {
 });
 ```
 
-- [ ] **Step 2: Run — confirm it fails**
+- [x] **Step 2: Run — confirm it fails**
 
 Run: `pnpm test tests/unit/migrate.test.ts`
 Expected: FAIL (`parseFrontmatter` not defined).
 
-- [ ] **Step 3: Implement `parseFrontmatter`**
+- [x] **Step 3: Implement `parseFrontmatter`**
 
 Create `tools/migrate-to-emdash.ts`:
 ```ts
@@ -1548,11 +1548,11 @@ export function parseFrontmatter(input: string): ParsedDoc {
 
 Install `gray-matter`: `pnpm add -D gray-matter`.
 
-- [ ] **Step 4: Run — confirm pass**
+- [x] **Step 4: Run — confirm pass**
 
 Run: `pnpm test tests/unit/migrate.test.ts` → PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tools/migrate-to-emdash.ts tests/unit/migrate.test.ts package.json pnpm-lock.yaml
@@ -1564,13 +1564,13 @@ git commit -m "feat: frontmatter parser for content migration"
 **Files:**
 - Modify: `tools/migrate-to-emdash.ts`
 
-- [ ] **Step 1: Decide on the import mechanism**
+- [x] **Step 1: Decide on the import mechanism**
 
 Read `docs/emdash-discovery.md`. If EmDash exposes an import API (CLI or HTTP) in v0.14.x, prefer that. If not, write directly to D1 via the EmDash schema (the discovery doc records table names and column shapes).
 
 Document the chosen mechanism at the top of `tools/migrate-to-emdash.ts` in a header comment.
 
-- [ ] **Step 2: Implement `importArticles` and `importNippos`**
+- [x] **Step 2: Implement `importArticles` and `importNippos`**
 
 Append to `tools/migrate-to-emdash.ts`:
 
@@ -1604,7 +1604,7 @@ export async function importDir(dir: string, kind: "article" | "nippo", importer
 }
 ```
 
-- [ ] **Step 3: Implement the concrete `Importer`**
+- [x] **Step 3: Implement the concrete `Importer`**
 
 Choose ONE of the two paths below (per Step 1):
 
@@ -1658,7 +1658,7 @@ class SqliteImporter implements Importer {
 
 For Path B, replace the SQL with the discovered schema, then `pnpm add -D better-sqlite3`.
 
-- [ ] **Step 4: Add the CLI entrypoint**
+- [x] **Step 4: Add the CLI entrypoint**
 
 At the bottom of `tools/migrate-to-emdash.ts`:
 
@@ -1686,7 +1686,7 @@ async function main() {
 if (import.meta.url === `file://${process.argv[1]}`) main();
 ```
 
-- [ ] **Step 5: Add a script in `package.json`**
+- [x] **Step 5: Add a script in `package.json`**
 
 ```json
 { "scripts": { "migrate": "tsx tools/migrate-to-emdash.ts" } }
@@ -1694,7 +1694,7 @@ if (import.meta.url === `file://${process.argv[1]}`) main();
 
 Install `tsx`: `pnpm add -D tsx`.
 
-- [ ] **Step 6: Commit (do NOT run migration yet)**
+- [x] **Step 6: Commit (do NOT run migration yet)**
 
 ```bash
 git add tools/migrate-to-emdash.ts package.json pnpm-lock.yaml
@@ -1705,7 +1705,7 @@ git commit -m "feat: importer for archived articles and nippos"
 
 **Files:** none changed; this is a smoke test.
 
-- [ ] **Step 1: Create a sandboxed copy of 2 files**
+- [x] **Step 1: Create a sandboxed copy of 2 files**
 
 ```bash
 mkdir -p /tmp/dz99-migrate-test/_posts /tmp/dz99-migrate-test/_nippo
@@ -1713,7 +1713,7 @@ cp _posts/first-aur-contributing.md /tmp/dz99-migrate-test/_posts/
 cp _nippo/2023-01-06.md /tmp/dz99-migrate-test/_nippo/
 ```
 
-- [ ] **Step 2: Run the migration against the sandbox**
+- [x] **Step 2: Run the migration against the sandbox**
 
 Modify the call sites in `tools/migrate-to-emdash.ts` temporarily to point at `/tmp/dz99-migrate-test/_posts` and `/tmp/dz99-migrate-test/_nippo`, OR set env vars:
 
@@ -1723,19 +1723,19 @@ ARTICLES_DIR=/tmp/dz99-migrate-test/_posts NIPPOS_DIR=/tmp/dz99-migrate-test/_ni
 
 (If env vars aren't supported yet, refactor `main()` to read them from `process.env`.)
 
-- [ ] **Step 3: Verify in admin UI**
+- [x] **Step 3: Verify in admin UI**
 
 Visit `/_emdash/admin`. Expect `ArchivedArticle` to show 1 entry (`first-aur-contributing`) and `ArchivedNippo` to show 1 entry (`2023-01-06`). Click each and confirm the body renders correctly.
 
-- [ ] **Step 4: Roll back the sandbox entries**
+- [x] **Step 4: Roll back the sandbox entries**
 
 Delete them via admin UI to leave a clean slate for the full run.
 
-- [ ] **Step 5: Revert any temporary code changes**
+- [x] **Step 5: Revert any temporary code changes**
 
 Restore call sites to read from `_posts` and `_nippo` (or env-driven with defaults).
 
-- [ ] **Step 6: Commit any env-var refactor done in Step 2**
+- [x] **Step 6: Commit any env-var refactor done in Step 2**
 
 ```bash
 git add tools/migrate-to-emdash.ts
@@ -1746,7 +1746,7 @@ git commit -m "feat: env-driven source dirs in migration script"
 
 **Files:** none changed; this populates D1.
 
-- [ ] **Step 1: Run**
+- [x] **Step 1: Run**
 
 ```bash
 pnpm migrate
@@ -1754,18 +1754,18 @@ pnpm migrate
 
 Expected output: `Imported 7/7 articles, 221/221 nippos.` and exit code 0.
 
-- [ ] **Step 2: Spot-check 3 random entries in admin**
+- [x] **Step 2: Spot-check 3 random entries in admin**
 
 Pick 1 archived article + 2 random nippos, open them in admin UI, confirm bodies render with formatting intact.
 
-- [ ] **Step 3: Visit the rendered pages**
+- [x] **Step 3: Visit the rendered pages**
 
 Run `pnpm dev`, visit:
 - `/archive/article/first-aur-contributing` — confirm content
 - `/archive/nippo/2023-01-06` — confirm content
 - `/archive/` — confirm counts (記事=7, 日報=221)
 
-- [ ] **Step 4: Commit the local D1 snapshot if EmDash stores it locally**
+- [x] **Step 4: Commit the local D1 snapshot if EmDash stores it locally**
 
 (If `wrangler.jsonc` includes a local D1 file path checked into the repo for dev — usually it's gitignored. If gitignored, skip.)
 

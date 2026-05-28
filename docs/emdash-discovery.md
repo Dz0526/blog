@@ -380,3 +380,41 @@ curl -s -X POST http://localhost:4321/_emdash/api/typegen -H "Content-Type: appl
   | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['types'])" \
   > emdash-env.d.ts
 ```
+
+---
+
+## 14. Content migration approach (Phase 6)
+
+### portableText conversion
+
+**Chosen approach: Option 3 (EmDash built-in via `emdash/client`).**
+
+`emdash/client` exports `markdownToPortableText(markdown: string): PortableTextBlock[]` directly. More importantly, `EmDashClient.create()` and `.update()` automatically call `convertDataForWrite()` internally — which converts any string value in a `portableText`-typed field into a PT block array before sending to the server. This means the migration script can simply pass the raw markdown body string; no manual PT conversion is needed at call sites.
+
+The CLI's `emdash content get` reads items back via `convertDataForRead()` which converts PT arrays → markdown strings for display. This is expected behavior.
+
+### Importer approach
+
+**Path B: EmDashClient JS API** was chosen over CLI subprocess (Path A) for speed (no process spawns).
+
+Key findings:
+- `EmDashClient.create()` only accepts `status: "draft"` (or omit) — passing `"published"` returns `VALIDATION_ERROR`. Publish separately via `.publish()`.
+- Soft delete: `emdash content delete <slug>` moves item to trash; the slug remains reserved. If creating with a slug that was previously soft-deleted, create() returns "Slug already exists". Solution: catch the error, call `.restore()`, then `.update()`.
+- `devBypass: true` enables authentication-free access on localhost — no token needed.
+
+### Migration script
+
+`tools/migrate-to-emdash.ts` (under 300 lines):
+- `parseFrontmatter()`: gray-matter wrapper, handles Date objects from YAML parsing
+- `EmDashClientImporter`: Path B importer with create→publish + trashed-slug recovery
+- `CLIImporter`: Path A fallback using `emdash seed` with explicit portableText conversion
+- `importDir()`: reads .md files from a directory, parses, upserts
+
+Run: `pnpm migrate` (articles from `_posts/`, nippos from `_nippo/`; env vars `ARTICLES_DIR`, `NIPPOS_DIR`, `EMDASH_URL` override defaults).
+
+### Results
+
+- 7/7 articles imported from `_posts/`
+- 221/221 nippos imported from `_nippo/`
+- `/archive/` shows "記事 (7)" and "日報 (221)"
+- Article and nippo detail pages render correctly
