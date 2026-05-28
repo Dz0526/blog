@@ -2040,11 +2040,11 @@ git commit -m "feat: /og dynamic OG image generation"
 
 **Files:** none changed; document in `docs/emdash-discovery.md`.
 
-- [ ] **Step 1: Locate the MCP endpoint path**
+- [x] **Step 1: Locate the MCP endpoint path**
 
 From `docs/emdash-discovery.md` Step-7. If it wasn't fully captured, re-investigate now: search `node_modules/@emdash-cms/core` for `mcp` route registrations.
 
-- [ ] **Step 2: Manual probe**
+- [x] **Step 2: Manual probe**
 
 With `pnpm dev` running, send a JSON-RPC ping to the MCP endpoint:
 ```bash
@@ -2055,7 +2055,7 @@ Expected: 200 with a JSON-RPC response describing capabilities.
 
 If the endpoint requires auth in dev as well, supply the dev token (configured in `wrangler.jsonc` `[vars]` or `.dev.vars`).
 
-- [ ] **Step 3: Document precise endpoint and auth in `docs/emdash-discovery.md`**
+- [x] **Step 3: Document precise endpoint and auth in `docs/emdash-discovery.md`**
 
 ### Task 9.2: Configure the MCP auth token
 
@@ -2064,7 +2064,7 @@ If the endpoint requires auth in dev as well, supply the dev token (configured i
 - Modify: `wrangler.jsonc` — prod secret binding
 - Modify: `.gitignore` — ensure `.dev.vars` is ignored
 
-- [ ] **Step 1: Generate a token**
+- [x] **Step 1: Generate a token**
 
 ```bash
 openssl rand -hex 32
@@ -2072,52 +2072,37 @@ openssl rand -hex 32
 
 Copy the output.
 
-- [ ] **Step 2: Set as dev var**
+**Phase 9 finding: EmDash does NOT use MCP_TOKEN env var.** Auth uses `ec_pat_*` PATs stored in D1. Static hex tokens are always rejected. Steps 2-4 below are annotated accordingly.
 
-`.dev.vars` (create if absent):
-```
-MCP_TOKEN=<paste-token>
-```
+- [x] **Step 2: Set as dev var**
 
-- [ ] **Step 3: Set as production secret**
+`.dev.vars` updated with a comment documenting the PAT mechanism. No `MCP_TOKEN=` line added — EmDash does not read this env var.
 
-```bash
-pnpm exec wrangler secret put MCP_TOKEN
-```
+- [x] **Step 3: Set as production secret**
 
-Paste the same token when prompted.
+No `wrangler secret put MCP_TOKEN` needed. The PAT is stored in D1, created via admin UI. For Phase 11: log in to `/_emdash/admin` → Settings → API Tokens → Create Token.
 
-- [ ] **Step 4: Ensure `wrangler.jsonc` references the binding**
+- [x] **Step 4: Ensure `wrangler.jsonc` references the binding**
 
-In `wrangler.jsonc`, under the appropriate section (per EmDash discovery), confirm `MCP_TOKEN` is declared as a secret/env binding so EmDash can read it.
+No change needed — EmDash reads the PAT from D1, not from wrangler vars.
 
-- [ ] **Step 5: `.gitignore`**
+- [x] **Step 5: `.gitignore`**
 
-Append:
-```
-.dev.vars
-```
+`.dev.vars` already in `.gitignore` (Phase 1). Confirmed.
 
-- [ ] **Step 6: Verify auth works**
+- [x] **Step 6: Verify auth works**
 
-```bash
-curl -i -X POST http://localhost:4321/<MCP-PATH> -H "content-type: application/json" -H "Authorization: Bearer $(grep MCP_TOKEN .dev.vars | cut -d= -f2)" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}'
-```
+Verified in Phase 9 session: POST with `ec_pat_*` Bearer token + `Accept: application/json, text/event-stream` returns HTTP 200 with MCP initialize response. Without token: HTTP 401. With bare hex token: HTTP 401.
 
-Expected: 200. Without the header, expect 401.
+- [x] **Step 7: Commit**
 
-- [ ] **Step 7: Commit**
-
-```bash
-git add wrangler.jsonc .gitignore
-git commit -m "chore: configure MCP_TOKEN for dev and prod"
-```
+Done (see Phase 9 commits).
 
 ### Task 9.3: Add the MCP endpoint to Claude / Cursor
 
 **Files:** none changed in repo; document recipe in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: Compose the MCP server config snippet**
+- [x] **Step 1: Compose the MCP server config snippet**
 
 For Claude Desktop / Claude Code: add an entry to the user's MCP config (location varies — Claude Desktop uses `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS). Example:
 
@@ -2125,34 +2110,29 @@ For Claude Desktop / Claude Code: add an entry to the user's MCP config (locatio
 {
   "mcpServers": {
     "dz99-emdash": {
-      "url": "https://dz99.me/<MCP-PATH>",
-      "headers": { "Authorization": "Bearer <MCP_TOKEN>" }
+      "url": "https://dz99.me/_emdash/api/mcp",
+      "headers": { "Authorization": "Bearer <ec_pat_your-token>" }
     }
   }
 }
 ```
 
-(Replace `<MCP-PATH>` and `<MCP_TOKEN>` with real values.)
+Token must be an `ec_pat_*` PAT from `/_emdash/admin` → Settings → API Tokens.
 
-- [ ] **Step 2: Write `docs/migration-runbook.md` with the recipe**
+- [x] **Step 2: Write `docs/migration-runbook.md` with the recipe**
 
-Create `docs/migration-runbook.md` with sections (filled in later phases too):
-- "MCP client setup (Claude / Cursor)"
-- "DNS migration steps"
-- "Cutover verification checklist"
+Created `docs/migration-runbook.md` with sections:
+- "MCP client setup (Claude Desktop / Claude Code / Cursor)" — filled with PAT auth mechanism, creation steps for dev+prod, Claude Desktop config, and verification steps
+- "DNS migration steps" — placeholder for Phase 11
+- "Cutover verification checklist" — placeholder for Phase 11
 
-For now, fill only the MCP section with the JSON snippet above.
+- [x] **Step 3: Smoke test from Claude**
 
-- [ ] **Step 3: Smoke test from Claude**
+(This step is performed by the user after deploying to the preview URL — see Phase 11. Noted in the runbook.)
 
-(This step is performed by the user after deploying to the preview URL — see Phase 11. Note this in the runbook.)
+- [x] **Step 4: Commit**
 
-- [ ] **Step 4: Commit**
-
-```bash
-git add docs/migration-runbook.md
-git commit -m "docs: MCP client setup runbook"
-```
+Done (see Phase 9 commits).
 
 ---
 
