@@ -5,6 +5,34 @@
 
 import type { ContentBylineCredit, PortableTextBlock } from "emdash";
 
+export interface ArchivedArticle {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  date: string;
+  body: PortableTextBlock[];
+  origin: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface ArchivedNippo {
+  id: string;
+  slug: string | null;
+  status: string;
+  title?: string;
+  date: string;
+  body: PortableTextBlock[];
+  origin: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 export interface BlogPost {
   id: string;
   slug: string | null;
@@ -65,6 +93,8 @@ export interface Profile {
 
 declare module "emdash" {
   interface EmDashCollections {
+    archivedarticle: ArchivedArticle;
+    archivednippo: ArchivedNippo;
     blogpost: BlogPost;
     pages: Page;
     posts: Post;

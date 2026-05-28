@@ -193,6 +193,76 @@
 					"searchable": true
 				}
 			]
+		},
+		{
+			"slug": "archivedarticle",
+			"label": "Archived Articles",
+			"labelSingular": "Archived Article",
+			"description": "Legacy _posts/*.md migration target",
+			"supports": [
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "date",
+					"label": "Date",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "body",
+					"label": "Body",
+					"type": "portableText",
+					"required": true
+				},
+				{
+					"slug": "origin",
+					"label": "Origin",
+					"type": "string",
+					"required": true
+				}
+			]
+		},
+		{
+			"slug": "archivednippo",
+			"label": "Archived Nippos",
+			"labelSingular": "Archived Nippo",
+			"description": "Legacy _nippo/*.md migration target",
+			"supports": [
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": false
+				},
+				{
+					"slug": "date",
+					"label": "Date",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "body",
+					"label": "Body",
+					"type": "portableText",
+					"required": true
+				},
+				{
+					"slug": "origin",
+					"label": "Origin",
+					"type": "string",
+					"required": true
+				}
+			]
 		}
 	],
 	"taxonomies": [
