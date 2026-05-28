@@ -75,24 +75,25 @@ Omitting `Accept: application/json, text/event-stream` returns HTTP 406.
 
 ### Claude Desktop config
 
+> **Note:** Once Cloudflare Access is configured (Phase 11, see [section 2.3](#23-updated-claude-desktop--cursor-config)), the config below must be extended with CF-Access headers. Section 2.3 is the canonical production config. Use the snippet below only for local dev (no Cloudflare Access in front of `localhost`).
+
 Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) and add:
 
 ```json
 {
   "mcpServers": {
-    "dz99-emdash": {
-      "url": "https://dz99.me/_emdash/api/mcp",
+    "dz99-emdash-dev": {
+      "url": "http://localhost:4321/_emdash/api/mcp",
       "headers": {
-        "Authorization": "Bearer <ec_pat_your-token-here>"
+        "Authorization": "Bearer ec_pat_<your-dev-token>",
+        "Accept": "application/json, text/event-stream"
       }
     }
   }
 }
 ```
 
-(Replace `<ec_pat_your-token-here>` with the actual PAT. Restart Claude Desktop after editing.)
-
-For local dev, use `http://localhost:4321/_emdash/api/mcp` and the dev PAT.
+(Replace `ec_pat_<your-dev-token>` with the dev PAT. For production, use the config in section 2.3.)
 
 ### Verification
 
@@ -105,12 +106,96 @@ Once configured:
 
 ---
 
-## 2. DNS migration steps
+## 2. Cloudflare Access policies for `/_emdash/admin` and `/_emdash/api/mcp`
+
+Cloudflare Access provides a defense-in-depth layer in front of EmDash's own auth. Configure two Access applications via the Cloudflare Zero Trust dashboard (`https://one.dash.cloudflare.com → Access → Applications`).
+
+### 2.1 App: EmDash admin UI
+
+**Settings:**
+- Application type: **Self-hosted**
+- Application name: `dz99.me admin`
+- Application domain: `dz99.me`
+- Application path: `/_emdash/admin*`
+- Session duration: `24 hours`
+
+**Identity provider:**
+- Add **Google OAuth** as an IdP (Cloudflare Zero Trust → Settings → Authentication → Add new) if not already present.
+
+**Policies:**
+1. Primary: **Allow**
+   - Include: Emails: `shining.sun0526@gmail.com` (or whichever Google account you sign in with)
+2. Backup (optional but recommended): **Allow**
+   - Include: Emails: `<backup-email@example.com>`
+   - Document where to find this backup email so future-self doesn't get locked out.
+
+After saving, visit `https://dz99.me/_emdash/admin` — Cloudflare Access should intercept and present Google sign-in BEFORE EmDash's own passkey flow.
+
+### 2.2 App: MCP endpoint
+
+**Settings:**
+- Application type: **Self-hosted**
+- Application name: `dz99.me MCP`
+- Application domain: `dz99.me`
+- Application path: `/_emdash/api/mcp*`
+- Session duration: `24 hours` (clients re-auth daily)
+
+**Identity provider:**
+- Use **Service Tokens** (Cloudflare Zero Trust → Access → Service Auth → Service Tokens → Create Service Token).
+- Issue ONE service token; record the Client ID and Client Secret securely (they're only shown once). Name it e.g. `claude-cursor-mcp`.
+
+**Policies:**
+1. **Allow** — Include → Service Auth → select the `claude-cursor-mcp` service token.
+
+**MCP client headers** — both layers of auth must be present:
+- `CF-Access-Client-Id: <issued-cf-id>` (Cloudflare Access outer gate)
+- `CF-Access-Client-Secret: <issued-cf-secret>` (Cloudflare Access outer gate)
+- `Authorization: Bearer ec_pat_<…>` (EmDash inner gate — minted post-deploy in admin UI)
+- `Accept: application/json, text/event-stream` (MCP protocol requirement)
+- `Content-Type: application/json` (for POST)
+
+### 2.3 Updated Claude Desktop / Cursor config
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) and add:
+
+```json
+{
+  "mcpServers": {
+    "dz99-emdash": {
+      "url": "https://dz99.me/_emdash/api/mcp",
+      "headers": {
+        "CF-Access-Client-Id": "<cf-client-id>",
+        "CF-Access-Client-Secret": "<cf-client-secret>",
+        "Authorization": "Bearer ec_pat_<token>",
+        "Accept": "application/json, text/event-stream"
+      }
+    }
+  }
+}
+```
+
+(Keep secrets in a password manager. Never commit `claude_desktop_config.json` with real secrets to a public repo.)
+
+### 2.4 Recovery from lock-out
+
+If Google OAuth fails or the primary email is unreachable, you can disable the Access app via the Cloudflare API (requires API token saved in a password manager separately):
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer <CF_API_TOKEN>" \
+  "https://api.cloudflare.com/client/v4/accounts/<account-id>/access/apps/<app-id>"
+```
+
+(Document your `<account-id>` and the two app IDs in your password manager once they're created.)
+
+---
+
+## 3. DNS migration steps
 
 (To be filled in Phase 11.)
 
 ---
 
-## 3. Cutover verification checklist
+## 4. Cutover verification checklist
 
 (To be filled in Phase 11.)

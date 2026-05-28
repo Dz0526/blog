@@ -2142,7 +2142,7 @@ Done (see Phase 9 commits).
 
 **Files:** none changed in repo; document in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: In the Cloudflare dashboard**
+- [x] **Step 1: In the Cloudflare dashboard**
 
 Navigate to Zero Trust → Access → Applications. Create two applications:
 
@@ -2157,7 +2157,7 @@ Navigate to Zero Trust → Access → Applications. Create two applications:
 - Service Token (no UI identity): generate a service token; this becomes a second auth factor on top of the Bearer token.
 - Policy: Allow service token ID = the one issued.
 
-- [ ] **Step 2: Update Claude / Cursor MCP config**
+- [x] **Step 2: Update Claude / Cursor MCP config**
 
 Service-token-protected endpoints require these headers in addition to `Authorization: Bearer`:
 ```
@@ -2167,11 +2167,11 @@ CF-Access-Client-Secret: <issued>
 
 Update the MCP config snippet in `docs/migration-runbook.md` to include both headers.
 
-- [ ] **Step 3: Backup access**
+- [x] **Step 3: Backup access**
 
 Create a second policy on App 1 allowing a backup email (e.g., a personal alias) — recorded for recovery if Google account access is lost. Document in `docs/migration-runbook.md`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/migration-runbook.md
