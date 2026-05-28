@@ -947,7 +947,7 @@ git commit -m "feat: home page with hero/about/latest/contact"
 
 **Files:** none changed (admin operation); update `docs/emdash-discovery.md` with the schema.
 
-- [ ] **Step 1: Create collection in admin**
+- [x] **Step 1: Create collection in admin**
 
 In `/_emdash/admin`, create collection `BlogPost` (not a singleton).
 
@@ -961,11 +961,11 @@ Fields:
 - `coverImage` — image (R2), optional
 - `published` — boolean, default false
 
-- [ ] **Step 2: Regenerate types**
+- [x] **Step 2: Regenerate types**
 
 Run: `pnpm exec emdash types`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/content docs/emdash-discovery.md
@@ -980,7 +980,7 @@ git commit -m "feat: define BlogPost content type"
 - Modify: `src/lib/content.ts` (add `listBlogPosts`)
 - Create: `tests/e2e/blog.spec.ts`
 
-- [ ] **Step 1: `src/components/PostCard.astro`**
+- [x] **Step 1: `src/components/PostCard.astro`**
 
 ```astro
 ---
@@ -1007,7 +1007,7 @@ const { title, slug, date, excerpt, tags = [] } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: Add `listBlogPosts` to `src/lib/content.ts`**
+- [x] **Step 2: Add `listBlogPosts` to `src/lib/content.ts`**
 
 Append:
 ```ts
@@ -1038,7 +1038,7 @@ export async function listBlogPosts(opts: { limit?: number; published?: boolean 
 
 If `listEntries` is not the actual API name, replace with the documented EmDash function and update the discovery doc.
 
-- [ ] **Step 3: `src/pages/blog/index.astro`**
+- [x] **Step 3: `src/pages/blog/index.astro`**
 
 ```astro
 ---
@@ -1058,7 +1058,7 @@ const posts = await listBlogPosts();
 </BaseLayout>
 ```
 
-- [ ] **Step 4: Update home `LatestPosts` to use real data**
+- [x] **Step 4: Update home `LatestPosts` to use real data**
 
 Modify `src/pages/index.astro` so it passes the latest 5 posts to `LatestPosts`:
 
@@ -1073,7 +1073,7 @@ const latestPosts = await listBlogPosts({ limit: 5 });
 <LatestPosts posts={latestPosts} />
 ```
 
-- [ ] **Step 5: E2E test for `/blog/`**
+- [x] **Step 5: E2E test for `/blog/`**
 
 `tests/e2e/blog.spec.ts`:
 ```ts
@@ -1087,7 +1087,7 @@ test("/blog/ renders without crashing", async ({ page }) => {
 
 Run: `pnpm test:e2e tests/e2e/blog.spec.ts` → PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/blog/index.astro src/pages/index.astro src/components/PostCard.astro src/lib/content.ts tests/e2e/blog.spec.ts
@@ -1102,11 +1102,11 @@ git commit -m "feat: /blog/ index and home latest posts"
 - Modify: `src/lib/content.ts` (add `getBlogPostBySlug`)
 - Modify: `tests/e2e/blog.spec.ts`
 
-- [ ] **Step 1: Install markdown renderer**
+- [x] **Step 1: Install markdown renderer**
 
 EmDash provides one; if not, install: `pnpm add marked` (or whatever the discovery doc identifies as EmDash's renderer).
 
-- [ ] **Step 2: `src/components/MarkdownBody.astro`**
+- [x] **Step 2: `src/components/MarkdownBody.astro`**
 
 ```astro
 ---
@@ -1122,7 +1122,7 @@ const { html } = Astro.props;
 
 Install `zenn-content-css`: `pnpm add zenn-content-css`.
 
-- [ ] **Step 3: Add `getBlogPostBySlug` to `src/lib/content.ts`**
+- [x] **Step 3: Add `getBlogPostBySlug` to `src/lib/content.ts`**
 
 ```ts
 export interface BlogPost {
@@ -1152,7 +1152,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
 (Use the actual EmDash query API; supply `markdownToHtml` if the body isn't pre-rendered. If EmDash returns HTML, drop the fallback call.)
 
-- [ ] **Step 4: `src/pages/blog/[slug].astro`**
+- [x] **Step 4: `src/pages/blog/[slug].astro`**
 
 ```astro
 ---
@@ -1187,7 +1187,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(post.title)}&date
 </style>
 ```
 
-- [ ] **Step 5: Extend E2E**
+- [x] **Step 5: Extend E2E**
 
 Append to `tests/e2e/blog.spec.ts`:
 
@@ -1204,7 +1204,7 @@ test("a blog post route renders when at least one post exists", async ({ page })
 
 Run: `pnpm test:e2e tests/e2e/blog.spec.ts` → PASS or SKIP (acceptable if no posts yet).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/blog src/components/MarkdownBody.astro src/lib/content.ts tests/e2e/blog.spec.ts package.json pnpm-lock.yaml
