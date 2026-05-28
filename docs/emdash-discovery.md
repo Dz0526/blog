@@ -232,7 +232,47 @@ Found in `node_modules/emdash/dist/astro/routes/api/mcp.mjs` and `middleware/aut
 - `GET  /_emdash/api/mcp` — SSE stream (not used in stateless mode)
 - `DELETE /_emdash/api/mcp` — Session close (not used in stateless mode)
 
-**Auth mechanism:** Bearer token via `Authorization: Bearer <token>` header. Unauthorized requests receive HTTP 401 with `WWW-Authenticate: Bearer resource_metadata="<origin>/.well-known/oauth-protected-resource"`. The OAuth protected resource metadata endpoint is at `/.well-known/oauth-protected-resource`.
+**Auth mechanism (Phase 9 confirmed):** Bearer token via `Authorization: Bearer <token>` header. The token **must** be an EmDash Personal Access Token (`ec_pat_*`) or an OAuth access token (`ec_oat_*`) — both prefixes are validated against the D1 database. A bare random hex string (e.g. from `openssl rand -hex 32`) is **always rejected with 401** ("invalid token"). There is **no `MCP_TOKEN` environment variable** — EmDash does not use static env-var tokens for MCP auth.
+
+Unauthorized requests receive HTTP 401 with:
+```
+WWW-Authenticate: Bearer resource_metadata="<origin>/.well-known/oauth-protected-resource"
+```
+
+**`/.well-known/oauth-protected-resource` response (HTTP 200):**
+```json
+{
+  "resource": "http://localhost:4321/_emdash/api/mcp",
+  "authorization_servers": ["http://localhost:4321/_emdash"],
+  "scopes_supported": [
+    "content:read","content:write","media:read","media:write",
+    "schema:read","schema:write","taxonomies:manage","menus:manage",
+    "settings:read","settings:manage","admin"
+  ],
+  "bearer_methods_supported": ["header"]
+}
+```
+
+**Required HTTP headers for MCP POST calls:**
+- `Authorization: Bearer ec_pat_<token>` — the `ec_pat_` prefix is mandatory
+- `Content-Type: application/json`
+- `Accept: application/json, text/event-stream` — omitting this returns HTTP 406 "Not Acceptable"
+
+**MCP initialize response (HTTP 200):**
+```json
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"tools":{"listChanged":true}},"serverInfo":{"name":"emdash","version":"0.1.0"}},"jsonrpc":"2.0","id":1}
+```
+Response is delivered as `text/event-stream` SSE format (`event: message\ndata: {...}`).
+
+**How to obtain a PAT for MCP (dev):**
+1. Create a dev bypass session: `GET /_emdash/api/auth/dev-bypass` (available in dev only, no auth required, returns a session cookie).
+2. POST to `/_emdash/api/admin/api-tokens` with `X-EmDash-Request: 1` header, session cookie, and body `{"name":"mcp-dev","scopes":["content:read","content:write",...]}`.
+3. The response includes `data.token` — the raw `ec_pat_*` value shown once only.
+
+**How to obtain a PAT for MCP (production):**
+- Log in to `/_emdash/admin` with your passkey.
+- Navigate to Settings → API Tokens → Create Token, select required scopes.
+- Copy the shown token immediately (cannot be retrieved later).
 
 The route is injected automatically by the `emdash()` Astro integration (controlled by `resolvedConfig.mcp` — defaults to `true`). No manual route registration needed.
 
