@@ -4,6 +4,7 @@
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
 	"d1_databases": [
 		{
 			"binding": "DB",
@@ -27,9 +28,8 @@
 	// "worker_loaders": [
 	// 	{ "binding": "LOADER" },
 	// ],
-	// Custom domain (requires `dz99.me` zone to be added to this Cloudflare account first)
-	// "routes": [
-	//   { "pattern": "dz99.me/*", "zone_name": "dz99.me", "custom_domain": true },
-	//   { "pattern": "www.dz99.me/*", "zone_name": "dz99.me", "custom_domain": true }
-	// ],
+	"routes": [
+		{ "pattern": "dz99.me", "zone_name": "dz99.me", "custom_domain": true },
+		{ "pattern": "www.dz99.me", "zone_name": "dz99.me", "custom_domain": true },
+	],
 }
