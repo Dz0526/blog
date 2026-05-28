@@ -1,13 +1,5 @@
 ---
-// Placeholder for Phase 4 — real post fetching comes later.
-// Phase 4 will centralize PostSummary via PostCard's exported Props.
-interface PostSummary {
-  title: string;
-  slug: string;
-  date: string;
-  excerpt?: string;
-  tags?: string[];
-}
+import type { PostSummary } from "../lib/content";
 
 interface Props {
   posts?: PostSummary[];

@@ -4,14 +4,15 @@ import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import LatestPosts from "../components/LatestPosts.astro";
 import Contact from "../components/Contact.astro";
-import { getProfile } from "../lib/content";
+import { getProfile, listBlogPosts } from "../lib/content";
 
 const profile = await getProfile();
+const latestPosts = await listBlogPosts({ limit: 5 });
 ---
 
 <Base title="dz99.me" description={profile.heroSubtitle ?? "Dz0526 / ITO の個人サイト"}>
   <Hero title={profile.heroTitle} subtitle={profile.heroSubtitle} avatarUrl={profile.avatarUrl} />
   <About bio={profile.bio} />
-  <LatestPosts />
+  <LatestPosts posts={latestPosts} />
   <Contact links={profile.contactLinks} />
 </Base>
