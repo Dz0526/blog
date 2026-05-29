@@ -32,7 +32,12 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
 ${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
 </urlset>`;
 
-    return new Response(body, { headers: { "content-type": "application/xml" } });
+    return new Response(body, {
+      headers: {
+        "content-type": "application/xml",
+        "Cache-Control": "public, max-age=3600",
+      },
+    });
   }
 
   return next();
