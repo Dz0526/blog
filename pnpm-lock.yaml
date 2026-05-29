@@ -23,9 +23,9 @@ importers:
       '@emdash-cms/plugin-webhook-notifier':
         specifier: 0.2.0
         version: 0.2.0(emdash@0.14.0(11f16d4548ed7e8601fff8d2100a3117))
-      '@fontsource/hachi-maru-pop':
-        specifier: ^5.2.8
-        version: 5.2.8
+      '@fontsource/zen-kaku-gothic-new':
+        specifier: ^5.2.7
+        version: 5.2.7
       astro:
         specifier: ^6.3.0
         version: 6.3.7(@types/node@25.9.1)(rollup@4.60.4)(tsx@4.22.3)(yaml@2.9.0)
@@ -958,8 +958,8 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
-  '@fontsource/hachi-maru-pop@5.2.8':
-    resolution: {integrity: sha512-MaPBq9mELk30HLhT5vViDZoU+XYpCEGf03f34o7NzGdcA/GOhQXe3lLnAfKdr27RIb/PcJnNtyriyAmlO28mcw==}
+  '@fontsource/zen-kaku-gothic-new@5.2.7':
+    resolution: {integrity: sha512-tfGiyBqeeBjUURHm+RIuBJCxIKhZFp46/+LEc+zCxR4sLslKwlVpWda0ZOnX/mTvOHpfr4DYjiV/pVosRXHWaw==}
 
   '@hono/node-server@1.19.14':
     resolution: {integrity: sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==}
@@ -5125,7 +5125,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@fontsource/hachi-maru-pop@5.2.8': {}
+  '@fontsource/zen-kaku-gothic-new@5.2.7': {}
 
   '@hono/node-server@1.19.14(hono@4.12.23)':
     dependencies:

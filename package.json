@@ -24,7 +24,7 @@
     "@emdash-cms/cloudflare": "0.14.0",
     "@emdash-cms/plugin-forms": "0.2.2",
     "@emdash-cms/plugin-webhook-notifier": "0.2.0",
-    "@fontsource/hachi-maru-pop": "^5.2.8",
+    "@fontsource/zen-kaku-gothic-new": "^5.2.7",
     "astro": "^6.3.0",
     "emdash": "0.14.0",
     "react": "19.2.4",
