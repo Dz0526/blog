@@ -1,0 +1,42 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PortableTextBody from "../../../components/PortableTextBody.astro";
+import { getArchivedNippoByDate } from "../../../lib/content";
+
+const { date } = Astro.params;
+const nippo = await getArchivedNippoByDate(date!);
+if (!nippo) return Astro.redirect("/archive/");
+
+const displayTitle = nippo.title ?? `日報 ${nippo.date}`;
+const ogImage = `https://dz99.me/og?title=${encodeURIComponent(displayTitle)}&date=${encodeURIComponent(nippo.date)}`;
+---
+<Base
+  title={displayTitle}
+  description={undefined}
+  ogImage={ogImage}
+  canonical={`https://dz99.me/archive/nippo/${nippo.slug}`}
+>
+  <article>
+    <p class="meta">📦 アーカイブ（日報） · {nippo.date}</p>
+    <header>
+      <time datetime={nippo.date}>{nippo.date}</time>
+      <h1>{displayTitle}</h1>
+    </header>
+    <PortableTextBody value={nippo.body} />
+  </article>
+</Base>
+<style>
+  .meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #64748b);
+    margin-bottom: var(--space-sm, 12px);
+  }
+  header { margin-bottom: var(--space-lg, 32px); }
+  time {
+    display: block;
+    color: var(--color-accent-100, #66cdaa);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-xs, 8px);
+  }
+  h1 { font-family: var(--font-display, sans-serif); }
+</style>

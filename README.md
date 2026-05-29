@@ -1,4 +1,3 @@
-This is Dz0526(Dz99, ITO)'s blog
+# dz99.me
 
-# blog
-
+Personal site for Dz0526 (ITO) at **dz99.me** — built with [Astro](https://astro.build) and [EmDash](https://emdashcms.com) 0.14.0, deployed on Cloudflare Workers with D1 (SQLite) and R2 (media). The site combines a profile landing page, a blog (`/blog/*`), and a read-only archive (`/archive/*`) of 228 pieces of legacy content migrated from the previous Next.js/Notion stack. All content is managed through the EmDash admin UI at `/_emdash/admin` or via MCP — see `CLAUDE.md` for the full developer guide and `docs/superpowers/specs/2026-05-27-emdash-blog-rewrite-design.md` for the design spec.

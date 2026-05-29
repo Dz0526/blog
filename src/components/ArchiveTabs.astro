@@ -1,0 +1,183 @@
+---
+import type { ArchiveListItem } from "../lib/content";
+
+interface Props {
+  articles: ArchiveListItem[];
+  nippos: ArchiveListItem[];
+}
+
+const { articles, nippos } = Astro.props;
+
+/** Group items by year, returning a sorted array of [year, items[]] pairs (desc). */
+function groupByYear(items: ArchiveListItem[]): [string, ArchiveListItem[]][] {
+  const map = new Map<string, ArchiveListItem[]>();
+  for (const item of items) {
+    const year = item.date.slice(0, 4) || "不明";
+    if (!map.has(year)) map.set(year, []);
+    map.get(year)!.push(item);
+  }
+  // Sort years descending; items within each year are already date-sorted by the helper
+  return [...map.entries()].sort(([a], [b]) => b.localeCompare(a));
+}
+
+const articleGroups = groupByYear(articles);
+const nippoGroups = groupByYear(nippos);
+---
+
+<div class="archive-tabs">
+  <!-- CSS-only tab switch via radio buttons -->
+  <input type="radio" name="archive-tab" id="tab-articles" class="tab-radio" checked />
+  <input type="radio" name="archive-tab" id="tab-nippos" class="tab-radio" />
+
+  <nav class="tab-nav" role="tablist" aria-label="アーカイブのタブ">
+    <label id="label-articles" class="tab-label" for="tab-articles" role="tab">
+      記事 ({articles.length})
+    </label>
+    <label id="label-nippos" class="tab-label" for="tab-nippos" role="tab">
+      日報 ({nippos.length})
+    </label>
+  </nav>
+
+  <!-- Articles panel -->
+  <div class="panel articles" role="tabpanel" aria-labelledby="label-articles">
+    {articleGroups.length === 0 ? (
+      <p class="empty">記事はまだありません。</p>
+    ) : (
+      articleGroups.map(([year, items]) => (
+        <section>
+          <h3 class="year-heading">{year}</h3>
+          <ul role="list" class="entry-list">
+            {items.map((item) => (
+              <li>
+                <a href={`/archive/article/${item.slug}`}>
+                  <time datetime={item.date}>{item.date}</time>
+                  {" "}
+                  {item.title ?? "（無題）"}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    )}
+  </div>
+
+  <!-- Nippos panel -->
+  <div class="panel nippos" role="tabpanel" aria-labelledby="label-nippos">
+    {nippoGroups.length === 0 ? (
+      <p class="empty">日報はまだありません。</p>
+    ) : (
+      nippoGroups.map(([year, items]) => (
+        <section>
+          <h3 class="year-heading">{year}</h3>
+          <ul role="list" class="entry-list">
+            {items.map((item) => (
+              <li>
+                <a href={`/archive/nippo/${item.slug}`}>
+                  <time datetime={item.date}>{item.date}</time>
+                  {" "}
+                  {item.title ?? "（無題）"}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    )}
+  </div>
+</div>
+
+<style>
+  /* Hide radios visually but keep them functional */
+  .tab-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: var(--space-sm, 12px);
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+    margin-bottom: var(--space-md, 24px);
+  }
+
+  .tab-label {
+    cursor: pointer;
+    padding: var(--space-xs, 8px) var(--space-sm, 12px);
+    border-bottom: 2px solid transparent;
+    color: var(--color-text-muted, #64748b);
+    font-size: 0.95rem;
+    user-select: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .tab-label:hover {
+    color: var(--color-text, #1e293b);
+  }
+
+  /* Show/hide panels based on which radio is checked */
+  .panel {
+    display: none;
+  }
+
+  #tab-articles:checked ~ .panel.articles,
+  #tab-nippos:checked ~ .panel.nippos {
+    display: block;
+  }
+
+  /* Active tab label styling */
+  #tab-articles:checked ~ .tab-nav label[for="tab-articles"],
+  #tab-nippos:checked ~ .tab-nav label[for="tab-nippos"] {
+    color: var(--color-text, #1e293b);
+    border-bottom-color: var(--color-accent-100, #66cdaa);
+    font-weight: 600;
+  }
+
+  .year-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #64748b);
+    margin: var(--space-md, 24px) 0 var(--space-xs, 8px);
+    padding-bottom: var(--space-xs, 8px);
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+  }
+
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-md, 24px);
+  }
+
+  .entry-list li {
+    padding: var(--space-xs, 8px) 0;
+    border-bottom: 1px solid var(--color-border-subtle, #f1f5f9);
+  }
+
+  .entry-list a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm, 12px);
+    color: var(--color-text, #1e293b);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .entry-list a:hover {
+    color: var(--color-accent-100, #66cdaa);
+  }
+
+  .entry-list time {
+    flex-shrink: 0;
+    color: var(--color-text-muted, #64748b);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .empty {
+    color: var(--color-text-muted, #64748b);
+    font-size: 0.9rem;
+  }
+</style>

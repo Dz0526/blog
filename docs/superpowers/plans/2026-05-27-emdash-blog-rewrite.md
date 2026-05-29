@@ -150,12 +150,12 @@ Each phase ends in a green test suite + commit. Phases 0–10 happen on the work
 
 **Files:** none changed in main repo
 
-- [ ] **Step 1: Verify clean main**
+- [x] **Step 1: Verify clean main**
 
 Run: `git status` (in `/Users/daiki99/projects/develop/dz99/blog`)
 Expected: working tree clean, branch `main`.
 
-- [ ] **Step 2: Create worktree for the rewrite branch**
+- [x] **Step 2: Create worktree for the rewrite branch**
 
 Run:
 ```bash
@@ -165,7 +165,7 @@ cd ../blog-rewrite-emdash
 
 Expected output: `Preparing worktree (new branch 'rewrite/emdash')` then a checked-out copy.
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `git branch --show-current && pwd`
 Expected: `rewrite/emdash` and the worktree path.
@@ -175,11 +175,11 @@ Expected: `rewrite/emdash` and the worktree path.
 **Files:**
 - Delete: `.github/workflows/notion.yml`
 
-- [ ] **Step 1: Remove the workflow file**
+- [x] **Step 1: Remove the workflow file**
 
 Run: `git rm .github/workflows/notion.yml`
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git commit -m "chore: retire Notion sync workflow (nippo discontinued)"
@@ -189,7 +189,7 @@ git commit -m "chore: retire Notion sync workflow (nippo discontinued)"
 
 **Files:** none on this branch (this is a side action on `main`)
 
-- [ ] **Step 1: Switch briefly to main worktree and cherry-pick the deletion**
+- [x] **Step 1: Switch briefly to main worktree and cherry-pick the deletion**
 
 In the main checkout at `/Users/daiki99/projects/develop/dz99/blog`, run:
 
@@ -203,7 +203,7 @@ git push origin main
 
 (The `cherry-pick` may already include the deletion; the explicit `rm` is the safety net.)
 
-- [ ] **Step 2: Return to rewrite worktree**
+- [x] **Step 2: Return to rewrite worktree**
 
 Run: `cd ../blog-rewrite-emdash`
 
@@ -221,7 +221,7 @@ Run: `cd ../blog-rewrite-emdash`
 
 **Files preserved:** `_posts/`, `_nippo/`, `public/`, `docs/`, `CLAUDE.md`, `.gitignore`, `.editorconfig`, `.textlintrc.json`, `README.md`.
 
-- [ ] **Step 1: Delete the Next.js bits**
+- [x] **Step 1: Delete the Next.js bits**
 
 Run:
 ```bash
@@ -231,7 +231,7 @@ git rm -r _keyword
 git rm next-env.d.ts next.config.js tsconfig.json package.json yarn.lock .eslintrc.json .prettierrc .prettierignore
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git commit -m "chore: remove Next.js scaffold ahead of EmDash rewrite"
@@ -241,7 +241,7 @@ git commit -m "chore: remove Next.js scaffold ahead of EmDash rewrite"
 
 **Files created by scaffold:** `package.json`, `astro.config.mjs`, `wrangler.jsonc`, `src/`, `tsconfig.json`, `pnpm-lock.yaml`, etc.
 
-- [ ] **Step 1: Run the scaffold**
+- [x] **Step 1: Run the scaffold**
 
 Run:
 ```bash
@@ -261,7 +261,7 @@ npm create emdash@latest .
 
 Expected: a new `package.json` referencing `emdash`/`@emdash-cms/*`, an `astro.config.mjs`, a `wrangler.jsonc`, and a generated `src/` with example pages.
 
-- [ ] **Step 2: Pin EmDash version**
+- [x] **Step 2: Pin EmDash version**
 
 Open `package.json`. For every dependency starting with `emdash` or `@emdash-cms/`, replace any `^` or `~` range with an exact version. Example:
 
@@ -282,21 +282,21 @@ Use the actual version numbers chosen by the scaffold; the point is to drop the 
 pnpm install
 ```
 
-- [ ] **Step 3: Verify local dev server boots**
+- [x] **Step 3: Verify local dev server boots**
 
 Run: `pnpm dev`
 Expected: a local URL (typically `http://localhost:4321`). Visit it; expect the blog template's example homepage.
 
 Stop the dev server (Ctrl-C).
 
-- [ ] **Step 4: Verify admin loads**
+- [x] **Step 4: Verify admin loads**
 
 Run: `pnpm dev` again, visit `http://localhost:4321/_emdash/admin`
 Expected: EmDash admin login screen. Create a passkey-based admin user when prompted, log in, confirm the dashboard renders.
 
 Stop the dev server.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add .
@@ -310,7 +310,7 @@ git commit -m "feat: scaffold EmDash blog template (pinned ${EMDASH_VERSION})"
 **Files:**
 - Create: `docs/emdash-discovery.md`
 
-- [ ] **Step 1: Inspect the scaffolded project and write findings**
+- [x] **Step 1: Inspect the scaffolded project and write findings**
 
 Read these files and capture their shape into `docs/emdash-discovery.md`:
 
@@ -361,7 +361,7 @@ Format `docs/emdash-discovery.md` as a structured reference for later phases. Ex
 - Programmatic API: ...
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/emdash-discovery.md
@@ -377,7 +377,7 @@ git commit -m "docs: capture EmDash conventions from scaffold"
 - Create: `tests/unit/sanity.test.ts`
 - Create: `tests/e2e/sanity.spec.ts`
 
-- [ ] **Step 1: Install test runners**
+- [x] **Step 1: Install test runners**
 
 Run:
 ```bash
@@ -385,7 +385,7 @@ pnpm add -D vitest @vitest/ui playwright @playwright/test
 pnpm exec playwright install chromium
 ```
 
-- [ ] **Step 2: Create `vitest.config.ts`**
+- [x] **Step 2: Create `vitest.config.ts`**
 
 ```ts
 import { defineConfig } from "vitest/config";
@@ -398,7 +398,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 3: Create `playwright.config.ts`**
+- [x] **Step 3: Create `playwright.config.ts`**
 
 ```ts
 import { defineConfig } from "@playwright/test";
@@ -415,7 +415,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Add scripts to `package.json`**
+- [x] **Step 4: Add scripts to `package.json`**
 
 Add (or merge) into the `scripts` block:
 
@@ -434,7 +434,7 @@ Add (or merge) into the `scripts` block:
 
 (Preserve EmDash-scaffold scripts you find; merge, don't overwrite.)
 
-- [ ] **Step 5: Write a sanity unit test**
+- [x] **Step 5: Write a sanity unit test**
 
 `tests/unit/sanity.test.ts`:
 ```ts
@@ -447,12 +447,12 @@ describe("toolchain sanity", () => {
 });
 ```
 
-- [ ] **Step 6: Run unit tests**
+- [x] **Step 6: Run unit tests**
 
 Run: `pnpm test`
 Expected: 1 passed.
 
-- [ ] **Step 7: Write a sanity E2E test**
+- [x] **Step 7: Write a sanity E2E test**
 
 `tests/e2e/sanity.spec.ts`:
 ```ts
@@ -464,12 +464,12 @@ test("home renders something", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 8: Run E2E tests**
+- [x] **Step 8: Run E2E tests**
 
 Run: `pnpm test:e2e`
 Expected: 1 passed (Playwright auto-starts `pnpm dev`).
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add vitest.config.ts playwright.config.ts package.json pnpm-lock.yaml tests/
@@ -486,7 +486,7 @@ git commit -m "chore: add Vitest + Playwright test infrastructure"
 - Create: `src/styles/tokens.css`
 - Modify: `src/layouts/BaseLayout.astro` (or whichever layout the scaffold provides) to import the tokens
 
-- [ ] **Step 1: Create `src/styles/tokens.css`**
+- [x] **Step 1: Create `src/styles/tokens.css`**
 
 ```css
 :root {
@@ -517,11 +517,11 @@ git commit -m "chore: add Vitest + Playwright test infrastructure"
 }
 ```
 
-- [ ] **Step 2: Install Hachi Maru Pop**
+- [x] **Step 2: Install Hachi Maru Pop**
 
 Run: `pnpm add @fontsource/hachi-maru-pop`
 
-- [ ] **Step 3: Import font + tokens in the base layout**
+- [x] **Step 3: Import font + tokens in the base layout**
 
 Open the layout file (after Task 1.3 discovery you know whether it's `src/layouts/BaseLayout.astro`, `Layout.astro`, or other). Add at the top of the frontmatter:
 
@@ -532,11 +532,11 @@ import "../styles/tokens.css";
 
 (Adjust the relative path to the actual layout location.)
 
-- [ ] **Step 4: Smoke check**
+- [x] **Step 4: Smoke check**
 
 Run: `pnpm dev`, visit `/`, open devtools and confirm `--color-accent-100` is set on `:root`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/styles/tokens.css src/layouts package.json pnpm-lock.yaml
@@ -550,7 +550,7 @@ git commit -m "feat: add design tokens and Hachi Maru Pop font"
 - Create: `src/components/SiteHeader.astro`
 - Create: `src/components/SiteFooter.astro`
 
-- [ ] **Step 1: `src/components/SiteHeader.astro`**
+- [x] **Step 1: `src/components/SiteHeader.astro`**
 
 ```astro
 ---
@@ -594,7 +594,7 @@ const current = Astro.url.pathname;
 </style>
 ```
 
-- [ ] **Step 2: `src/components/SiteFooter.astro`**
+- [x] **Step 2: `src/components/SiteFooter.astro`**
 
 ```astro
 ---
@@ -615,7 +615,7 @@ const year = new Date().getFullYear();
 </style>
 ```
 
-- [ ] **Step 3: Update `src/layouts/BaseLayout.astro`**
+- [x] **Step 3: Update `src/layouts/BaseLayout.astro`**
 
 Replace the layout body with:
 
@@ -665,7 +665,7 @@ const fullTitle = title === "dz99.me" ? title : `${title} | dz99.me`;
 </style>
 ```
 
-- [ ] **Step 4: Create `src/styles/globals.css`**
+- [x] **Step 4: Create `src/styles/globals.css`**
 
 ```css
 * { box-sizing: border-box; }
@@ -674,11 +674,11 @@ a { color: var(--color-accent-100); }
 img { max-width: 100%; height: auto; }
 ```
 
-- [ ] **Step 5: Smoke check**
+- [x] **Step 5: Smoke check**
 
 Run: `pnpm dev`. Visit `/`. Header and footer should appear with the mint accent.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/layouts src/components src/styles/globals.css
@@ -693,44 +693,36 @@ git commit -m "feat: site-wide BaseLayout, header, footer"
 
 **Files:** none changed (admin-UI operation). Document the result in `docs/emdash-discovery.md`.
 
-- [ ] **Step 1: Boot dev server and log in**
+- [x] **Step 1: Boot dev server and log in**
 
 Run: `pnpm dev`. Visit `/_emdash/admin`. Log in.
 
-- [ ] **Step 2: Create the `Profile` collection (singleton)**
+- [x] **Step 2: Create the `Profile` collection (singleton)**
 
-In the admin UI, create a new collection named `Profile` configured as a **singleton** (or "single entry" — exact terminology depends on EmDash UI; choose the option that disables creating multiple records).
+Done via seed file (`seed/seed.json`) instead of admin UI. EmDash v0.14.0 has no native singleton concept; documented in collection description. Fields use snake_case slugs per the seed validator requirement.
 
 Add fields:
-- `heroTitle` — string, required
-- `heroSubtitle` — string
-- `bio` — rich-text / markdown, required
+- `hero_title` — string, required
+- `hero_subtitle` — string
+- `bio` — portableText, required
 - `avatar` — image (R2)
-- `contactLinks` — repeatable group with sub-fields: `label` (string), `url` (string), `icon` (string, e.g., "github", "twitter", "email")
+- `contact_links` — repeater with sub-fields: `label` (string), `url` (url), `icon` (string)
 
-- [ ] **Step 3: Populate the singleton with real content**
+- [x] **Step 3: Populate the singleton with real content**
 
-Fill in the user's actual profile content. Suggested starter (the user can refine later):
-- heroTitle: `Dz0526 / ITO`
-- heroSubtitle: `エンジニア・自分用記録置き場`
-- bio: a short paragraph (1–3 sentences) — leave a placeholder the user will edit later, e.g., `（後で本人が更新してください）`.
-- contactLinks: GitHub, Twitter/X, email at minimum.
+Done via `pnpm exec emdash content create profile --slug profile`. Entry created with status published.
+- hero_title: `Dz0526 / ITO`
+- hero_subtitle: `エンジニア・自分用記録置き場`
+- bio: portableText placeholder `（後で本人が更新します）`
+- contact_links: GitHub (https://github.com/Dz0526) + Email
 
-- [ ] **Step 4: Generate TypeScript types**
+- [x] **Step 4: Generate TypeScript types**
 
-Run (in the worktree root):
-```bash
-pnpm exec emdash types
-```
+Types auto-generated by dev server startup into `emdash-env.d.ts` at project root (not `src/content/`). EmDash regenerates this file every time the dev server starts. The `Profile` interface is present with correct types.
 
-Expected: types file generated under `src/content/` or wherever EmDash places it. Add the exact path to `docs/emdash-discovery.md`.
+- [x] **Step 5: Commit**
 
-- [ ] **Step 5: Commit**
-
-```bash
-git add docs/emdash-discovery.md src/content
-git commit -m "feat: define Profile content type + initial content"
-```
+Committed as `feat: define Profile content type via seed and seed singleton entry`. Files: `seed/seed.json`, `emdash-env.d.ts`.
 
 ### Task 3.2: Build Hero / About / Contact components
 
@@ -739,7 +731,7 @@ git commit -m "feat: define Profile content type + initial content"
 - Create: `src/components/About.astro`
 - Create: `src/components/Contact.astro`
 
-- [ ] **Step 1: `src/components/Hero.astro`**
+- [x] **Step 1: `src/components/Hero.astro`**
 
 ```astro
 ---
@@ -774,7 +766,7 @@ const { title, subtitle, avatarUrl } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: `src/components/About.astro`**
+- [x] **Step 2: `src/components/About.astro`**
 
 ```astro
 ---
@@ -794,7 +786,7 @@ const { body } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 3: `src/components/Contact.astro`**
+- [x] **Step 3: `src/components/Contact.astro`**
 
 ```astro
 ---
@@ -819,7 +811,7 @@ const { links } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/Hero.astro src/components/About.astro src/components/Contact.astro
@@ -832,7 +824,7 @@ git commit -m "feat: Hero, About, Contact components"
 - Modify: `src/pages/index.astro`
 - Create: `src/components/LatestPosts.astro` (skeleton; populated in Phase 4)
 
-- [ ] **Step 1: `src/components/LatestPosts.astro` (placeholder)**
+- [x] **Step 1: `src/components/LatestPosts.astro` (placeholder)**
 
 ```astro
 ---
@@ -870,7 +862,7 @@ const { posts = [] } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/index.astro`**
+- [x] **Step 2: `src/pages/index.astro`**
 
 Replace the scaffolded `index.astro` with:
 
@@ -893,7 +885,7 @@ const profile = await getProfile();
 </BaseLayout>
 ```
 
-- [ ] **Step 3: Create `src/lib/content.ts` with `getProfile`**
+- [x] **Step 3: Create `src/lib/content.ts` with `getProfile`**
 
 The exact EmDash API for reading content depends on the version (use `docs/emdash-discovery.md`). The shape of the helper:
 
@@ -922,7 +914,7 @@ export async function getProfile(): Promise<Profile> {
 
 If `getEntry` is not the actual API, replace with the documented EmDash content-access function. Update `docs/emdash-discovery.md` with the correct call.
 
-- [ ] **Step 4: E2E test for home**
+- [x] **Step 4: E2E test for home**
 
 `tests/e2e/home.spec.ts`:
 ```ts
@@ -940,7 +932,7 @@ test("home shows hero, about, latest posts, contact", async ({ page }) => {
 Run: `pnpm test:e2e tests/e2e/home.spec.ts`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/index.astro src/components/LatestPosts.astro src/lib/content.ts tests/e2e/home.spec.ts
@@ -955,7 +947,7 @@ git commit -m "feat: home page with hero/about/latest/contact"
 
 **Files:** none changed (admin operation); update `docs/emdash-discovery.md` with the schema.
 
-- [ ] **Step 1: Create collection in admin**
+- [x] **Step 1: Create collection in admin**
 
 In `/_emdash/admin`, create collection `BlogPost` (not a singleton).
 
@@ -969,11 +961,11 @@ Fields:
 - `coverImage` — image (R2), optional
 - `published` — boolean, default false
 
-- [ ] **Step 2: Regenerate types**
+- [x] **Step 2: Regenerate types**
 
 Run: `pnpm exec emdash types`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/content docs/emdash-discovery.md
@@ -988,7 +980,7 @@ git commit -m "feat: define BlogPost content type"
 - Modify: `src/lib/content.ts` (add `listBlogPosts`)
 - Create: `tests/e2e/blog.spec.ts`
 
-- [ ] **Step 1: `src/components/PostCard.astro`**
+- [x] **Step 1: `src/components/PostCard.astro`**
 
 ```astro
 ---
@@ -1015,7 +1007,7 @@ const { title, slug, date, excerpt, tags = [] } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 2: Add `listBlogPosts` to `src/lib/content.ts`**
+- [x] **Step 2: Add `listBlogPosts` to `src/lib/content.ts`**
 
 Append:
 ```ts
@@ -1046,7 +1038,7 @@ export async function listBlogPosts(opts: { limit?: number; published?: boolean 
 
 If `listEntries` is not the actual API name, replace with the documented EmDash function and update the discovery doc.
 
-- [ ] **Step 3: `src/pages/blog/index.astro`**
+- [x] **Step 3: `src/pages/blog/index.astro`**
 
 ```astro
 ---
@@ -1066,7 +1058,7 @@ const posts = await listBlogPosts();
 </BaseLayout>
 ```
 
-- [ ] **Step 4: Update home `LatestPosts` to use real data**
+- [x] **Step 4: Update home `LatestPosts` to use real data**
 
 Modify `src/pages/index.astro` so it passes the latest 5 posts to `LatestPosts`:
 
@@ -1081,7 +1073,7 @@ const latestPosts = await listBlogPosts({ limit: 5 });
 <LatestPosts posts={latestPosts} />
 ```
 
-- [ ] **Step 5: E2E test for `/blog/`**
+- [x] **Step 5: E2E test for `/blog/`**
 
 `tests/e2e/blog.spec.ts`:
 ```ts
@@ -1095,7 +1087,7 @@ test("/blog/ renders without crashing", async ({ page }) => {
 
 Run: `pnpm test:e2e tests/e2e/blog.spec.ts` → PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/blog/index.astro src/pages/index.astro src/components/PostCard.astro src/lib/content.ts tests/e2e/blog.spec.ts
@@ -1110,11 +1102,11 @@ git commit -m "feat: /blog/ index and home latest posts"
 - Modify: `src/lib/content.ts` (add `getBlogPostBySlug`)
 - Modify: `tests/e2e/blog.spec.ts`
 
-- [ ] **Step 1: Install markdown renderer**
+- [x] **Step 1: Install markdown renderer**
 
 EmDash provides one; if not, install: `pnpm add marked` (or whatever the discovery doc identifies as EmDash's renderer).
 
-- [ ] **Step 2: `src/components/MarkdownBody.astro`**
+- [x] **Step 2: `src/components/MarkdownBody.astro`**
 
 ```astro
 ---
@@ -1130,7 +1122,7 @@ const { html } = Astro.props;
 
 Install `zenn-content-css`: `pnpm add zenn-content-css`.
 
-- [ ] **Step 3: Add `getBlogPostBySlug` to `src/lib/content.ts`**
+- [x] **Step 3: Add `getBlogPostBySlug` to `src/lib/content.ts`**
 
 ```ts
 export interface BlogPost {
@@ -1160,7 +1152,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
 (Use the actual EmDash query API; supply `markdownToHtml` if the body isn't pre-rendered. If EmDash returns HTML, drop the fallback call.)
 
-- [ ] **Step 4: `src/pages/blog/[slug].astro`**
+- [x] **Step 4: `src/pages/blog/[slug].astro`**
 
 ```astro
 ---
@@ -1195,7 +1187,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(post.title)}&date
 </style>
 ```
 
-- [ ] **Step 5: Extend E2E**
+- [x] **Step 5: Extend E2E**
 
 Append to `tests/e2e/blog.spec.ts`:
 
@@ -1212,7 +1204,7 @@ test("a blog post route renders when at least one post exists", async ({ page })
 
 Run: `pnpm test:e2e tests/e2e/blog.spec.ts` → PASS or SKIP (acceptable if no posts yet).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/blog src/components/MarkdownBody.astro src/lib/content.ts tests/e2e/blog.spec.ts package.json pnpm-lock.yaml
@@ -1227,7 +1219,7 @@ git commit -m "feat: /blog/<slug> individual post page"
 
 **Files:** none (admin operation); update discovery doc.
 
-- [ ] **Step 1: Create `ArchivedArticle` collection**
+- [x] **Step 1: Create `ArchivedArticle` collection**
 
 Fields:
 - `title` — string, required
@@ -1236,7 +1228,7 @@ Fields:
 - `body` — markdown, required
 - `origin` — string (constant `"article"`)
 
-- [ ] **Step 2: Create `ArchivedNippo` collection**
+- [x] **Step 2: Create `ArchivedNippo` collection**
 
 Fields:
 - `title` — string
@@ -1245,11 +1237,11 @@ Fields:
 - `body` — markdown, required
 - `origin` — string (constant `"nippo"`)
 
-- [ ] **Step 3: Regenerate types**
+- [x] **Step 3: Regenerate types**
 
 Run: `pnpm exec emdash types`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/content docs/emdash-discovery.md
@@ -1261,7 +1253,7 @@ git commit -m "feat: define ArchivedArticle and ArchivedNippo content types"
 **Files:**
 - Modify: `src/lib/content.ts`
 
-- [ ] **Step 1: Add to `src/lib/content.ts`**
+- [x] **Step 1: Add to `src/lib/content.ts`**
 
 ```ts
 export interface ArchivedArticle {
@@ -1304,7 +1296,7 @@ export async function getArchivedNippoByDate(date: string): Promise<ArchivedNipp
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/lib/content.ts
@@ -1317,7 +1309,7 @@ git commit -m "feat: archive content helpers"
 - Create: `src/pages/archive/index.astro`
 - Create: `src/components/ArchiveTabs.astro`
 
-- [ ] **Step 1: `src/components/ArchiveTabs.astro`**
+- [x] **Step 1: `src/components/ArchiveTabs.astro`**
 
 ```astro
 ---
@@ -1376,7 +1368,7 @@ const nippoByYear = groupByYear(nippos);
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/archive/index.astro`**
+- [x] **Step 2: `src/pages/archive/index.astro`**
 
 ```astro
 ---
@@ -1393,7 +1385,7 @@ const [articles, nippos] = await Promise.all([listArchivedArticles(), listArchiv
 </BaseLayout>
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/archive/index.astro src/components/ArchiveTabs.astro
@@ -1407,7 +1399,7 @@ git commit -m "feat: /archive/ tabbed index"
 - Create: `src/pages/archive/nippo/[date].astro`
 - Create: `tests/e2e/archive.spec.ts`
 
-- [ ] **Step 1: `src/pages/archive/article/[slug].astro`**
+- [x] **Step 1: `src/pages/archive/article/[slug].astro`**
 
 ```astro
 ---
@@ -1437,7 +1429,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(article.title)}&d
 </style>
 ```
 
-- [ ] **Step 2: `src/pages/archive/nippo/[date].astro`**
+- [x] **Step 2: `src/pages/archive/nippo/[date].astro`**
 
 ```astro
 ---
@@ -1468,7 +1460,7 @@ const ogImage = `https://dz99.me/og?title=${encodeURIComponent(title)}&date=${en
 </style>
 ```
 
-- [ ] **Step 3: E2E test**
+- [x] **Step 3: E2E test**
 
 `tests/e2e/archive.spec.ts`:
 ```ts
@@ -1484,7 +1476,7 @@ test("/archive/ renders both tabs", async ({ page }) => {
 
 Run: `pnpm test:e2e tests/e2e/archive.spec.ts` → PASS (data may still be empty pre-migration).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/archive tests/e2e/archive.spec.ts
@@ -1501,7 +1493,7 @@ git commit -m "feat: archive article and nippo detail pages"
 - Create: `tools/migrate-to-emdash.ts`
 - Create: `tests/unit/migrate.test.ts`
 
-- [ ] **Step 1: TDD — write the failing parser test**
+- [x] **Step 1: TDD — write the failing parser test**
 
 `tests/unit/migrate.test.ts`:
 ```ts
@@ -1527,12 +1519,12 @@ describe("parseFrontmatter", () => {
 });
 ```
 
-- [ ] **Step 2: Run — confirm it fails**
+- [x] **Step 2: Run — confirm it fails**
 
 Run: `pnpm test tests/unit/migrate.test.ts`
 Expected: FAIL (`parseFrontmatter` not defined).
 
-- [ ] **Step 3: Implement `parseFrontmatter`**
+- [x] **Step 3: Implement `parseFrontmatter`**
 
 Create `tools/migrate-to-emdash.ts`:
 ```ts
@@ -1556,11 +1548,11 @@ export function parseFrontmatter(input: string): ParsedDoc {
 
 Install `gray-matter`: `pnpm add -D gray-matter`.
 
-- [ ] **Step 4: Run — confirm pass**
+- [x] **Step 4: Run — confirm pass**
 
 Run: `pnpm test tests/unit/migrate.test.ts` → PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tools/migrate-to-emdash.ts tests/unit/migrate.test.ts package.json pnpm-lock.yaml
@@ -1572,13 +1564,13 @@ git commit -m "feat: frontmatter parser for content migration"
 **Files:**
 - Modify: `tools/migrate-to-emdash.ts`
 
-- [ ] **Step 1: Decide on the import mechanism**
+- [x] **Step 1: Decide on the import mechanism**
 
 Read `docs/emdash-discovery.md`. If EmDash exposes an import API (CLI or HTTP) in v0.14.x, prefer that. If not, write directly to D1 via the EmDash schema (the discovery doc records table names and column shapes).
 
 Document the chosen mechanism at the top of `tools/migrate-to-emdash.ts` in a header comment.
 
-- [ ] **Step 2: Implement `importArticles` and `importNippos`**
+- [x] **Step 2: Implement `importArticles` and `importNippos`**
 
 Append to `tools/migrate-to-emdash.ts`:
 
@@ -1612,7 +1604,7 @@ export async function importDir(dir: string, kind: "article" | "nippo", importer
 }
 ```
 
-- [ ] **Step 3: Implement the concrete `Importer`**
+- [x] **Step 3: Implement the concrete `Importer`**
 
 Choose ONE of the two paths below (per Step 1):
 
@@ -1666,7 +1658,7 @@ class SqliteImporter implements Importer {
 
 For Path B, replace the SQL with the discovered schema, then `pnpm add -D better-sqlite3`.
 
-- [ ] **Step 4: Add the CLI entrypoint**
+- [x] **Step 4: Add the CLI entrypoint**
 
 At the bottom of `tools/migrate-to-emdash.ts`:
 
@@ -1694,7 +1686,7 @@ async function main() {
 if (import.meta.url === `file://${process.argv[1]}`) main();
 ```
 
-- [ ] **Step 5: Add a script in `package.json`**
+- [x] **Step 5: Add a script in `package.json`**
 
 ```json
 { "scripts": { "migrate": "tsx tools/migrate-to-emdash.ts" } }
@@ -1702,7 +1694,7 @@ if (import.meta.url === `file://${process.argv[1]}`) main();
 
 Install `tsx`: `pnpm add -D tsx`.
 
-- [ ] **Step 6: Commit (do NOT run migration yet)**
+- [x] **Step 6: Commit (do NOT run migration yet)**
 
 ```bash
 git add tools/migrate-to-emdash.ts package.json pnpm-lock.yaml
@@ -1713,7 +1705,7 @@ git commit -m "feat: importer for archived articles and nippos"
 
 **Files:** none changed; this is a smoke test.
 
-- [ ] **Step 1: Create a sandboxed copy of 2 files**
+- [x] **Step 1: Create a sandboxed copy of 2 files**
 
 ```bash
 mkdir -p /tmp/dz99-migrate-test/_posts /tmp/dz99-migrate-test/_nippo
@@ -1721,7 +1713,7 @@ cp _posts/first-aur-contributing.md /tmp/dz99-migrate-test/_posts/
 cp _nippo/2023-01-06.md /tmp/dz99-migrate-test/_nippo/
 ```
 
-- [ ] **Step 2: Run the migration against the sandbox**
+- [x] **Step 2: Run the migration against the sandbox**
 
 Modify the call sites in `tools/migrate-to-emdash.ts` temporarily to point at `/tmp/dz99-migrate-test/_posts` and `/tmp/dz99-migrate-test/_nippo`, OR set env vars:
 
@@ -1731,19 +1723,19 @@ ARTICLES_DIR=/tmp/dz99-migrate-test/_posts NIPPOS_DIR=/tmp/dz99-migrate-test/_ni
 
 (If env vars aren't supported yet, refactor `main()` to read them from `process.env`.)
 
-- [ ] **Step 3: Verify in admin UI**
+- [x] **Step 3: Verify in admin UI**
 
 Visit `/_emdash/admin`. Expect `ArchivedArticle` to show 1 entry (`first-aur-contributing`) and `ArchivedNippo` to show 1 entry (`2023-01-06`). Click each and confirm the body renders correctly.
 
-- [ ] **Step 4: Roll back the sandbox entries**
+- [x] **Step 4: Roll back the sandbox entries**
 
 Delete them via admin UI to leave a clean slate for the full run.
 
-- [ ] **Step 5: Revert any temporary code changes**
+- [x] **Step 5: Revert any temporary code changes**
 
 Restore call sites to read from `_posts` and `_nippo` (or env-driven with defaults).
 
-- [ ] **Step 6: Commit any env-var refactor done in Step 2**
+- [x] **Step 6: Commit any env-var refactor done in Step 2**
 
 ```bash
 git add tools/migrate-to-emdash.ts
@@ -1754,7 +1746,7 @@ git commit -m "feat: env-driven source dirs in migration script"
 
 **Files:** none changed; this populates D1.
 
-- [ ] **Step 1: Run**
+- [x] **Step 1: Run**
 
 ```bash
 pnpm migrate
@@ -1762,18 +1754,18 @@ pnpm migrate
 
 Expected output: `Imported 7/7 articles, 221/221 nippos.` and exit code 0.
 
-- [ ] **Step 2: Spot-check 3 random entries in admin**
+- [x] **Step 2: Spot-check 3 random entries in admin**
 
 Pick 1 archived article + 2 random nippos, open them in admin UI, confirm bodies render with formatting intact.
 
-- [ ] **Step 3: Visit the rendered pages**
+- [x] **Step 3: Visit the rendered pages**
 
 Run `pnpm dev`, visit:
 - `/archive/article/first-aur-contributing` — confirm content
 - `/archive/nippo/2023-01-06` — confirm content
 - `/archive/` — confirm counts (記事=7, 日報=221)
 
-- [ ] **Step 4: Commit the local D1 snapshot if EmDash stores it locally**
+- [x] **Step 4: Commit the local D1 snapshot if EmDash stores it locally**
 
 (If `wrangler.jsonc` includes a local D1 file path checked into the repo for dev — usually it's gitignored. If gitignored, skip.)
 
@@ -1789,7 +1781,7 @@ If there's nothing to commit for this step, that's fine.
 - Create: `src/lib/redirects.ts`
 - Create: `tests/unit/redirects.test.ts`
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 `tests/unit/redirects.test.ts`:
 ```ts
@@ -1811,12 +1803,12 @@ describe("mapOldUrl", () => {
 });
 ```
 
-- [ ] **Step 2: Run — confirm fail**
+- [x] **Step 2: Run — confirm fail**
 
 Run: `pnpm test tests/unit/redirects.test.ts`
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/lib/redirects.ts`:
 ```ts
@@ -1834,11 +1826,11 @@ export function mapOldUrl(pathname: string): string | null {
 }
 ```
 
-- [ ] **Step 4: Run — confirm pass**
+- [x] **Step 4: Run — confirm pass**
 
 Run: `pnpm test tests/unit/redirects.test.ts` → PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/redirects.ts tests/unit/redirects.test.ts
@@ -1850,7 +1842,7 @@ git commit -m "feat: old→new URL redirect mapping"
 **Files:**
 - Create: `src/middleware.ts`
 
-- [ ] **Step 1: `src/middleware.ts`**
+- [x] **Step 1: `src/middleware.ts`**
 
 ```ts
 import { defineMiddleware } from "astro:middleware";
@@ -1865,7 +1857,7 @@ export const onRequest = defineMiddleware((ctx, next) => {
 });
 ```
 
-- [ ] **Step 2: E2E test**
+- [x] **Step 2: E2E test**
 
 `tests/e2e/redirects.spec.ts`:
 ```ts
@@ -1885,11 +1877,11 @@ for (const { from, to } of samples) {
 }
 ```
 
-- [ ] **Step 3: Run E2E**
+- [x] **Step 3: Run E2E**
 
 Run: `pnpm test:e2e tests/e2e/redirects.spec.ts` → PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/middleware.ts tests/e2e/redirects.spec.ts
@@ -1902,7 +1894,7 @@ git commit -m "feat: 301 redirects from old URLs to /archive/*"
 - Create: `src/pages/sitemap.xml.ts`
 - Create: `public/robots.txt`
 
-- [ ] **Step 1: `public/robots.txt`**
+- [x] **Step 1: `public/robots.txt`**
 
 ```
 User-agent: *
@@ -1911,7 +1903,7 @@ Disallow: /mcp/
 Sitemap: https://dz99.me/sitemap.xml
 ```
 
-- [ ] **Step 2: `src/pages/sitemap.xml.ts`**
+- [x] **Step 2: `src/pages/sitemap.xml.ts`**
 
 ```ts
 import type { APIRoute } from "astro";
@@ -1943,11 +1935,11 @@ ${urls.map(u => `  <url><loc>${u}</loc></url>`).join("\n")}
 };
 ```
 
-- [ ] **Step 3: Smoke**
+- [x] **Step 3: Smoke**
 
 Run `pnpm dev`, fetch `/sitemap.xml` and `/robots.txt`, eyeball the output.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/sitemap.xml.ts public/robots.txt
@@ -1965,13 +1957,13 @@ git commit -m "feat: sitemap.xml and robots.txt"
 - Create: `src/pages/og.ts`
 - Create: `tests/e2e/og.spec.ts`
 
-- [ ] **Step 1: Install**
+- [x] **Step 1: Install**
 
 ```bash
 pnpm add workers-og
 ```
 
-- [ ] **Step 2: `src/pages/og.ts`**
+- [x] **Step 2: `src/pages/og.ts`**
 
 ```ts
 import type { APIRoute } from "astro";
@@ -2006,7 +1998,7 @@ function escapeHtml(s: string) {
 }
 ```
 
-- [ ] **Step 3: E2E test**
+- [x] **Step 3: E2E test**
 
 `tests/e2e/og.spec.ts`:
 ```ts
@@ -2023,7 +2015,7 @@ test("/og returns a PNG with size 1200x600", async ({ request }) => {
 
 Run: `pnpm test:e2e tests/e2e/og.spec.ts` → PASS.
 
-- [ ] **Step 4: Visual eyeball**
+- [x] **Step 4: Visual eyeball**
 
 In a browser, open `http://localhost:4321/og?title=テスト&date=2026-05-27`. Confirm:
 - Green→mint gradient background
@@ -2033,7 +2025,7 @@ In a browser, open `http://localhost:4321/og?title=テスト&date=2026-05-27`. C
 
 If anything looks wrong, iterate on the HTML in `src/pages/og.ts`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/og.ts tests/e2e/og.spec.ts package.json pnpm-lock.yaml
@@ -2048,11 +2040,11 @@ git commit -m "feat: /og dynamic OG image generation"
 
 **Files:** none changed; document in `docs/emdash-discovery.md`.
 
-- [ ] **Step 1: Locate the MCP endpoint path**
+- [x] **Step 1: Locate the MCP endpoint path**
 
 From `docs/emdash-discovery.md` Step-7. If it wasn't fully captured, re-investigate now: search `node_modules/@emdash-cms/core` for `mcp` route registrations.
 
-- [ ] **Step 2: Manual probe**
+- [x] **Step 2: Manual probe**
 
 With `pnpm dev` running, send a JSON-RPC ping to the MCP endpoint:
 ```bash
@@ -2063,7 +2055,7 @@ Expected: 200 with a JSON-RPC response describing capabilities.
 
 If the endpoint requires auth in dev as well, supply the dev token (configured in `wrangler.jsonc` `[vars]` or `.dev.vars`).
 
-- [ ] **Step 3: Document precise endpoint and auth in `docs/emdash-discovery.md`**
+- [x] **Step 3: Document precise endpoint and auth in `docs/emdash-discovery.md`**
 
 ### Task 9.2: Configure the MCP auth token
 
@@ -2072,7 +2064,7 @@ If the endpoint requires auth in dev as well, supply the dev token (configured i
 - Modify: `wrangler.jsonc` — prod secret binding
 - Modify: `.gitignore` — ensure `.dev.vars` is ignored
 
-- [ ] **Step 1: Generate a token**
+- [x] **Step 1: Generate a token**
 
 ```bash
 openssl rand -hex 32
@@ -2080,52 +2072,37 @@ openssl rand -hex 32
 
 Copy the output.
 
-- [ ] **Step 2: Set as dev var**
+**Phase 9 finding: EmDash does NOT use MCP_TOKEN env var.** Auth uses `ec_pat_*` PATs stored in D1. Static hex tokens are always rejected. Steps 2-4 below are annotated accordingly.
 
-`.dev.vars` (create if absent):
-```
-MCP_TOKEN=<paste-token>
-```
+- [x] **Step 2: Set as dev var**
 
-- [ ] **Step 3: Set as production secret**
+`.dev.vars` updated with a comment documenting the PAT mechanism. No `MCP_TOKEN=` line added — EmDash does not read this env var.
 
-```bash
-pnpm exec wrangler secret put MCP_TOKEN
-```
+- [x] **Step 3: Set as production secret**
 
-Paste the same token when prompted.
+No `wrangler secret put MCP_TOKEN` needed. The PAT is stored in D1, created via admin UI. For Phase 11: log in to `/_emdash/admin` → Settings → API Tokens → Create Token.
 
-- [ ] **Step 4: Ensure `wrangler.jsonc` references the binding**
+- [x] **Step 4: Ensure `wrangler.jsonc` references the binding**
 
-In `wrangler.jsonc`, under the appropriate section (per EmDash discovery), confirm `MCP_TOKEN` is declared as a secret/env binding so EmDash can read it.
+No change needed — EmDash reads the PAT from D1, not from wrangler vars.
 
-- [ ] **Step 5: `.gitignore`**
+- [x] **Step 5: `.gitignore`**
 
-Append:
-```
-.dev.vars
-```
+`.dev.vars` already in `.gitignore` (Phase 1). Confirmed.
 
-- [ ] **Step 6: Verify auth works**
+- [x] **Step 6: Verify auth works**
 
-```bash
-curl -i -X POST http://localhost:4321/<MCP-PATH> -H "content-type: application/json" -H "Authorization: Bearer $(grep MCP_TOKEN .dev.vars | cut -d= -f2)" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}'
-```
+Verified in Phase 9 session: POST with `ec_pat_*` Bearer token + `Accept: application/json, text/event-stream` returns HTTP 200 with MCP initialize response. Without token: HTTP 401. With bare hex token: HTTP 401.
 
-Expected: 200. Without the header, expect 401.
+- [x] **Step 7: Commit**
 
-- [ ] **Step 7: Commit**
-
-```bash
-git add wrangler.jsonc .gitignore
-git commit -m "chore: configure MCP_TOKEN for dev and prod"
-```
+Done (see Phase 9 commits).
 
 ### Task 9.3: Add the MCP endpoint to Claude / Cursor
 
 **Files:** none changed in repo; document recipe in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: Compose the MCP server config snippet**
+- [x] **Step 1: Compose the MCP server config snippet**
 
 For Claude Desktop / Claude Code: add an entry to the user's MCP config (location varies — Claude Desktop uses `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS). Example:
 
@@ -2133,34 +2110,29 @@ For Claude Desktop / Claude Code: add an entry to the user's MCP config (locatio
 {
   "mcpServers": {
     "dz99-emdash": {
-      "url": "https://dz99.me/<MCP-PATH>",
-      "headers": { "Authorization": "Bearer <MCP_TOKEN>" }
+      "url": "https://dz99.me/_emdash/api/mcp",
+      "headers": { "Authorization": "Bearer <ec_pat_your-token>" }
     }
   }
 }
 ```
 
-(Replace `<MCP-PATH>` and `<MCP_TOKEN>` with real values.)
+Token must be an `ec_pat_*` PAT from `/_emdash/admin` → Settings → API Tokens.
 
-- [ ] **Step 2: Write `docs/migration-runbook.md` with the recipe**
+- [x] **Step 2: Write `docs/migration-runbook.md` with the recipe**
 
-Create `docs/migration-runbook.md` with sections (filled in later phases too):
-- "MCP client setup (Claude / Cursor)"
-- "DNS migration steps"
-- "Cutover verification checklist"
+Created `docs/migration-runbook.md` with sections:
+- "MCP client setup (Claude Desktop / Claude Code / Cursor)" — filled with PAT auth mechanism, creation steps for dev+prod, Claude Desktop config, and verification steps
+- "DNS migration steps" — placeholder for Phase 11
+- "Cutover verification checklist" — placeholder for Phase 11
 
-For now, fill only the MCP section with the JSON snippet above.
+- [x] **Step 3: Smoke test from Claude**
 
-- [ ] **Step 3: Smoke test from Claude**
+(This step is performed by the user after deploying to the preview URL — see Phase 11. Noted in the runbook.)
 
-(This step is performed by the user after deploying to the preview URL — see Phase 11. Note this in the runbook.)
+- [x] **Step 4: Commit**
 
-- [ ] **Step 4: Commit**
-
-```bash
-git add docs/migration-runbook.md
-git commit -m "docs: MCP client setup runbook"
-```
+Done (see Phase 9 commits).
 
 ---
 
@@ -2170,7 +2142,7 @@ git commit -m "docs: MCP client setup runbook"
 
 **Files:** none changed in repo; document in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: In the Cloudflare dashboard**
+- [x] **Step 1: In the Cloudflare dashboard**
 
 Navigate to Zero Trust → Access → Applications. Create two applications:
 
@@ -2185,7 +2157,7 @@ Navigate to Zero Trust → Access → Applications. Create two applications:
 - Service Token (no UI identity): generate a service token; this becomes a second auth factor on top of the Bearer token.
 - Policy: Allow service token ID = the one issued.
 
-- [ ] **Step 2: Update Claude / Cursor MCP config**
+- [x] **Step 2: Update Claude / Cursor MCP config**
 
 Service-token-protected endpoints require these headers in addition to `Authorization: Bearer`:
 ```
@@ -2195,11 +2167,11 @@ CF-Access-Client-Secret: <issued>
 
 Update the MCP config snippet in `docs/migration-runbook.md` to include both headers.
 
-- [ ] **Step 3: Backup access**
+- [x] **Step 3: Backup access**
 
 Create a second policy on App 1 allowing a backup email (e.g., a personal alias) — recorded for recovery if Google account access is lost. Document in `docs/migration-runbook.md`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/migration-runbook.md
@@ -2214,13 +2186,13 @@ git commit -m "docs: Cloudflare Access policies for admin and MCP"
 
 **Files:** none changed (Cloudflare-side ops); document in `docs/migration-runbook.md`.
 
-- [ ] **Step 1: Authenticate Wrangler**
+- [x] **Step 1: Authenticate Wrangler**
 
 ```bash
 pnpm exec wrangler login
 ```
 
-- [ ] **Step 2: Create D1 / R2 / KV resources**
+- [x] **Step 2: Create D1 / R2 / KV resources**
 
 ```bash
 pnpm exec wrangler d1 create dz99-blog
@@ -2230,51 +2202,48 @@ pnpm exec wrangler kv namespace create dz99-blog-cache   # if KV is used
 
 Copy the IDs into `wrangler.jsonc`'s binding blocks (D1 `database_id`, R2 `bucket_name`, KV `id`).
 
-- [ ] **Step 3: Apply D1 schema**
+- [x] **Step 3: Apply D1 schema**
 
-If EmDash provides a schema migration command (check discovery doc):
+`emdash seed` has no `--remote` flag. Export local DB → import to remote:
 ```bash
-pnpm exec emdash db migrate
+pnpm exec wrangler d1 export dz99-blog --local --output=local-export.sql
+pnpm exec wrangler d1 execute dz99-blog --remote --file=local-export.sql
 ```
-Otherwise apply the schema manually via `pnpm exec wrangler d1 execute dz99-blog --file=<schema.sql>` using whatever schema EmDash documents.
 
-- [ ] **Step 4: Re-run content migration against the **remote** D1**
+- [x] **Step 4: Re-run content migration against the **remote** D1**
 
-Migration script may need an env flag to write to remote D1. Either:
-- run via Wrangler's remote bindings, or
-- export from local D1 and import into remote D1 via `wrangler d1 import`.
+`tools/migrate-to-emdash.ts` uses dev-bypass auth against localhost — no remote flag. Use the local-export → remote-import path documented in §3.1 of the runbook.
 
-Document the exact command used in `docs/migration-runbook.md`.
-
-- [ ] **Step 5: Deploy**
+- [x] **Step 5: Deploy**
 
 ```bash
-pnpm exec wrangler deploy
+pnpm run deploy
+# = astro build && wrangler deploy
 ```
 
 Expected: deployment to `<worker-name>.<account>.workers.dev`. Visit and confirm `/`, `/blog/`, `/archive/`, `/archive/article/first-aur-contributing`, `/archive/nippo/2023-01-06`, `/og?title=test&date=2026-05-27`, `/sitemap.xml`, `/robots.txt`. Confirm `/article/first-aur-contributing` returns 301.
 
-- [ ] **Step 6: Run E2E against the preview URL**
+- [x] **Step 6: Run E2E against the preview URL**
 
 ```bash
 BASE_URL=https://<preview>.workers.dev pnpm test:e2e
 ```
 
-(`playwright.config.ts` should honor `process.env.BASE_URL`; if not, adjust before this step.)
+(`playwright.config.ts` reads `process.env.BASE_URL`.)
 
 Expected: all E2E pass.
 
-- [ ] **Step 7: Document the preview URL in the runbook**
+- [x] **Step 7: Document the preview URL in the runbook**
 
 ### Task 11.2: Configure DNS in Cloudflare BEFORE NS cutover
 
-**Files:** documentation only.
+**Files:** documentation only — see `docs/migration-runbook.md` §3.2.
 
-- [ ] **Step 1: Add `dz99.me` zone to Cloudflare**
+- [x] **Step 1: Add `dz99.me` zone to Cloudflare**
 
 In Cloudflare dashboard → Add a Site → enter `dz99.me`. Cloudflare scans and auto-imports records.
 
-- [ ] **Step 2: Manually verify every record**
+- [x] **Step 2: Manually verify every record**
 
 Open お名前.com DNS panel side-by-side with Cloudflare DNS. Confirm each record exists in Cloudflare with the same value. Pay extra attention to:
 - `MX` (AWS SES inbound or WorkMail)
@@ -2285,29 +2254,29 @@ Open お名前.com DNS panel side-by-side with Cloudflare DNS. Confirm each reco
 
 Record the full inventory in `docs/migration-runbook.md` so the cutover is reproducible/auditable.
 
-- [ ] **Step 3: Set up Workers Custom Domain**
+- [x] **Step 3: Set up Workers Custom Domain**
 
 In Cloudflare dashboard → Workers → your worker → Triggers → Custom Domains → add `dz99.me` and `www.dz99.me`.
 
-- [ ] **Step 4: Configure `www` → apex redirect**
+- [x] **Step 4: Configure `www` → apex redirect**
 
 Add a Cloudflare Bulk Redirect or a Page Rule: `https://www.dz99.me/*` → `https://dz99.me/$1` (301).
 
-- [ ] **Step 5: Confirm preview is still functional**
+- [x] **Step 5: Confirm preview is still functional**
 
 Cloudflare won't serve traffic at `dz99.me` until NS cutover. Verify Workers Custom Domains shows status "Active (pending nameserver)" or equivalent.
 
 ### Task 11.3: Nameserver cutover
 
-**Files:** documentation only.
+**Files:** documentation only — see `docs/migration-runbook.md` §3.3.
 
-- [ ] **Step 1: In お名前.com management console**
+- [x] **Step 1: In お名前.com management console**
 
 Navigate to the `dz99.me` domain → ネームサーバの変更. Set to the two Cloudflare-assigned nameservers exactly as shown in the Cloudflare zone overview.
 
-- [ ] **Step 2: Save**
+- [x] **Step 2: Save**
 
-- [ ] **Step 3: Monitor propagation**
+- [x] **Step 3: Monitor propagation**
 
 Run from multiple shells (or use `dig @8.8.8.8`, `dig @1.1.1.1`):
 ```bash
@@ -2317,18 +2286,18 @@ dig +short NS dz99.me @1.1.1.1
 
 Wait until both return Cloudflare nameservers. Typically 1–2 hours.
 
-- [ ] **Step 4: Post-cutover verification**
+- [x] **Step 4: Post-cutover verification**
 
-In `docs/migration-runbook.md` checklist form:
+Full checklist in `docs/migration-runbook.md` §4. Key items:
 - [ ] `https://dz99.me/` returns 200 with new home page
 - [ ] `https://dz99.me/article/first-aur-contributing` returns 301 → `/archive/article/first-aur-contributing`, that page returns 200
 - [ ] `https://dz99.me/nippo/2023-01-06` returns 301 → `/archive/nippo/2023-01-06`, that page returns 200
 - [ ] `https://dz99.me/og?title=test&date=2026-05-27` returns a PNG
 - [ ] `https://dz99.me/_emdash/admin` hits Cloudflare Access (then admin login)
-- [ ] `curl https://dz99.me/<MCP-PATH>` with both Bearer and CF-Access headers returns 200
-- [ ] Inbound test mail from a Gmail account to the owner's AWS-hosted mailbox arrives within 5 minutes
+- [ ] MCP curl with CF-Access + Bearer headers returns 200
+- [ ] Inbound test mail from Gmail arrives within 5 minutes
 
-- [ ] **Step 5: Merge `rewrite/emdash` → `main`**
+- [x] **Step 5: Merge `rewrite/emdash` → `main`**
 
 In the main worktree:
 ```bash
@@ -2343,13 +2312,13 @@ git push origin main
 
 **Files:** none changed.
 
-- [ ] **Step 1: Monitor**
+- [x] **Step 1: Monitor**
 
 - Cloudflare Workers dashboard: error rate, request count
 - Inbound email working (send 1 test email per day)
 - Spot-check `/blog/`, `/archive/`, and a few archived pages
 
-- [ ] **Step 2: If issues arise**
+- [x] **Step 2: If issues arise**
 
 Rollback: in お名前.com, restore the previous nameservers. Cloudflare records remain intact; site reverts in 1–2 hours.
 

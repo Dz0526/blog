@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /_emdash/
+Disallow: /mcp/
+Sitemap: https://dz99.me/sitemap.xml

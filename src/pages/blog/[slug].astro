@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import PortableTextBody from "../../components/PortableTextBody.astro";
+import { getBlogPostBySlug } from "../../lib/content";
+
+const { slug } = Astro.params;
+const post = await getBlogPostBySlug(slug!);
+if (!post) return Astro.redirect("/blog/");
+
+const ogImage = `https://dz99.me/og?title=${encodeURIComponent(post.title)}&date=${encodeURIComponent(post.date)}`;
+---
+<Base title={post.title} description={post.excerpt} ogImage={ogImage} canonical={`https://dz99.me/blog/${post.slug}`}>
+  <article>
+    <header>
+      <time datetime={post.date}>{post.date}</time>
+      <h1>{post.title}</h1>
+    </header>
+    <PortableTextBody value={post.body} />
+  </article>
+</Base>
+<style>
+  header { margin-bottom: var(--space-lg, 32px); }
+  time { color: var(--color-accent-100, #66cdaa); font-size: 0.9rem; }
+  h1 { font-family: var(--font-display, sans-serif); }
+</style>

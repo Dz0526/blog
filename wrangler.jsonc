@@ -1,0 +1,35 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "dz99-blog",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "dz99-blog",
+			"database_id": "a056a9d0-3fc6-4272-af8f-bab0d6dfb956",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "dz99-blog-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "6f652c23e0304adeacd6b69a3db5a302",
+		},
+	],
+	// Worker Loader (plugin sandboxing) requires Workers Paid plan; disabled for Free tier.
+	// "worker_loaders": [
+	// 	{ "binding": "LOADER" },
+	// ],
+	"routes": [
+		{ "pattern": "dz99.me", "zone_name": "dz99.me", "custom_domain": true },
+		{ "pattern": "www.dz99.me", "zone_name": "dz99.me", "custom_domain": true },
+	],
+}

@@ -1,0 +1,16 @@
+---
+const year = new Date().getFullYear();
+---
+<footer>
+  <p>© {year} Daiki Ito · <a href="/archive/">Archive</a></p>
+</footer>
+<style>
+  footer {
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-xl);
+  }
+  footer a { color: inherit; }
+</style>

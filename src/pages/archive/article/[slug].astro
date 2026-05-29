@@ -1,0 +1,41 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PortableTextBody from "../../../components/PortableTextBody.astro";
+import { getArchivedArticleBySlug } from "../../../lib/content";
+
+const { slug } = Astro.params;
+const article = await getArchivedArticleBySlug(slug!);
+if (!article) return Astro.redirect("/archive/");
+
+const ogImage = `https://dz99.me/og?title=${encodeURIComponent(article.title)}&date=${encodeURIComponent(article.date)}`;
+---
+<Base
+  title={article.title}
+  description={undefined}
+  ogImage={ogImage}
+  canonical={`https://dz99.me/archive/article/${article.slug}`}
+>
+  <article>
+    <p class="meta">📦 アーカイブ（記事） · {article.date}</p>
+    <header>
+      <time datetime={article.date}>{article.date}</time>
+      <h1>{article.title}</h1>
+    </header>
+    <PortableTextBody value={article.body} />
+  </article>
+</Base>
+<style>
+  .meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #64748b);
+    margin-bottom: var(--space-sm, 12px);
+  }
+  header { margin-bottom: var(--space-lg, 32px); }
+  time {
+    display: block;
+    color: var(--color-accent-100, #66cdaa);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-xs, 8px);
+  }
+  h1 { font-family: var(--font-display, sans-serif); }
+</style>

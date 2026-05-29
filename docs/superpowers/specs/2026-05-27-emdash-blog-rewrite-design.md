@@ -36,7 +36,7 @@
 | C6 | **Visual direction:** retain the current `#66cdaa → #66cdda` mint gradient and Hachi Maru Pop / sans-serif feel; no design refresh | User explicitly requested keeping the current look. |
 | C7 | **Archive strategy:** ingest all existing markdown into EmDash content types (no separate static folder) | User chose Approach A; one system manages everything. |
 | C8 | **Profile sections:** Hero, About/Bio, Latest Posts, Contact only (no Skills/Projects/Timeline/Now) | User-selected after card review. |
-| C9 | **MCP authentication:** Bearer-token auth on `/mcp/*` endpoints, token stored as a Wrangler-managed Worker secret and provided to Claude/Cursor via env var | Simplest workable auth for a personal site; tokens revocable in one place. |
+| C9 | **MCP authentication:** D1-stored EmDash PAT (`ec_pat_*`) minted after first admin login via `/_emdash/api/admin/api-tokens`. Cloudflare Access service token sits in front as defense-in-depth. Both required by MCP clients (`CF-Access-Client-Id` + `CF-Access-Client-Secret` headers AND `Authorization: Bearer ec_pat_...`). | EmDash 0.14.x does not support static env-var tokens for MCP; PAT model is its actual auth mechanism. Cloudflare Access remains useful as an outer gate to limit who can even reach the inner EmDash auth flow. |
 | C10 | **Admin authentication:** Cloudflare Access in front of EmDash's built-in auth on `/admin/*` (Google OAuth identity provider) | Defense in depth; avoids reliance on beta CMS auth alone. |
 
 ## 4. Architecture
