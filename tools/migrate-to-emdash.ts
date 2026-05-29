@@ -1,4 +1,20 @@
 /**
+ * ONE-SHOT MIGRATION SCRIPT — 2026-05-27 dz99.me EmDash rewrite
+ *
+ * This script was run once to import the legacy _posts/ (7 files) and _nippo/
+ * (221 files) markdown sources into the EmDash archivedarticle and archivednippo
+ * D1 collections. The source files have since been deleted from the repo (Phase 12
+ * cleanup). All migrated content is live in D1/Cloudflare.
+ *
+ * DO NOT re-run this script unless you are rebuilding D1 from scratch (disaster
+ * recovery after a D1 reset). For future content, use the MCP server or the
+ * EmDash admin UI at /_emdash/admin — see docs/migration-runbook.md §1 for MCP
+ * setup and PAT minting.
+ *
+ * Kept here as a historical record and D1 re-seed disaster-recovery script.
+ *
+ * ---
+ *
  * Content migration script: imports legacy _posts/ and _nippo/ markdown files
  * into EmDash's archivedarticle and archivednippo collections.
  *
