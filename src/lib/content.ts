@@ -138,9 +138,13 @@ function imageToUrl(raw: unknown): string | undefined {
     if (src.startsWith("/")) return src;
     return undefined;
   }
-  // Local provider: build from media API using the media id
-  if (typeof img.id === "string" && img.id) {
-    return `/_emdash/api/media/file/${img.id}`;
+  // Local provider (EmDash media): /_emdash/api/media/file/<storageKey>.
+  // The `id` (ULID) is the media row's primary key — NOT a file URL.
+  // The file is served by storageKey (filename-shaped, e.g. "01KST...GD.jpg").
+  const meta = img.meta as Record<string, unknown> | undefined;
+  const storageKey = meta?.storageKey;
+  if (typeof storageKey === "string" && storageKey) {
+    return `/_emdash/api/media/file/${storageKey}`;
   }
   return undefined;
 }
