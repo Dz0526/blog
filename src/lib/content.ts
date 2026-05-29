@@ -36,7 +36,7 @@ export async function getProfile(): Promise<Profile> {
     // DB is unseeded (local dev before first seed run). Return placeholder
     // so the dev page renders without crashing.
     return {
-      heroTitle: "Dz0526 / ITO",
+      heroTitle: "Daiki Ito",
       heroSubtitle: undefined,
       bio: [],
       avatarUrl: undefined,
@@ -170,7 +170,11 @@ export async function listBlogPosts(
   }
 
   const posts: PostSummary[] = (entries ?? [])
-    .filter((e) => e.data.published === true)
+    // EmDash tracks publish state on the entry's top-level `status` column,
+    // not on the user-defined `data.published` field. SQLite stores booleans
+    // as INTEGER (1/0), so a strict `=== true` check on data.published would
+    // exclude every entry. Use `entry.status === "published"` instead.
+    .filter((e) => (e as { status?: string }).status === "published")
     .sort((a, b) => {
       // date is a string field — sort lexicographically desc (ISO format works)
       const da = String(a.data.date ?? "");
@@ -209,8 +213,9 @@ export async function getBlogPostBySlug(
   // entry is null and error is null → entry not found
   if (!entry) return null;
 
-  // Only serve published posts
-  if (entry.data.published !== true) return null;
+  // Only serve published posts (see listBlogPosts for the same rationale —
+  // EmDash uses entry.status, not data.published).
+  if ((entry as { status?: string }).status !== "published") return null;
 
   return {
     ...toPostSummary(entry as unknown as { id: string; data: Record<string, unknown> }),

@@ -13,7 +13,7 @@ export interface BlogSiteIdentitySettings {
 }
 
 const DEFAULT_SITE_TITLE = "dz99.me";
-const DEFAULT_SITE_TAGLINE = "Dz0526 / ITO の個人サイト";
+const DEFAULT_SITE_TAGLINE = "Daiki Ito の個人サイト";
 
 export function resolveBlogSiteIdentity(settings?: BlogSiteIdentitySettings) {
 	return {

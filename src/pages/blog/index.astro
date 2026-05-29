@@ -5,7 +5,7 @@ import { listBlogPosts } from "../../lib/content";
 
 const posts = await listBlogPosts();
 ---
-<Base title="Blog" description="Dz0526 / ITO のブログ記事一覧">
+<Base title="Blog" description="Daiki Ito のブログ記事一覧">
   <h1>Blog</h1>
   {posts.length === 0 ? (
     <p>まだ記事がありません。</p>

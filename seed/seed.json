@@ -8,7 +8,7 @@
 	},
 	"settings": {
 		"title": "dz99.me",
-		"tagline": "Dz0526 / ITO の個人サイト"
+		"tagline": "Daiki Ito の個人サイト"
 	},
 	"collections": [
 		{
@@ -1182,7 +1182,7 @@
 				"slug": "profile",
 				"status": "published",
 				"data": {
-					"hero_title": "Dz0526 / ITO",
+					"hero_title": "Daiki Ito",
 					"hero_subtitle": "エンジニア・自分用記録置き場",
 					"bio": [
 						{

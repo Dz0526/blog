@@ -10,7 +10,7 @@ const profile = await getProfile();
 const latestPosts = await listBlogPosts({ limit: 5 });
 ---
 
-<Base title="dz99.me" description={profile.heroSubtitle ?? "Dz0526 / ITO の個人サイト"}>
+<Base title="dz99.me" description={profile.heroSubtitle ?? "Daiki Ito の個人サイト"}>
   <Hero title={profile.heroTitle} subtitle={profile.heroSubtitle} avatarUrl={profile.avatarUrl} />
   <About bio={profile.bio} />
   <LatestPosts posts={latestPosts} />
