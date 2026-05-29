@@ -26,10 +26,13 @@ export const GET: APIRoute = async ({ url }) => {
       `</div>` +
     `</div>`;
 
-  const fontData = await loadGoogleFont({ family: "Noto Sans JP", weight: 400 });
-  const fonts = [
-    { name: "Noto Sans JP", data: fontData, weight: 400 as const, style: "normal" as const },
-  ];
+  let fonts: { name: string; data: Awaited<ReturnType<typeof loadGoogleFont>>; weight: number; style: string }[] = [];
+  try {
+    const fontData = await loadGoogleFont({ family: "Noto Sans JP", weight: 400 });
+    fonts = [{ name: "Noto Sans JP", data: fontData, weight: 400, style: "normal" }];
+  } catch {
+    // graceful degradation: render without custom font
+  }
 
   const imgResp = new ImageResponse(html, { width: 1200, height: 600, fonts });
   const buf = await imgResp.arrayBuffer();
