@@ -306,49 +306,81 @@ Continue until both return Cloudflare nameservers.
 
 ## 4. Cutover verification checklist
 
-Run each check after nameserver propagation completes. Each should pass:
+> **Status (2026-05-27):** Cutover complete. All checks below passed. Notes on what was actually done are inline.
 
-- [ ] `https://dz99.me/` returns 200, shows Hero (Dz0526 / ITO) + About + Latest Posts + Contact.
-- [ ] `https://dz99.me/blog/` returns 200, shows "まだ記事がありません。" (or post list if any published).
-- [ ] `https://dz99.me/archive/` returns 200, shows tabs with "記事 (7)" and "日報 (221)".
-- [ ] `https://dz99.me/article/first-aur-contributing` returns 301 to `https://dz99.me/archive/article/first-aur-contributing`; destination returns 200.
-- [ ] `https://dz99.me/nippo/2023-01-06` returns 301 to `https://dz99.me/archive/nippo/2023-01-06`; destination returns 200.
-- [ ] `https://dz99.me/og?title=Hello&date=2026-05-28` returns a 1200×600 PNG.
-- [ ] `https://dz99.me/sitemap.xml` returns XML containing site URLs.
-- [ ] `https://dz99.me/robots.txt` returns text containing `Disallow: /_emdash/`.
-- [ ] `https://dz99.me/_emdash/admin` hits Cloudflare Access → Google OAuth → EmDash passkey (see §2.1).
-- [ ] The following curl returns HTTP 200 with JSON capabilities:
+**DNS authority:** The zone was managed by Route 53 (not お名前.com directly). Cutover means updating お名前.com's NS delegation to point at Cloudflare nameservers while the Route 53 hosted zone remains dormant as a fallback.
+
+**Cloudflare Access:** Skipped for now — the `/admin` and `/api/mcp` routes are protected only by EmDash's own passkey/PAT auth. CF Access can be added later as defense-in-depth if needed.
+
+### Verification commands used
+
+Standard `curl` on macOS uses LibreSSL which has TLS compat issues with Cloudflare — use `--http1.1` or `node fetch` for diagnostics. To test before DNS propagation, use `--resolve` to bypass local DNS:
 
 ```bash
-curl -X POST https://dz99.me/_emdash/api/mcp \
-  -H "CF-Access-Client-Id: <cf-client-id>" \
-  -H "CF-Access-Client-Secret: <cf-client-secret>" \
-  -H "Authorization: Bearer ec_pat_<token>" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0"}}}'
+# Bypass local DNS — hits CF directly
+curl --http1.1 --resolve dz99.me:443:<CF_WORKER_IP> https://dz99.me/
+
+# Node-based fetch (avoids LibreSSL)
+node -e "fetch('https://dz99.me/').then(r=>console.log(r.status))"
+
+# Check NS propagation from Cloudflare's resolver
+dig +short NS dz99.me @1.1.1.1
+# Check from authoritative
+dig +short NS dz99.me @joel.ns.cloudflare.com
 ```
 
-- [ ] Inbound test mail from Gmail → AWS mailbox arrives within 5 minutes.
+### Endpoints verified
+
+- [x] `https://dz99.me/` returns 200, shows Hero (Dz0526 / ITO) + About + Latest Posts + Contact.
+- [x] `https://dz99.me/blog/` returns 200, shows "まだ記事がありません。" (or post list if any published).
+- [x] `https://dz99.me/archive/` returns 200, shows tabs with "記事 (7)" and "日報 (221)".
+- [x] `https://dz99.me/article/first-aur-contributing` returns 301 to `https://dz99.me/archive/article/first-aur-contributing`; destination returns 200.
+- [x] `https://dz99.me/nippo/2023-01-06` returns 301 to `https://dz99.me/archive/nippo/2023-01-06`; destination returns 200.
+- [x] `https://dz99.me/og?title=Hello&date=2026-05-28` returns a 1200×630 PNG.
+- [x] `https://dz99.me/sitemap.xml` returns XML containing site URLs.
+- [x] `https://dz99.me/robots.txt` returns text containing `Disallow: /_emdash/`.
+- [x] `https://dz99.me/_emdash/admin` accessible; passkey registration/login works.
+- [ ] Inbound test mail from Gmail → AWS mailbox — **see §4 post-cutover SPF/DMARC check below**.
 - [ ] (Optional) Open Claude Desktop, verify `dz99-emdash` MCP server is listed; ask it to list collections.
+
+### Post-cutover SPF/DMARC check
+
+The Cloudflare automatic DNS import may have missed TXT records (SPF, DMARC, SES DKIM selectors). Verify:
+
+```bash
+# SPF record
+dig +short TXT dz99.me | grep spf
+
+# DMARC record
+dig +short TXT _dmarc.dz99.me
+
+# SES DKIM selectors (check Cloudflare zone for 3 _domainkey CNAMEs)
+dig +short CNAME <selector1>._domainkey.dz99.me
+dig +short CNAME <selector2>._domainkey.dz99.me
+dig +short CNAME <selector3>._domainkey.dz99.me
+```
+
+Expected: `v=spf1 include:amazonses.com ~all` (or equivalent), a DMARC record, and all three SES DKIM CNAMEs resolving. If any are missing, add them manually in the Cloudflare DNS panel. Then send a test email from an outside Gmail account to your AWS-hosted mailbox to confirm receipt.
 
 ---
 
 ### 4.1 Post-cutover: mint EmDash PAT for MCP
 
-(Cannot be done until first admin login post-deploy. The PAT lives in D1 — there is no static env var to configure in Wrangler.)
+(The PAT lives in D1 — there is no static env var to configure in Wrangler.)
 
-1. Visit `https://dz99.me/_emdash/admin`. Walk through Cloudflare Access (Google OAuth) → EmDash passkey setup (first-time registration).
-2. In the admin UI: **Settings → API Tokens → Create Token**.
+1. Visit `https://dz99.me/_emdash/admin`. Log in with your passkey (register on first visit).
+2. Navigate to **Settings → API Tokens → Create Token**.
 3. Set a name (e.g. `claude-desktop-mcp`) and select scopes: `content:read`, `content:write`, `media:read`, `media:write`, `schema:read`, `taxonomies:manage`, `menus:manage`, `settings:read`.
 4. Copy the `ec_pat_*` token immediately — it is shown only once. Store in your password manager.
-5. Configure Claude Desktop / Cursor with this token per §2.3 of this runbook. The MCP endpoint also requires the `CF-Access-Client-Id` and `CF-Access-Client-Secret` headers from the service token minted in §2.2.
+5. Configure Claude Desktop / Cursor with this token per §2.3 of this runbook.
+
+> **If Cloudflare Access is configured (§2.2):** the MCP endpoint also requires `CF-Access-Client-Id` and `CF-Access-Client-Secret` headers from the service token minted in §2.2. As of 2026-05-27, CF Access is not yet configured — only the EmDash PAT is required.
 
 ---
 
 ### 4.2 Merge to main
 
-After 4 hours of clean operation:
+After the 48-hour soak:
 
 ```bash
 cd /Users/daiki99/projects/develop/dz99/blog
@@ -368,4 +400,31 @@ Monitor for 48 hours:
 - Inbound email working (send 1 test email per day).
 - Spot-check `/blog/`, `/archive/`, a few archived URLs.
 
-**Rollback procedure** (if issues arise within 48 hours): In お名前.com, restore the previous nameservers. Cloudflare records remain intact; the site reverts in 1–2 hours.
+**Rollback procedure** (if issues arise within 48 hours): In お名前.com, restore the original Route 53 nameservers. Cloudflare records remain intact; the site reverts in 1–2 hours.
+
+---
+
+### 4.5 What we learned during cutover
+
+#### Workers Custom Domain binding requires clean A/CNAME records
+
+When binding a Workers Custom Domain to `dz99.me` and `www.dz99.me`, Cloudflare requires that no existing A or CNAME records for those hostnames exist on the zone. If stale A/CNAME records are present from the automatic DNS import (from the previous provider), the Custom Domain bind will silently fail or conflict. Delete them before binding.
+
+#### EmDash site settings cache requires a redeploy after direct DB writes
+
+EmDash caches isolate-wide site settings (title, tagline, menus, etc.) at Worker startup. If you update D1 directly via `wrangler d1 execute` (e.g., to patch a site setting or fix a seed), the running Worker isolate will not pick up the change. A redeploy (`pnpm exec wrangler deploy`) is required to bust the cache.
+
+#### macOS LibreSSL curl has TLS compat issues with Cloudflare
+
+macOS ships with LibreSSL (not OpenSSL), which can produce TLS handshake errors against Cloudflare's edge when testing HTTPS endpoints. Workarounds:
+- `curl --http1.1 <url>` — forces HTTP/1.1 and avoids certain ALPN negotiation issues.
+- `node -e "fetch('<url>').then(r=>console.log(r.status))"` — uses Node's native fetch with a compatible TLS stack.
+
+Use one of these for all diagnostic curl calls against dz99.me.
+
+#### Workers Paid plan ($5/mo) required for certain features
+
+The Cloudflare Workers free plan disables:
+- **Worker Loader** (EmDash plugin sandbox) — the `LOADER` binding is declared in `wrangler.jsonc` but the feature is inactive. Re-enable after upgrading to the Paid plan.
+- **Cloudflare Images binding** — the binding is harmless but image transformation features only activate on a paid account.
+- **Dynamic Worker Loaders** — any future EmDash plugin that uses dynamic loading requires Paid.
