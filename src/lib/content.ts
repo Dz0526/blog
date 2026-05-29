@@ -68,7 +68,7 @@ export async function getProfile(): Promise<Profile> {
     heroTitle: data.hero_title,
     heroSubtitle: data.hero_subtitle,
     bio: data.bio ?? [],
-    avatarUrl: data.avatar?.src,
+    avatarUrl: imageToUrl(data.avatar),
     contactLinks,
   };
 }
