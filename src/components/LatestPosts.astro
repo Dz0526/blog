@@ -49,6 +49,9 @@ const { posts = [] } = Astro.props;
     margin: 0;
     padding: 0;
   }
+  .posts-list li + li {
+    border-top: 1px solid var(--color-border, #e2e8f0);
+  }
 
   .empty-state {
     font-size: var(--font-size-base, 1rem);

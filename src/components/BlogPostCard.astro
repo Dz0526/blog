@@ -5,19 +5,64 @@ const { title, slug, date, excerpt, tags = [] } = Astro.props;
 ---
 <article class="card">
   <a href={`/blog/${slug}`}>
-    <time datetime={date}>{date}</time>
+    <div class="meta">
+      <time datetime={date}>{date}</time>
+      {tags.length > 0 && (
+        <span class="tags" aria-label="Tags">
+          <span class="meta-sep" aria-hidden="true">·</span>
+          {tags.map((t) => <span class="tag">#{t}</span>)}
+        </span>
+      )}
+    </div>
     <h2>{title}</h2>
-    {excerpt && <p>{excerpt}</p>}
-    {tags.length > 0 && (
-      <ul class="tags">{tags.map(t => <li>#{t}</li>)}</ul>
-    )}
+    {excerpt && <p class="excerpt">{excerpt}</p>}
   </a>
 </article>
 <style>
-  .card { border: 1px solid var(--color-border, #e2e8f0); border-radius: var(--radius-md, 8px); margin-bottom: var(--space-md, 16px); }
-  .card a { display: block; padding: var(--space-md, 16px); text-decoration: none; color: inherit; }
-  .card:hover, .card:focus-within { border-color: var(--color-accent-100, #66cdaa); }
-  time { font-size: 0.85rem; color: var(--color-accent-100, #66cdaa); }
-  h2 { font-family: var(--font-display, sans-serif); margin: var(--space-xs, 4px) 0; }
-  .tags { display: flex; gap: var(--space-xs, 4px); padding: 0; list-style: none; font-size: 0.8rem; color: var(--color-text-muted, #4a5568); }
+  .card a {
+    display: block;
+    padding: var(--space-md, 16px) 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card a:hover h2,
+  .card a:focus-visible h2 {
+    color: var(--color-accent-100, #66cdaa);
+  }
+  .meta {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-xs, 4px);
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #4a5568);
+    margin-bottom: var(--space-xs, 4px);
+  }
+  .meta-sep {
+    margin: 0 var(--space-xs, 4px);
+    opacity: 0.5;
+  }
+  .tags {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-xs, 4px);
+  }
+  .tag::before {
+    /* keep leading "#" tight to the word */
+    content: "";
+  }
+  h2 {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700;
+    margin: 0 0 var(--space-xs, 4px);
+    font-size: 1.25rem;
+    line-height: 1.4;
+    transition: color 0.15s ease;
+  }
+  .excerpt {
+    color: var(--color-text-muted, #4a5568);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
 </style>
